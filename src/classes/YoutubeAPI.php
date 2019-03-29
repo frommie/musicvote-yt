@@ -4,45 +4,20 @@ class YoutubeAPI {
   protected $service;
 
   public function __construct() {
-    $client = $this->getClient();
-    $service = new Google_Service_YouTube($client);
-    $this->service = $service;
+    $this->client = new Google_Client();
+    $this->client->setDeveloperKey($this->get_api_key());
+    $this->service = new Google_Service_YouTube($this->client);
   }
 
-  public function getClient() {
-    $client = new Google_Client();
-    $client->setAuthConfigFile('../client_secret.json');
-    $client->setRedirectUri('http://music.test');
-    $client->setApprovalPrompt('force');
-    $client->addScope(Google_Service_YouTube::YOUTUBE_READONLY);
-    $client->setAccessType('offline');
-
-    // Load previously authorized credentials from a file.
-    $credentialsPath = '../php-yt-oauth2.json';
-    if (file_exists($credentialsPath)) {
-      $accessToken = file_get_contents($credentialsPath);
+  private function get_api_key() {
+    $config_file = dirname(__FILE__) . '/../../config.php';
+    if (is_readable($config_file)) {
+      require $config_file;
+      return $config['api_key'];
     }
-    $client->setAccessToken($accessToken);
-
-    // Refresh the token if it's expired.
-    if ($client->isAccessTokenExpired()) {
-      $client->refreshToken($client->getRefreshToken());
-      file_put_contents($credentialsPath, json_encode($client->getAccessToken()));
+    if (getenv("API_KEY") !== false) {
+      return getenv("API_KEY");
     }
-    return $client;
-  }
-
-  public function test() {
-    return $this->channelsListByUsername($this->service, 'snippet,contentDetails,statistics', array('forUsername' => 'GoogleDevelopers'));
-  }
-
-  public function channelsListByUsername($service, $part, $params) {
-      $params = array_filter($params);
-      $response = $service->channels->listChannels(
-          $part,
-          $params
-      );
-      return json_encode($response);
   }
 
   public function search($query) {
@@ -57,6 +32,4 @@ class YoutubeAPI {
     }
     return json_encode($arr);
   }
-
-  //channelsListByUsername($service, 'snippet,contentDetails,statistics', array('forUsername' => 'GoogleDevelopers'));
 }

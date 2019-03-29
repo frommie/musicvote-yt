@@ -12,7 +12,8 @@ class Database {
     // check if config file is present, then use config file
     $config_file = dirname(__FILE__) . '/../../config.php';
     if (is_readable($config_file)) {
-      require_once $config_file;
+      require $config_file;
+
       $db_config = Array(
         "adapter" => "mysql",
         "host" => $config['db']['host'],
