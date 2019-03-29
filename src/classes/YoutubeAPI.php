@@ -21,7 +21,12 @@ class YoutubeAPI {
   }
 
   public function search($query) {
-    $search = $this->service->search->listSearch('snippet', array('maxResults' => 24, 'q' => $query, 'type' => ''))['items'];
+    $search = $this->service->search->listSearch('snippet', array(
+      'maxResults' => 24,
+      'q' => $query,
+      'type' => '',
+      'regionCode' => 'DE'
+    ))['items'];
     $arr = array();
     foreach ($search as $item) {
       $cleaned_item = array();
