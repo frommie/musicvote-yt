@@ -1,0 +1,20 @@
+<html>
+<head>
+    <title>Example Application</title>
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">
+</head>
+<body>
+<h1>New Post</h1>
+
+<form class="pure-form" method="post" action="/post/new">
+    <label for="title">Title</label>
+    <input name="title" id="title" type="text" size="60" /><br />
+
+    <label for="description">Description</label>
+    <textarea name="description" id="description" rows="6" cols="80"></textarea><br />
+
+    <input type="submit" class="pure-button" value="Create" />
+</form>
+
+</body>
+</html>

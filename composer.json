@@ -1,0 +1,19 @@
+{
+  "require": {
+    "slim/slim": "^3.12",
+    "monolog/monolog": "^1.24",
+    "robmorgan/phinx": "^0.10.6",
+    "slim/twig-view": "^2.4",
+    "google/apiclient": "^2.2"
+  },
+  "autoload": {
+    "psr-4": {
+      "": "src/classes/"
+    }
+  },
+  "scripts": {
+    "post-install-cmd": [
+      "php vendor/robmorgan/phinx/bin/phinx migrate"
+    ]
+  }
+}

@@ -1,0 +1,9 @@
+.DS_Store
+Thumbs.db
+
+/vendor/
+/logs/*
+
+config.php
+client_secret.json
+php-yt-oauth2.json

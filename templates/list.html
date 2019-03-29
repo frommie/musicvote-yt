@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h1 class="title">Playlist</h1>
+<p>Search</p>
+
+{% for track in tracks %}
+  <div class="columns">
+    <div class="column"><p>{{ track.name }}</p></div>
+    <div class="column"><p>{{ track.votes }}</p></div>
+    <div class="column"><p><a class="button is-success" href="{{ path_for('vote', { 'id': track.id }) }}">+</a></p></div>
+  </div>
+{% endfor %}
+
+
+{% endblock %}
