@@ -26,7 +26,10 @@ class YoutubeAPI {
     $search = $this->service->search->listSearch('snippet', array(
       'maxResults' => 24,
       'q' => $query,
-      'type' => '',
+      'type' => 'video',
+      'videoDuration' => 'short', // can be any, long, medium or short
+      'videoEmbeddable' => 'true',
+      'videoSyndicated' => 'true',
       'regionCode' => 'DE'
     ))['items'];
     $arr = array();
