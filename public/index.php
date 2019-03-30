@@ -65,9 +65,11 @@ $app->get('/play', function ($request, $response) {
   print($playlist->get_next_video());
 });
 
-$app->get('/', function (Request $request, Response $response) {
+$app->get('/', function ($request, $response) {
+  $playlist = new Playlist($this->db);
+
   $response = $this->view->render($response, 'list.html', [
-    'tracks' => array(array('id' => 1, 'name' => "track 1", 'votes' => 5), array('id' => 2, 'name' => "track 2", 'votes' => 10))
+    'playlist' => $playlist->get_playlist()
   ]);
 
   return $response;

@@ -25,7 +25,11 @@ class Playlist {
   }
 
   public function get_playlist() {
-    return $this->playlist;
+    $arr = array();
+    foreach ($this->playlist as $video) {
+      array_push($arr, json_decode(strval($video)));
+    }
+    return $arr;
   }
 
   public function remove($video_id) {

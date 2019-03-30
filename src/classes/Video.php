@@ -27,7 +27,8 @@ class Video {
     $stmt = $db->prepare($sql);
     $stmt->execute(["video_id" => $video_id]);
     if ($stmt->rowCount() > 0) {
-      return new self($db, $video_id, $stmt->fetch()['title'], $stmt->fetch()['img']);
+      $result = $stmt->fetch();
+      return new self($db, $video_id, $result['title'], $result['img']);
     } else {
       throw new VideoNotFoundException();
     }
