@@ -4,18 +4,29 @@
 <script>
   $(document).ready(function(){
     $("#search").click(function(){
-      $.post("/search", {
-        query: $("#search_query").val()
-      },
-      function(data, status){
-        document.getElementById("search_result").innerHTML = "";
-        console.log(JSON.parse(data));
-        document.getElementById("search-modal").className = "modal is-active";
-
-        document.getElementById("search_result").appendChild(show_result(JSON.parse(data)));
-      });
+      search();
+    });
+    $("#search_query").keypress(function (e) {
+      if (e.which == 13) {
+        search();
+        return false;
+      }
     });
   });
+
+  function search() {
+    $.post("/search", {
+      query: $("#search_query").val()
+    },
+    function(data, status){
+      document.getElementById("search_result").innerHTML = "";
+      console.log(JSON.parse(data));
+      document.getElementById("search-modal").className = "modal is-active";
+
+      document.getElementById("search_result").appendChild(show_result(JSON.parse(data)));
+    });
+  }
+
   function show_result(data) {
     var ret_html = document.createElement("div");
 
