@@ -38,12 +38,6 @@ $app->post('/vote', function ($request, $response) {
   print_r($video->get_votes());
 });
 
-$app->get('/player', function (Request $request, Response $response) {
-  $response->getBody()->write("Play");
-
-  return $response;
-});
-
 $app->get('/search', function ($request, $response) {
   $response = $this->view->render($response, 'search.html');
 
@@ -57,6 +51,18 @@ $app->post('/search', function ($request, $response) {
   $content = $api->search($search_query);
 
   print_r($content);
+});
+
+$app->get('/player', function ($request, $response) {
+  $response = $this->view->render($response, 'player.html');
+
+  return $response;
+});
+
+$app->get('/play', function ($request, $response) {
+  $playlist = new Playlist($this->db);
+
+  print($playlist->get_next_video());
 });
 
 $app->get('/', function (Request $request, Response $response) {

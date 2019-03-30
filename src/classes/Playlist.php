@@ -12,16 +12,27 @@ class Playlist {
 
     $results = [];
     while($row = $stmt->fetch()) {
-        $results[] = new Video($row['video_id'], $row['votes']);
+        $results[] = $video = Video::with_video_id($this->db, $row['video_id']);
     }
     $this->playlist = $results;
   }
 
   public function get_next_video() {
-    return $this->playlist[0];
+    // return next video in list and remove top video
+    $next_id = $this->playlist[0]->get_video_id();
+    $this->remove($next_id);
+    return $next_id;
   }
 
   public function get_playlist() {
     return $this->playlist;
+  }
+
+  public function remove($video_id) {
+    $sql = "DELETE FROM playlist WHERE video_id = :video_id";
+    $stmt = $this->db->prepare($sql);
+    $result = $stmt->execute([
+      'video_id' => $video_id
+    ]);
   }
 }
