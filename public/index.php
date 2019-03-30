@@ -31,12 +31,12 @@ $container['view'] = function ($container) {
     return $view;
 };
 
-$app->get('/vote/{id}', function (Request $request, Response $response, $args) {
-  $track_id = (int)$args['id'];
-  $response->getBody()->write("Voting for ".$track_id);
-
-  return $response;
-})->setName('vote');
+$app->post('/vote', function ($request, $response) {
+  $video_id = $request->getParsedBody()['video_id'];
+  $video = Video::with_video_id($this->db, $video_id);
+  $video->add_vote();
+  print_r($video->get_votes());
+});
 
 $app->get('/player', function (Request $request, Response $response) {
   $response->getBody()->write("Play");
@@ -53,7 +53,7 @@ $app->get('/search', function ($request, $response) {
 $app->post('/search', function ($request, $response) {
   $search_query = $request->getParsedBody()['query'];
   //$response = new Search($search_query);
-  $api = new YoutubeAPI();
+  $api = new YoutubeAPI($this->db);
   $content = $api->search($search_query);
 
   print_r($content);

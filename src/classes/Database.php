@@ -41,4 +41,8 @@ class Database {
   public function get_connection() {
     return $this->pdo;
   }
+
+  public function get_db_name() {
+    return $this->pdo->query("SELECT DATABASE()")->fetchColumn(0);
+  }
 }

@@ -28,6 +28,7 @@ function show_result(data) {
 function get_box(vid) {
   var div_box = document.createElement("div");
   div_box.className = "box columns";
+  // TODO path_for cant be used here so the link to vote is a thing to improve
   div_box.innerHTML = '<div class="column"> \
       <figure class="image is-5by4"> \
         <img src="' + vid['img'] + '" alt="Image"> \
@@ -41,25 +42,28 @@ function get_box(vid) {
     <div class="column is-one-fifth"> \
       <nav class="level is-mobile"> \
         <div class="level-left"> \
-          <a class="level-item" aria-label="reply"> \
+          <a class="level-item"> \
+            <span class="is-large" id="votes_' + vid['video_id'] + '">' + vid['votes'] + '</span> \
+          </a> \
+          <a class="level-item" onClick="vote(\'' + vid['video_id'] + '\')" aria-label="reply"> \
             <span class="icon is-medium"> \
               <i class="fas fa-arrow-alt-circle-up fa-2x" aria-hidden="true"></i> \
-            </span> \
-          </a> \
-          <a class="level-item" aria-label="retweet"> \
-            <span class="is-large"> \
-              123 \
-            </span> \
-          </a> \
-          <a class="level-item" aria-label="like"> \
-            <span class="icon is-medium"> \
-              <i class="fas fa-arrow-alt-circle-down fa-2x" aria-hidden="true"></i> \
             </span> \
           </a> \
         </div> \
       </nav> \
     </div>';
   return div_box;
+}
+
+function vote(video_id) {
+  $.post("/vote", {
+    video_id: video_id
+  },
+  function(data, status){
+    // update vote number
+    document.getElementById("votes_" + video_id).innerHTML = data;
+  });
 }
 </script>
 {% endblock %}

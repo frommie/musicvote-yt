@@ -10,7 +10,7 @@ return [
         "default_migration_table" => "phinxlog",
         "default_database" => "dev",
         "dev" => [
-          "name" => "devdb",
+          "name" => $db->get_db_name(),
           "connection" => $db->get_connection()
         ]
     ]

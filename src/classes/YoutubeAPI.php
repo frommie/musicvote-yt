@@ -2,8 +2,10 @@
 
 class YoutubeAPI {
   protected $service;
+  protected $db;
 
-  public function __construct() {
+  public function __construct($db) {
+    $this->db = $db;
     $this->client = new Google_Client();
     $this->client->setDeveloperKey($this->get_api_key());
     $this->service = new Google_Service_YouTube($this->client);
@@ -29,11 +31,11 @@ class YoutubeAPI {
     ))['items'];
     $arr = array();
     foreach ($search as $item) {
-      $cleaned_item = array();
-      $cleaned_item['video_id'] = $item['id']['videoId'];
-      $cleaned_item['title'] = html_entity_decode($item['snippet']['title']);
-      $cleaned_item['img'] = $item['snippet']['thumbnails']['high']['url'];
-      array_push($arr, $cleaned_item);
+      try {
+        $video_result = new Video($this->db, $item['id']['videoId'], html_entity_decode($item['snippet']['title']), $item['snippet']['thumbnails']['high']['url']);
+        $video_result->save();
+        array_push($arr, json_decode(strval($video_result)));
+      } catch (VideoIDNullException $e) {}
     }
     return json_encode($arr);
   }
