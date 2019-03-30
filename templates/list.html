@@ -94,10 +94,10 @@
   <div class="column">
     <div class="field has-addons">
       <div class="control" style="width:100%;">
-        <input class="input is-large" type="text" id="search_query" placeholder="">
+        <input class="input" type="text" id="search_query" placeholder="">
       </div>
       <div class="control">
-        <a class="button is-info is-large" id="search">
+        <a class="button is-info" id="search">
           Suche
         </a>
       </div>
@@ -110,7 +110,7 @@
   <div class="modal-content">
     <div id="search_result"></div>
   </div>
-  <button class="modal-close is-large" aria-label="close"></button>
+  <button class="modal-close is-large" aria-label="close"  onClick="close_search_modal()"></button>
 </div>
 
 {% for video in playlist %}
