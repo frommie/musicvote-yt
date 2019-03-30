@@ -39,12 +39,6 @@ $app->post('/vote', function ($request, $response) {
   print_r($video->get_votes());
 });
 
-$app->get('/search', function ($request, $response) {
-  $response = $this->view->render($response, 'search.html');
-
-  return $response;
-});
-
 $app->post('/search', function ($request, $response) {
   $search_query = $request->getParsedBody()['query'];
   //$response = new Search($search_query);

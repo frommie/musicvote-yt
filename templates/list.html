@@ -2,16 +2,87 @@
 
 {% block script %}
 <script>
-function vote(video_id) {
-  $.post("/vote", {
-    video_id: video_id
-  },
-  function(data, status){
-    // update vote number
-    document.getElementById("votes_" + video_id).innerHTML = data;
-    console.log(data);
+  $(document).ready(function(){
+    $("#search").click(function(){
+      $.post("/search", {
+        query: $("#search_query").val()
+      },
+      function(data, status){
+        document.getElementById("search_result").innerHTML = "";
+        console.log(JSON.parse(data));
+        document.getElementById("search-modal").className = "modal is-active";
+
+        document.getElementById("search_result").appendChild(show_result(JSON.parse(data)));
+      });
+    });
   });
-}
+  function show_result(data) {
+    var ret_html = document.createElement("div");
+
+    var new_column = document.createElement("div");
+
+    for (let i = 0; i < data.length; i++) {
+      ret_html.appendChild(get_box(data[i]));
+    }
+
+    return ret_html;
+  }
+
+  function close_search_modal() {
+    document.getElementById("search-modal").className = "modal";
+  }
+
+  function get_box(vid) {
+    var div_box = document.createElement("div");
+    div_box.className = "box columns";
+    // TODO path_for cant be used here so the link to vote is a thing to improve
+    div_box.innerHTML = '<div class="column"> \
+        <figure class="image is-5by4"> \
+          <img src="' + vid['img'] + '" alt="Image"> \
+        </figure> \
+      </div> \
+      <div class="column is-half"> \
+        <p class="is-large"> \
+          <strong>' + vid['title'] + '</strong> \
+        </p> \
+      </div> \
+      <div class="column is-one-fifth"> \
+        <nav class="level is-mobile"> \
+          <div class="level-left"> \
+            <a class="level-item"> \
+              <span class="is-large" id="votes_' + vid['video_id'] + '">' + vid['votes'] + '</span> \
+            </a> \
+            <a class="level-item" onClick="vote(\'' + vid['video_id'] + '\')" aria-label="reply"> \
+              <span class="icon is-medium"> \
+                <i class="fas fa-arrow-alt-circle-up fa-2x" aria-hidden="true"></i> \
+              </span> \
+            </a> \
+          </div> \
+        </nav> \
+      </div>';
+    return div_box;
+  }
+
+  function vote(video_id) {
+    $.post("/vote", {
+      video_id: video_id
+    },
+    function(data, status){
+      // update vote number
+      document.getElementById("votes_" + video_id).innerHTML = data;
+    });
+  }
+
+  function vote(video_id) {
+    $.post("/vote", {
+      video_id: video_id
+    },
+    function(data, status){
+      // update vote number
+      document.getElementById("votes_" + video_id).innerHTML = data;
+      console.log(data);
+    });
+  }
 </script>
 {% endblock %}
 
@@ -21,8 +92,25 @@ function vote(video_id) {
     <h1 class="title">Playlist</h1>
   </div>
   <div class="column">
-    <a href="search">Suche</a>
+    <div class="field has-addons">
+      <div class="control">
+        <input class="input" type="text" id="search_query" placeholder="">
+      </div>
+      <div class="control">
+        <a class="button is-info" id="search">
+          Suche
+        </a>
+      </div>
+    </div>
   </div>
+</div>
+
+<div id="search-modal" class="modal">
+  <div class="modal-background" onClick="close_search_modal()"></div>
+  <div class="modal-content">
+    <div id="search_result"></div>
+  </div>
+  <button class="modal-close is-large" aria-label="close"></button>
 </div>
 
 {% for video in playlist %}
