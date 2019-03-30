@@ -17,11 +17,17 @@ class Playlist {
     $this->playlist = $results;
   }
 
+  public function get_first_video() {
+    // return first video in list
+    $next_id = $this->playlist[0]->get_video_id();
+    return $next_id;
+  }
+
   public function get_next_video() {
     // return next video in list and remove top video
     $next_id = $this->playlist[0]->get_video_id();
     $this->remove($next_id);
-    return $next_id;
+    return $this->playlist[1]->get_video_id();
   }
 
   public function get_playlist() {

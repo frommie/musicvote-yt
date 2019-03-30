@@ -9,14 +9,21 @@ function vote(video_id) {
   function(data, status){
     // update vote number
     document.getElementById("votes_" + video_id).innerHTML = data;
+    console.log(data);
   });
 }
 </script>
 {% endblock %}
 
 {% block content %}
-<h1 class="title">Playlist</h1>
-<p>Search</p>
+<div class="columns">
+  <div class="column">
+    <h1 class="title">Playlist</h1>
+  </div>
+  <div class="column">
+    <a href="search">Suche</a>
+  </div>
+</div>
 
 {% for video in playlist %}
 <div class="box columns">

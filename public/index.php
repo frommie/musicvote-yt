@@ -1,4 +1,5 @@
 <?php
+session_start();
 
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
@@ -54,12 +55,21 @@ $app->post('/search', function ($request, $response) {
 });
 
 $app->get('/player', function ($request, $response) {
-  $response = $this->view->render($response, 'player.html');
+  $playlist = new Playlist($this->db);
+  $response = $this->view->render($response, 'player.html', [
+    'video_id' => $playlist->get_first_video()
+  ]);
 
   return $response;
 });
 
 $app->get('/play', function ($request, $response) {
+  $playlist = new Playlist($this->db);
+
+  print($playlist->get_first_video());
+});
+
+$app->get('/next', function ($request, $response) {
   $playlist = new Playlist($this->db);
 
   print($playlist->get_next_video());

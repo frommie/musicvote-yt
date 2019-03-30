@@ -1,55 +1,49 @@
-{% extends "layout.html" %}
-
-{% block script %}
+<html>
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
-function create_iframe(video_id) {
-  return '<iframe width="560" height="315" src="https://www.youtube.com/embed/' + video_id + '" \
-    frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
-}
-
 var tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 var firstScriptTag = document.getElementsByTagName('script')[0];
 firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 var player;
 
-function onYouTubeIframeAPIReady() {
-  var videoId;
-  $.get("/play", {
-  },
-  function(data, status){
-    //document.getElementById("player").innerHTML = create_iframe(data['video_id']);
-    videoId = data;
-    player = new YT.Player('player', {
-      height: '360',
-      width: '640',
-      videoId: videoId,
-      events: {
-        'onReady': onPlayerReady,
-        'onStateChange': onPlayerStateChange
-      }
-    });
+function onYouTubeIframeAPIReady(video_id) {
+  if (video_id == null) {
+    video_id = '{{ video_id }}';
+  }
+  player = new YT.Player('player', {
+    height: '800',
+    width: '640',
+    videoId: video_id,
+    playerVars: { 'autoplay': 1},
+    events: {
+      'onReady': onPlayerReady,
+      'onStateChange': onPlayerStateChange
+    }
   });
 }
 
 function onPlayerReady(event) {
+  event.target.setVolume(100);
   event.target.playVideo();
 }
 
 function onPlayerStateChange(event) {
   if (event.data == YT.PlayerState.ENDED) {
+    console.log("next");
     // get next video
-    console.log("next video");
-    player.destroy();
-    onYouTubeIframeAPIReady();
+    $.get("/next", {
+    },
+    function(data, status){
+      player.destroy();
+      onYouTubeIframeAPIReady(data);
+    });
   }
 }
 </script>
-{% endblock %}
-
-{% block content %}
-<h1 class="title">Player</h1>
-
-<div id="player"></div>
-
-{% endblock %}
+</head>
+<body>
+<div id="player" style="width:100%; height:100%;"></div>
+</body>
+</html>
