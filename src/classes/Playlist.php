@@ -18,6 +18,8 @@ class Playlist {
   }
 
   public function get_first_video() {
+    // set playing status to first video in list
+    $this->playlist[0]->playing();
     // return first video in list
     $next_id = $this->playlist[0]->get_video_id();
     return $next_id;

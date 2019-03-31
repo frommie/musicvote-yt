@@ -35,6 +35,9 @@ class PlaylistMigration extends AbstractMigration
       $table = $this->table('playlist');
       $table->addColumn('video_id', 'string')
             ->addColumn('votes', 'integer')
+            ->addColumn('playing', 'boolean', [
+              'default' => 0
+            ])
             ->create();
     }
 }

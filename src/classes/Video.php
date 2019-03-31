@@ -120,6 +120,19 @@ class Video {
     }
   }
 
+  public function playing() {
+    // set playing status in db
+    $sql = "UPDATE playlist SET playing = 1 WHERE video_id = :video_id";
+    $stmt = $this->db->prepare($sql);
+    $result = $stmt->execute([
+      "video_id" => $this->video_id
+    ]);
+
+    if(!$result) {
+        throw new Exception("could not save record");
+    }
+  }
+
   public function __toString() {
     $arr = array(
       'video_id' => $this->video_id,
