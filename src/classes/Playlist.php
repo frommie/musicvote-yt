@@ -10,6 +10,7 @@ class Playlist {
   public function __construct($db) {
     $this->db = $db;
     // get playlist from db
+    // playing video is first
     $sql = "SELECT video_id, votes, playing FROM playlist ORDER BY playing DESC, votes DESC";
     $stmt = $this->db->query($sql);
 
@@ -23,26 +24,24 @@ class Playlist {
     $this->playlist = $results;
   }
 
-  public function get_first_video() {
+  public function get_top_video() {
     if (count($this->playlist) == 0) {
       throw new PlaylistEmptyException;
     }
     // set playing status to first video in list
     $this->playlist[0]->playing();
 
-    // return first video in list
-    $next_id = $this->playlist[0]->get_video_id();
-    return $next_id;
+    return $this->playlist[0]->get_video_id();;
   }
 
-  public function get_next_video() {
+  public function remove_playing_video() {
     if (count($this->playlist) == 1) {
       throw new PlaylistEmptyException;
     }
-    // return next video in list and remove top video
-    $next_id = $this->playlist[0]->get_video_id();
-    $this->remove($next_id);
-    return $this->playlist[1]->get_video_id();
+    // remove current playing video
+    $current_playing_id = $this->playlist[0]->get_video_id();
+    $this->remove($current_playing_id); // remove from db
+    array_splice($this->playlist, 0, 1);
   }
 
   public function get_playlist() {
@@ -61,6 +60,7 @@ class Playlist {
   }
 
   public function remove($video_id) {
+    // remove video from playlist
     $sql = "DELETE FROM playlist WHERE video_id = :video_id";
     $stmt = $this->db->prepare($sql);
     $result = $stmt->execute([

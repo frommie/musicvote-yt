@@ -53,7 +53,7 @@ $app->post('/search', function ($request, $response) {
 $app->get('/player', function ($request, $response) {
   $playlist = new Playlist($this->db);
   $response = $this->view->render($response, 'player.html', [
-    'video_id' => $playlist->get_first_video()
+    'video_id' => $playlist->get_top_video()
   ]);
 
   return $response;
@@ -62,16 +62,16 @@ $app->get('/player', function ($request, $response) {
 $app->get('/play', function ($request, $response) {
   $playlist = new Playlist($this->db);
   try {
-    print($playlist->get_first_video());
+    print($playlist->get_top_video());
   } catch (PlaylistEmptyException $e) {
     print("Empty playlist");
-  }  
+  }
 });
 
 $app->get('/next', function ($request, $response) {
   $playlist = new Playlist($this->db);
   try {
-    print($playlist->get_next_video());
+    print($playlist->remove_playing_video());
   } catch (PlaylistEmptyException $e) {
     print("Empty playlist");
   }
