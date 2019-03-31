@@ -86,11 +86,18 @@ class Video {
     }
   }
 
-  public function add_vote() {
-    $this->votes = $this->votes + 1;
+  public function vote($direction) {
+    if ($direction == "down") {
+      $this->votes = $this->votes - 1;
+      $operation = "-";
+    } else {
+      $this->votes = $this->votes + 1;
+      $operation = "+";
+    }
+
     // check if already in playlist
     if ($this->exists_in_playlist()) {
-      $sql = "UPDATE playlist SET votes = votes + 1 WHERE video_id = :video_id";
+      $sql = "UPDATE playlist SET votes = votes " . $operation . " 1 WHERE video_id = :video_id";
       $stmt = $this->db->prepare($sql);
       $result = $stmt->execute([
         "video_id" => $this->video_id

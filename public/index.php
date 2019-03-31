@@ -33,9 +33,11 @@ $container['view'] = function ($container) {
 };
 
 $app->post('/vote', function ($request, $response) {
-  $video_id = $request->getParsedBody()['video_id'];
+  $body = $request->getParsedBody();
+  $video_id = $body['video_id'];
+  $direction = $body['direction'];
   $video = Video::with_video_id($this->db, $video_id);
-  $video->add_vote();
+  $video->vote($direction);
   print_r($video->get_votes());
 });
 
