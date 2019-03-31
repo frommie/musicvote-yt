@@ -33,6 +33,13 @@ class YoutubeAPI {
       'videoSyndicated' => 'true',
       'regionCode' => 'DE'
     ))['items'];
+
+    $videos = $this->get_video_array($search);
+
+    return json_encode($videos);
+  }
+
+  public function get_video_array($search) {
     $arr = array();
     $videos = array();
     $video_ids = "";
@@ -68,6 +75,15 @@ class YoutubeAPI {
         array_push($videos, json_decode(strval($video_result)));
       } catch (VideoIDNullException $e) {}
     }
+    return $videos;
+  }
+
+  public function get_playlist_items($playlist_id) {
+    $playlist_items = $this->service->playlistItems->listPlaylistItems('snippet', array(
+      'maxResults' => 25,
+      'playlistId' => $playlist_id
+    ))['items'];
+    $videos = $this->get_video_array($playlist_items);
     return json_encode($videos);
   }
 

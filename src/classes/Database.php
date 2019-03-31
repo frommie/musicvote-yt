@@ -2,6 +2,7 @@
 
 class Database {
   protected $pdo;
+  
   public function __construct() {
     $db = $this->get_credentials();
     $this->pdo = new PDO($db['adapter'] . ':host=' . $db['host'] . ';dbname=' . $db['name'], $db['user'], $db['pass']);

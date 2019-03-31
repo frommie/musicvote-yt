@@ -3,7 +3,7 @@
 
 use Phinx\Migration\AbstractMigration;
 
-class VideosMigration extends AbstractMigration
+class FallbackMigration extends AbstractMigration
 {
     /**
      * Change Method.
@@ -32,14 +32,8 @@ class VideosMigration extends AbstractMigration
      */
     public function change()
     {
-      $table = $this->table('videos');
+      $table = $this->table('fallback_playlist');
       $table->addColumn('video_id', 'string')
-            ->addColumn('title', 'string')
-            ->addColumn('img', 'string')
-            ->addColumn('duration', 'integer', [
-              'default' => 0,
-              'null' => true
-            ])
             ->create();
     }
 }

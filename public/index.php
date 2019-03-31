@@ -7,6 +7,11 @@ use \Psr\Http\Message\ResponseInterface as Response;
 require '../vendor/autoload.php';
 require_once '../src/classes/Database.php';
 
+$config_file = '../config.php';
+if (is_readable($config_file)) {
+  require $config_file;
+}
+
 $config['displayErrorDetails'] = true;
 $config['addContentLengthHeader'] = false;
 $db = new Database;
@@ -71,7 +76,8 @@ $app->get('/play', function ($request, $response) {
 $app->get('/next', function ($request, $response) {
   $playlist = new Playlist($this->db);
   try {
-    print($playlist->remove_playing_video());
+    $playlist->remove_playing_video();
+    print($playlist->get_top_video());
   } catch (PlaylistEmptyException $e) {
     print("Empty playlist");
   }

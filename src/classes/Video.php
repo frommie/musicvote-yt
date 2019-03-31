@@ -105,7 +105,7 @@ class Video {
       ]);
 
       if(!$result) {
-          throw new Exception("could not save record");
+        throw new Exception("could not save record");
       }
     } else {
       // insert into playlist
@@ -116,7 +116,7 @@ class Video {
         'votes' => $this->votes
       ]);
       if(!$result) {
-          throw new Exception("could not save record");
+        throw new Exception("could not save record");
       }
     }
   }
@@ -131,7 +131,7 @@ class Video {
     ]);
 
     if(!$result) {
-        throw new Exception("could not save record");
+      throw new Exception("could not save record");
     }
   }
 
