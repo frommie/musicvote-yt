@@ -31,7 +31,7 @@ class Playlist {
     // set playing status to first video in list
     $this->playlist[0]->playing();
 
-    return $this->playlist[0]->get_video_id();;
+    return $this->playlist[0]->get_video_id();
   }
 
   public function remove_playing_video() {
