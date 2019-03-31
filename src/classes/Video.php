@@ -8,14 +8,16 @@ class Video {
   protected $video_id;
   protected $title;
   protected $img;
+  protected $duration;
   protected $votes;
 
-  public function __construct($db, $video_id, $title, $img) {
+  public function __construct($db, $video_id, $title, $img, $duration) {
     if ($video_id != "") {
       $this->db = $db;
       $this->video_id = $video_id;
       $this->title = $title;
       $this->img = $img;
+      $this->duration = $duration;
       $this->votes = $this->get_votes();
     } else {
       throw new VideoIDNullException();
@@ -23,12 +25,12 @@ class Video {
   }
 
   public static function with_video_id($db, $video_id) {
-    $sql = "SELECT title, img FROM videos WHERE video_id = :video_id";
+    $sql = "SELECT title, img, duration FROM videos WHERE video_id = :video_id";
     $stmt = $db->prepare($sql);
     $stmt->execute(["video_id" => $video_id]);
     if ($stmt->rowCount() > 0) {
       $result = $stmt->fetch();
-      return new self($db, $video_id, $result['title'], $result['img']);
+      return new self($db, $video_id, $result['title'], $result['img'], $result['duration']);
     } else {
       throw new VideoNotFoundException();
     }
@@ -51,12 +53,13 @@ class Video {
 
   public function save() {
     if (!$this->exists_on_db()) {
-      $sql = "INSERT INTO videos (video_id, title, img) VALUES (:video_id, :title, :img)";
+      $sql = "INSERT INTO videos (video_id, title, img, duration) VALUES (:video_id, :title, :img, :duration)";
       $stmt = $this->db->prepare($sql);
       $result = $stmt->execute([
         'video_id' => $this->video_id,
         'title' => $this->title,
-        'img' => $this->img
+        'img' => $this->img,
+        'duration' => $this->duration
       ]);
     }
   }
@@ -115,6 +118,7 @@ class Video {
       'video_id' => $this->video_id,
       'title' => $this->title,
       'img' => $this->img,
+      'duration' => $this->duration,
       'votes' => $this->votes
     );
     return json_encode($arr);

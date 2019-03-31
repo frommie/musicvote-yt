@@ -44,8 +44,24 @@
   }
 
   function get_box(vid) {
+    // calculate duration
+    var sec_num = parseInt(vid['duration'], 10); // don't forget the second param
+    var hours   = Math.floor(sec_num / 3600);
+    var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+    var seconds = sec_num - (hours * 3600) - (minutes * 60);
+
+    if (seconds < 10) {seconds = "0"+seconds;}
+
+    if (hours > 0) {
+      var duration = hours+':'+minutes+':'+seconds;
+      if (minutes < 10) {minutes = "0"+minutes;}
+    } else {
+      var duration = minutes+':'+seconds;
+    }
+
     var div_box = document.createElement("div");
     div_box.className = "box columns";
+    div_box.setAttribute("style", "margin: 10px;");
     // TODO path_for cant be used here so the link to vote is a thing to improve
     div_box.innerHTML = '<div class="column"> \
         <figure class="image is-5by4"> \
@@ -56,6 +72,9 @@
         <p class="is-large"> \
           <strong>' + vid['title'] + '</strong> \
         </p> \
+      </div> \
+      <div class="column"> \
+        <p>' + duration + '</p> \
       </div> \
       <div class="column is-one-fifth"> \
         <nav class="level is-mobile"> \

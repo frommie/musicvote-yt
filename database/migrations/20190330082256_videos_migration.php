@@ -36,6 +36,7 @@ class VideosMigration extends AbstractMigration
       $table->addColumn('video_id', 'string')
             ->addColumn('title', 'string')
             ->addColumn('img', 'string')
+            ->addColumn('duration', 'integer')
             ->create();
     }
 }

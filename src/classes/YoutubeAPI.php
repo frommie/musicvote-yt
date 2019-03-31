@@ -23,6 +23,7 @@ class YoutubeAPI {
   }
 
   public function search($query) {
+    // call search
     $search = $this->service->search->listSearch('snippet', array(
       'maxResults' => 24,
       'q' => $query,
@@ -33,13 +34,49 @@ class YoutubeAPI {
       'regionCode' => 'DE'
     ))['items'];
     $arr = array();
+    $videos = array();
+    $video_ids = "";
     foreach ($search as $item) {
+      if ($item['id']['videoId'] != "") {
+        $arr[$item['id']['videoId']] = array(
+          'title' => html_entity_decode($item['snippet']['title']),
+          'img' => $item['snippet']['thumbnails']['high']['url']
+        );
+        $video_ids .= $item['id']['videoId'] . ", ";
+      }
+    }
+
+    // call contentDetails for video IDs
+    $search = $this->service->videos->listVideos('contentDetails', array(
+      'id' => $video_ids,
+    ))['items'];
+    foreach ($search as $item) {
+      $arr[$item['id']]['duration'] = YoutubeAPI::ISO8601ToSeconds($item['contentDetails']['duration']);
+    }
+
+    // now create Video instances
+    foreach ($arr as $video_id => $video) {
       try {
-        $video_result = new Video($this->db, $item['id']['videoId'], html_entity_decode($item['snippet']['title']), $item['snippet']['thumbnails']['high']['url']);
+        $video_result = new Video(
+          $this->db,
+          $video_id,
+          $video['title'],
+          $video['img'],
+          $video['duration']
+        );
         $video_result->save();
-        array_push($arr, json_decode(strval($video_result)));
+        array_push($videos, json_decode(strval($video_result)));
       } catch (VideoIDNullException $e) {}
     }
-    return json_encode($arr);
+    return json_encode($videos);
+  }
+
+  public static function ISO8601ToSeconds($ISO8601){
+  	$interval = new \DateInterval($ISO8601);
+
+  	return ($interval->d * 24 * 60 * 60) +
+  		($interval->h * 60 * 60) +
+  		($interval->i * 60) +
+  		$interval->s;
   }
 }
