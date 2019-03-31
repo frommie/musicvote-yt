@@ -28,7 +28,7 @@ class YoutubeAPI {
       'maxResults' => 24,
       'q' => $query,
       'type' => 'video',
-      'videoDuration' => 'short', // can be any, long, medium or short
+      'videoDuration' => 'any', // can be any, long, medium or short
       'videoEmbeddable' => 'true',
       'videoSyndicated' => 'true',
       'regionCode' => 'DE'

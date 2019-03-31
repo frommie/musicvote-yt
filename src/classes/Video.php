@@ -10,6 +10,7 @@ class Video {
   protected $img;
   protected $duration;
   protected $votes;
+  protected $playing;
 
   public function __construct($db, $video_id, $title, $img, $duration) {
     if ($video_id != "") {
@@ -121,6 +122,7 @@ class Video {
   }
 
   public function playing() {
+    $this->playing = 1;
     // set playing status in db
     $sql = "UPDATE playlist SET playing = 1 WHERE video_id = :video_id";
     $stmt = $this->db->prepare($sql);

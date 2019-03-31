@@ -64,7 +64,7 @@
     div_box.setAttribute("style", "margin: 10px;");
     // TODO path_for cant be used here so the link to vote is a thing to improve
     div_box.innerHTML = '<div class="column"> \
-        <figure class="image is-5by4"> \
+        <figure class="image is-4by3"> \
           <img src="' + vid['img'] + '" alt="Image"> \
         </figure> \
       </div> \
@@ -109,7 +109,7 @@
 {% block content %}
 <div class="columns is-desktop">
   <div class="column">
-    <h1 class="title">Playlist</h1>
+    <h1 class="title">Vote Your Music</h1>
   </div>
   <div class="column">
     <div class="field has-addons">
@@ -134,37 +134,44 @@
 </div>
 
 {% for video in playlist %}
-<div class="box columns" style="margin: 10px;">
-  <div class="column">
-    <figure class="image is-5by4">
-      <img src="{{ video.img }}" alt="Image">
-    </figure>
+  {% if video.playing %}
+    <div class="box columns" style="margin: 10px; box-shadow: 0 5px 10px rgba(10,10,10,.1), 0 0 0 2px rgba(26, 204, 14, 0.77);">
+  {% else %}
+    <div class="box columns" style="margin: 10px;">
+  {% endif %}
+    <div class="column">
+      <figure class="image is-4by3">
+        <img src="{{ video.img }}" alt="Image">
+      </figure>
+    </div>
+    <div class="column is-half">
+      <p class="is-large">
+        <strong>{{ video.title }}</strong>
+      </p>
+    </div>
+    <div class="column is-one-fifth">
+      <nav class="level is-mobile">
+        <div class="level-left">
+          <a class="level-item" onClick="vote('{{ video.video_id }}', 'up')" aria-label="reply">
+            <span class="icon is-medium has-text-success">
+              <i class="fas fa-arrow-alt-circle-up fa-2x" aria-hidden="true"></i>
+            </span>
+          </a>
+          <a class="level-item">
+            <span class="is-size-3" id="votes_{{ video.video_id }}">{{ video.votes }}</span>
+          </a>
+          <a class="level-item" onClick="vote('{{ video.video_id }}', 'down')" aria-label="reply">
+            <span class="icon is-medium has-text-danger">
+              <i class="fas fa-arrow-alt-circle-down fa-2x" aria-hidden="true"></i>
+            </span>
+          </a>
+        </div>
+      </nav>
+    </div>
   </div>
-  <div class="column is-half">
-    <p class="is-large">
-      <strong>{{ video.title }}</strong>
-    </p>
-  </div>
-  <div class="column is-one-fifth">
-    <nav class="level is-mobile">
-      <div class="level-left">
-        <a class="level-item" onClick="vote('{{ video.video_id }}', 'up')" aria-label="reply">
-          <span class="icon is-medium">
-            <i class="fas fa-arrow-alt-circle-up fa-2x" aria-hidden="true"></i>
-          </span>
-        </a>
-        <a class="level-item">
-          <span class="is-large" id="votes_{{ video.video_id }}">{{ video.votes }}</span>
-        </a>
-        <a class="level-item" onClick="vote('{{ video.video_id }}', 'down')" aria-label="reply">
-          <span class="icon is-medium">
-            <i class="fas fa-arrow-alt-circle-down fa-2x" aria-hidden="true"></i>
-          </span>
-        </a>
-      </div>
-    </nav>
-  </div>
-</div>
+  {% if video.playing %}
+    <div class="column"><h3>Next:</h3></div>
+  {% endif %}
 {% endfor %}
 
 

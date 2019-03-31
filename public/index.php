@@ -71,6 +71,12 @@ $app->get('/next', function ($request, $response) {
   print($playlist->get_next_video());
 });
 
+$app->get('/playlist', function ($request, $response) {
+  $playlist = new Playlist($this->db);
+
+  print_r($playlist->get_playlist());
+});
+
 $app->get('/', function ($request, $response) {
   $playlist = new Playlist($this->db);
 

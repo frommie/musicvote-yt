@@ -3,16 +3,20 @@
 class Playlist {
   protected $db;
   protected $playlist;
+  protected $playing;
 
   public function __construct($db) {
     $this->db = $db;
     // get playlist from db
-    $sql = "SELECT video_id, votes FROM playlist ORDER BY votes DESC";
+    $sql = "SELECT video_id, votes, playing FROM playlist ORDER BY playing DESC, votes DESC";
     $stmt = $this->db->query($sql);
 
     $results = [];
     while($row = $stmt->fetch()) {
         $results[] = $video = Video::with_video_id($this->db, $row['video_id']);
+        if ($row['playing']) {
+          $this->playing = $row['video_id'];
+        }
     }
     $this->playlist = $results;
   }
@@ -20,6 +24,7 @@ class Playlist {
   public function get_first_video() {
     // set playing status to first video in list
     $this->playlist[0]->playing();
+
     // return first video in list
     $next_id = $this->playlist[0]->get_video_id();
     return $next_id;
@@ -35,7 +40,14 @@ class Playlist {
   public function get_playlist() {
     $arr = array();
     foreach ($this->playlist as $video) {
-      array_push($arr, json_decode(strval($video)));
+      $arr[] = json_decode(strval($video), true);
+    }
+    foreach ($arr as $key => $item) {
+      if ($item['video_id'] == $this->playing) {
+        $arr[$key]['playing'] = 1;
+      } else {
+        $arr[$key]['playing'] = 0;
+      }
     }
     return $arr;
   }
