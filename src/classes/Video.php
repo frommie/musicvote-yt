@@ -124,7 +124,7 @@ class Video {
   public function playing() {
     $this->playing = 1;
     // set playing status in db
-    $sql = "UPDATE playlist SET playing = 1 WHERE video_id = :video_id";
+    $sql = "UPDATE playlist SET playing = TRUE WHERE video_id = :video_id";
     $stmt = $this->db->prepare($sql);
     $result = $stmt->execute([
       "video_id" => $this->video_id
