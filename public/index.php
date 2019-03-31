@@ -61,14 +61,20 @@ $app->get('/player', function ($request, $response) {
 
 $app->get('/play', function ($request, $response) {
   $playlist = new Playlist($this->db);
-
-  print($playlist->get_first_video());
+  try {
+    print($playlist->get_first_video());
+  } catch (PlaylistEmptyException $e) {
+    print("Empty playlist");
+  }  
 });
 
 $app->get('/next', function ($request, $response) {
   $playlist = new Playlist($this->db);
-
-  print($playlist->get_next_video());
+  try {
+    print($playlist->get_next_video());
+  } catch (PlaylistEmptyException $e) {
+    print("Empty playlist");
+  }
 });
 
 $app->get('/playlist', function ($request, $response) {

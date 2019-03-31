@@ -1,5 +1,7 @@
 <?php
 
+class PlaylistEmptyException extends Exception {}
+
 class Playlist {
   protected $db;
   protected $playlist;
@@ -22,6 +24,9 @@ class Playlist {
   }
 
   public function get_first_video() {
+    if (count($this->playlist) == 0) {
+      throw new PlaylistEmptyException;
+    }
     // set playing status to first video in list
     $this->playlist[0]->playing();
 
@@ -31,6 +36,9 @@ class Playlist {
   }
 
   public function get_next_video() {
+    if (count($this->playlist) == 1) {
+      throw new PlaylistEmptyException;
+    }
     // return next video in list and remove top video
     $next_id = $this->playlist[0]->get_video_id();
     $this->remove($next_id);
