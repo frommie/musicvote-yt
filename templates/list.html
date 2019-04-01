@@ -3,6 +3,7 @@
 {% block script %}
 <script>
   $(document).ready(function(){
+    set_votes();
     $("#search").click(function(){
       search();
     });
@@ -13,6 +14,16 @@
       }
     });
   });
+
+  function set_votes() {
+    {% for vote in votes %}
+      {% if vote.direction == "+" %}
+        document.getElementById("{{ vote.video_id }}_up").className = "icon is-medium has-text-success";
+      {% else %}
+        document.getElementById("{{ vote.video_id }}_down").className = "icon is-medium has-text-danger";
+      {% endif %}
+    {% endfor %}
+  }
 
   function search() {
     $.post("/search", {
@@ -101,6 +112,13 @@
     function(data, status){
       // update vote number
       document.getElementById("votes_" + video_id).innerHTML = data;
+      if (direction == "+") {
+        document.getElementById(video_id + "_up").className = "icon is-medium has-text-success";
+        document.getElementById(video_id + "_down").className = "icon is-medium has-text-grey-lighter";
+      } else {
+        document.getElementById(video_id + "_up").className = "icon is-medium has-text-grey-lighter";
+        document.getElementById(video_id + "_down").className = "icon is-medium has-text-danger";
+      }
     });
   }
 </script>
@@ -152,16 +170,16 @@
     <div class="column is-one-fifth">
       <nav class="level is-mobile">
         <div class="level-left">
-          <a class="level-item" onClick="vote('{{ video.video_id }}', '+')" aria-label="reply">
-            <span class="icon is-medium has-text-success">
+          <a class="level-item" onClick="vote('{{ video.video_id }}', '+')">
+            <span class="icon is-medium has-text-grey-lighter" id="{{ video.video_id }}_up">
               <i class="fas fa-arrow-alt-circle-up fa-2x" aria-hidden="true"></i>
             </span>
           </a>
           <a class="level-item">
             <span class="is-size-3" id="votes_{{ video.video_id }}">{{ video.votes }}</span>
           </a>
-          <a class="level-item" onClick="vote('{{ video.video_id }}', '-')" aria-label="reply">
-            <span class="icon is-medium has-text-danger">
+          <a class="level-item" onClick="vote('{{ video.video_id }}', '-')">
+            <span class="icon is-medium has-text-grey-lighter" id="{{ video.video_id }}_down">
               <i class="fas fa-arrow-alt-circle-down fa-2x" aria-hidden="true"></i>
             </span>
           </a>

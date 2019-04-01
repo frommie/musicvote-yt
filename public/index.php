@@ -91,9 +91,11 @@ $app->get('/playlist', function ($request, $response) {
 
 $app->get('/', function ($request, $response) {
   $playlist = new Playlist($this->db);
+  $votes = new Votes($this->db, session_id());
 
   $response = $this->view->render($response, 'list.html', [
-    'playlist' => $playlist->get_playlist()
+    'playlist' => $playlist->get_playlist(),
+    'votes' => $votes->get_votes()
   ]);
 
   return $response;
