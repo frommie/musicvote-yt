@@ -42,7 +42,7 @@ $app->post('/vote', function ($request, $response) {
   $video_id = $body['video_id'];
   $direction = $body['direction'];
   $video = Video::with_video_id($this->db, $video_id);
-  $video->vote($direction);
+  $video->vote(session_id(), $direction);
   print_r($video->get_votes());
 });
 

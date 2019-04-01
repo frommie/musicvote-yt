@@ -82,7 +82,7 @@
             <a class="level-item"> \
               <span class="is-large" id="votes_' + vid['video_id'] + '">' + vid['votes'] + '</span> \
             </a> \
-            <a class="level-item" onClick="vote(\'' + vid['video_id'] + '\', \'up\')" aria-label="reply"> \
+            <a class="level-item" onClick="vote(\'' + vid['video_id'] + '\', \'+\')" aria-label="reply"> \
               <span class="icon is-medium"> \
                 <i class="fas fa-arrow-alt-circle-up fa-2x" aria-hidden="true"></i> \
               </span> \
@@ -152,7 +152,7 @@
     <div class="column is-one-fifth">
       <nav class="level is-mobile">
         <div class="level-left">
-          <a class="level-item" onClick="vote('{{ video.video_id }}', 'up')" aria-label="reply">
+          <a class="level-item" onClick="vote('{{ video.video_id }}', '+')" aria-label="reply">
             <span class="icon is-medium has-text-success">
               <i class="fas fa-arrow-alt-circle-up fa-2x" aria-hidden="true"></i>
             </span>
@@ -160,7 +160,7 @@
           <a class="level-item">
             <span class="is-size-3" id="votes_{{ video.video_id }}">{{ video.votes }}</span>
           </a>
-          <a class="level-item" onClick="vote('{{ video.video_id }}', 'down')" aria-label="reply">
+          <a class="level-item" onClick="vote('{{ video.video_id }}', '-')" aria-label="reply">
             <span class="icon is-medium has-text-danger">
               <i class="fas fa-arrow-alt-circle-down fa-2x" aria-hidden="true"></i>
             </span>

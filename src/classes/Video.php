@@ -87,15 +87,51 @@ class Video {
     }
   }
 
-  public function vote($direction) {
-    if ($direction == "down") {
-      $this->votes = $this->votes - 1;
-      $operation = "-";
-    } else {
-      $this->votes = $this->votes + 1;
-      $operation = "+";
-    }
+  public function vote($session_id, $direction) {
+    // check if already voted for that ID
+    $sql = "SELECT direction FROM votes WHERE video_id = :video_id AND session_id = :session_id";
+    $stmt = $this->db->prepare($sql);
+    $result = $stmt->execute([
+      "video_id" => $this->video_id,
+      "session_id" => $session_id
+    ]);
 
+    if ($stmt->rowCount() > 0) {
+      // already voted
+      $before_direction = $stmt->fetch()['direction'];
+      if ($before_direction != $direction) { // only senseful case
+        if ($before_direction == "+") { // before it was upvoted, so downvote now
+          $direction = "-";
+          $this->votes--;
+        } else {
+          $direction = "+"; // before it was downvoted, so upvote now
+          $this->votes++;
+        }
+        // correct entry
+        $sql = "UPDATE votes SET direction = :direction WHERE video_id = :video_id AND session_id = :session_id";
+        $stmt = $this->db->prepare($sql);
+        $result = $stmt->execute([
+          "direction" => $direction,
+          "video_id" => $this->video_id,
+          "session_id" => $session_id
+        ]);
+
+        if(!$result) {
+          throw new Exception("could not save record");
+        }
+        $this->save_vote($direction);
+      } else {
+        // do nothing
+        return;
+      }
+    } else {
+      $this->log_vote($session_id, $direction);
+      $this->save_vote($direction);
+    }
+  }
+
+  public function save_vote($operation) {
+    // not voted yet
     // check if already in playlist
     if ($this->exists_in_playlist()) {
       $sql = "UPDATE playlist SET votes = votes " . $operation . " 1 WHERE video_id = :video_id";
@@ -108,8 +144,23 @@ class Video {
         throw new Exception("could not save record");
       }
     } else {
-      // insert into playlist
-      $this->insert_in_playlist();
+      if ($direction != "down") {
+        // insert into playlist
+        $this->insert_in_playlist();
+      }
+    }
+  }
+
+  public function log_vote($session_id, $direction) {
+    $sql = "INSERT INTO votes (session_id, video_id, direction) VALUES (:session_id, :video_id, :direction)";
+    $stmt = $this->db->prepare($sql);
+    $result = $stmt->execute([
+      'session_id' => $session_id,
+      'video_id' => $this->video_id,
+      'direction' => $direction
+    ]);
+    if(!$result) {
+      throw new Exception("could not save record");
     }
   }
 
