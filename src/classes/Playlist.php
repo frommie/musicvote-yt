@@ -80,7 +80,11 @@ class Playlist {
 
   public function get_fallback_video() {
     // first check if fallback playlist is already in db
-    $sql = "SELECT video_id FROM fallback_playlist ORDER BY RAND() LIMIT 1";
+    if ($this->db->getAttribute(PDO::ATTR_DRIVER_NAME) == "pgsql") {
+      $sql = "SELECT video_id FROM fallback_playlist ORDER BY random() LIMIT 1";
+    } else {
+      $sql = "SELECT video_id FROM fallback_playlist ORDER BY RAND() LIMIT 1";
+    }
     $stmt = $this->db->prepare($sql);
     $stmt->execute();
     if ($stmt->rowCount() > 0) {
