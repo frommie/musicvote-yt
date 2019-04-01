@@ -103,10 +103,19 @@ class Playlist {
       require $config_file;
       if ($config['fallback_playlist'] != "") {
         $fallback_playlist_id = $config['fallback_playlist'];
-        return $this->save_fallback_playlist($fallback_playlist_id);
       }
     }
-    return false;
+
+    // check if deployed to heroku
+    if (getenv("FALLBACK_PLAYLIST") !== false) {
+      $fallback_playlist_id = getenv("FALLBACK_PLAYLIST");
+    }
+
+    if ($fallback_playlist_id != "") {
+      return $this->save_fallback_playlist($fallback_playlist_id);
+    } else {
+      return false;
+    }
   }
 
   public function save_fallback_playlist($fallback_playlist_id) {

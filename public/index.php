@@ -89,11 +89,6 @@ $app->get('/playlist', function ($request, $response) {
   print_r($playlist->get_playlist());
 });
 
-$app->get('/fallback', function ($request, $response) {
-  $playlist = new Playlist($this->db);
-  print_r($playlist->load_fallback_playlist());
-});
-
 $app->get('/', function ($request, $response) {
   $playlist = new Playlist($this->db);
 
@@ -103,47 +98,5 @@ $app->get('/', function ($request, $response) {
 
   return $response;
 });
-
-/*
-$app->get('/hello/{name}', function (Request $request, Response $response, array $args) {
-  $name = $args['name'];
-  $response->getBody()->write("Hello, $name");
-  $this->logger->addInfo('Hello: ' . $name);
-
-  return $response;
-});
-
-$app->get('/posts', function (Request $request, Response $response) {
-  $this->logger->addInfo("Post list");
-  $mapper = new PostMapper($this->db);
-  $posts = $mapper->getPosts();
-  $response = $this->view->render($response, 'posts.html', ['posts' => $posts, 'router' => $this->router]);
-  return $response;
-});
-
-$app->get('/post/new', function (Request $request, Response $response) {
-  $response = $this->view->render($response, 'addpost.html', []);
-  return $response;
-});
-
-$app->post('/post/new', function (Request $request, Response $response) {
-  $data = $request->getParsedBody();
-  $post_data = [];
-  $post_data['title'] = filter_var($data['title'], FILTER_SANITIZE_STRING);
-  $post_data['description'] = filter_var($data['description'], FILTER_SANITIZE_STRING);
-  $post = new PostEntity($post_data);
-  $mapper = new PostMapper($this->db);
-  $mapper->save($post);
-});
-
-$app->get('/post/{id}', function (Request $request, Response $response, $args) {
-  $post_id = (int)$args['id'];
-  $mapper = new PostMapper($this->db);
-  $post = $mapper->getPostById($post_id);
-  $this->logger->addInfo(print_r($mapper->getPostById(1), true));
-  $response = $this->view->render($response, 'postdetail.html', ['post' => $post, 'router' => $this->router]);
-  return $response;
-})->setName('post-detail');
-*/
 
 $app->run();
