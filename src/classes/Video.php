@@ -119,22 +119,22 @@ class Video {
         if(!$result) {
           throw new Exception("could not save record");
         }
-        $this->save_vote($direction);
+        $this->save_vote($direction, 2);
       } else {
         // do nothing
         return;
       }
     } else {
       $this->log_vote($session_id, $direction);
-      $this->save_vote($direction);
+      $this->save_vote($direction, 1);
     }
   }
 
-  public function save_vote($operation) {
+  public function save_vote($operation, $count) {
     // not voted yet
     // check if already in playlist
     if ($this->exists_in_playlist()) {
-      $sql = "UPDATE playlist SET votes = votes " . $operation . " 1 WHERE video_id = :video_id";
+      $sql = "UPDATE playlist SET votes = votes " . $operation . " " . $count . " WHERE video_id = :video_id";
       $stmt = $this->db->prepare($sql);
       $result = $stmt->execute([
         "video_id" => $this->video_id
