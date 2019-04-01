@@ -2,6 +2,14 @@
 <head>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
+var source = new EventSource("/playcontrol");
+source.onmessage = function(event) {
+  console.log(event.data);
+  if (event.data == "skip") {
+    get_next_video();
+  }
+};
+
 var tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 var firstScriptTag = document.getElementsByTagName('script')[0];
@@ -31,15 +39,18 @@ function onPlayerReady(event) {
 
 function onPlayerStateChange(event) {
   if (event.data == YT.PlayerState.ENDED) {
-    console.log("next");
-    // get next video
-    $.get("/next", {
-    },
-    function(data, status){
-      player.destroy();
-      onYouTubeIframeAPIReady(data);
-    });
+    get_next_video();
   }
+}
+
+function get_next_video() {
+  // get next video
+  $.get("/next", {
+  },
+  function(data, status){
+    player.destroy();
+    onYouTubeIframeAPIReady(data);
+  });
 }
 </script>
 </head>

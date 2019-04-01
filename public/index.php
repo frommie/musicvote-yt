@@ -89,6 +89,17 @@ $app->get('/playlist', function ($request, $response) {
   print_r($playlist->get_playlist());
 });
 
+$app->get('/playcontrol', function ($request, $response) {
+  $controller = new Controller($this->db);
+  $body = $response->getBody();
+  $body->write($controller->get_event()."\n\n");
+
+  return $response
+    ->withHeader('Content-Type', 'text/event-stream')
+    ->withHeader('Cache-Control', 'no-cache')
+    ->withBody($body);
+});
+
 $app->get('/', function ($request, $response) {
   $playlist = new Playlist($this->db);
   $votes = new Votes($this->db, session_id());

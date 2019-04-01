@@ -146,7 +146,7 @@ class Video {
     } else {
       if ($direction != "down") {
         // insert into playlist
-        $this->insert_in_playlist();
+        $this->insert_in_playlist_and_vote();
       }
     }
   }
@@ -164,12 +164,24 @@ class Video {
     }
   }
 
+  public function insert_in_playlist_and_vote() {
+    $sql = "INSERT INTO playlist (video_id, votes) VALUES (:video_id, :votes)";
+    $stmt = $this->db->prepare($sql);
+    $result = $stmt->execute([
+      'video_id' => $this->video_id,
+      'votes' => 1 // called when voted from search
+    ]);
+    if(!$result) {
+      throw new Exception("could not save record");
+    }
+  }
+
   public function insert_in_playlist() {
     $sql = "INSERT INTO playlist (video_id, votes) VALUES (:video_id, :votes)";
     $stmt = $this->db->prepare($sql);
     $result = $stmt->execute([
       'video_id' => $this->video_id,
-      'votes' => 1 // insert_in_playlist is only called when not in playlist and voted
+      'votes' => 0 // called when random video inserted into playlist
     ]);
     if(!$result) {
       throw new Exception("could not save record");
