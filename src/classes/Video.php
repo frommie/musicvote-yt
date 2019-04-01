@@ -169,7 +169,7 @@ class Video {
     $stmt = $this->db->prepare($sql);
     $result = $stmt->execute([
       'video_id' => $this->video_id,
-      'votes' => $this->votes
+      'votes' => 1 // insert_in_playlist is only called when not in playlist and voted
     ]);
     if(!$result) {
       throw new Exception("could not save record");

@@ -113,6 +113,9 @@
     },
     function(data, status){
       // update vote number
+      if (data == "") {
+        data = 0;
+      }
       document.getElementById("votes_" + video_id).innerHTML = data;
       if (direction == "+") {
         document.getElementById(video_id + "_up").className = "icon is-medium has-text-success";
