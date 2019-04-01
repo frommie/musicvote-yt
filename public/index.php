@@ -89,6 +89,11 @@ $app->get('/playlist', function ($request, $response) {
   print_r($playlist->get_playlist());
 });
 
+$app->get('/fallback', function ($request, $response) {
+  $playlist = new Playlist($this->db);
+  print_r($playlist->load_fallback_playlist());
+});
+
 $app->get('/', function ($request, $response) {
   $playlist = new Playlist($this->db);
 

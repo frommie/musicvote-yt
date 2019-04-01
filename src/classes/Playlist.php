@@ -22,7 +22,8 @@ class Playlist {
         }
     }
     if (count($results) == 0) {
-      $results = $this->get_fallback_video();
+      $results[0] = $this->get_fallback_video();
+      $results[0]->insert_in_playlist();
     }
     $this->playlist = $results;
   }
@@ -30,7 +31,9 @@ class Playlist {
   public function get_top_video() {
     if (count($this->playlist) == 0) {
       try {
-        return $this->get_fallback_video();
+        $this->playlist[0] = $this->get_fallback_video();
+        $this->playlist[0]->insert_in_playlist();
+        $this->playlist[0]->playing();
       } catch (PlaylistEmptyException $e) {
         die ($e);
       }
@@ -100,7 +103,7 @@ class Playlist {
       require $config_file;
       if ($config['fallback_playlist'] != "") {
         $fallback_playlist_id = $config['fallback_playlist'];
-        return ($this->save_fallback_playlist($fallback_playlist_id));
+        return $this->save_fallback_playlist($fallback_playlist_id);
       }
     }
     return false;
@@ -109,21 +112,21 @@ class Playlist {
   public function save_fallback_playlist($fallback_playlist_id) {
     // API call to get videos from fallback playlist
     $api = new YoutubeAPI($this->db);
-    $fallback_videos = $api->get_playlist_items($fallback_playlist_id);
+    $fallback_videos = json_decode($api->get_playlist_items($fallback_playlist_id), true);
     if (count($fallback_videos) == 0) {
       return false;
     } else {
       foreach ($fallback_videos as $video) {
-        $video->save();
         $sql = "INSERT INTO fallback_playlist (video_id) VALUES (:video_id)";
         $stmt = $this->db->prepare($sql);
         $result = $stmt->execute([
-          'video_id' => $video->get_video_id()
+          'video_id' => $video['video_id']
         ]);
         if(!$result) {
           throw new Exception("could not save record");
         }
       }
+      return true;
     }
   }
 }

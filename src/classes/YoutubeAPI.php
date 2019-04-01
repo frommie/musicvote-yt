@@ -41,7 +41,6 @@ class YoutubeAPI {
 
   public function get_video_array($search) {
     $arr = array();
-    $videos = array();
     $video_ids = "";
     foreach ($search as $item) {
       if ($item['id']['videoId'] != "") {
@@ -53,27 +52,36 @@ class YoutubeAPI {
       }
     }
 
+    $videos = $this->get_video_details($arr, $video_ids);
+    return $videos;
+  }
+
+  public function get_video_details($arr, $video_ids) {
+    $videos = array();
     // call contentDetails for video IDs
-    $search = $this->service->videos->listVideos('contentDetails', array(
+    $search = $this->service->videos->listVideos('contentDetails,status', array(
       'id' => $video_ids,
     ))['items'];
     foreach ($search as $item) {
       $arr[$item['id']]['duration'] = YoutubeAPI::ISO8601ToSeconds($item['contentDetails']['duration']);
+      $arr[$item['id']]['status'] = $item['status'];
     }
 
     // now create Video instances
     foreach ($arr as $video_id => $video) {
-      try {
-        $video_result = new Video(
-          $this->db,
-          $video_id,
-          $video['title'],
-          $video['img'],
-          $video['duration']
-        );
-        $video_result->save();
-        array_push($videos, json_decode(strval($video_result)));
-      } catch (VideoIDNullException $e) {}
+      if ($video['status']['privacyStatus'] == "public" && $video['status']['embeddable'] == true) {
+        try {
+          $video_result = new Video(
+            $this->db,
+            $video_id,
+            $video['title'],
+            $video['img'],
+            $video['duration']
+          );
+          $video_result->save();
+          array_push($videos, json_decode(strval($video_result)));
+        } catch (VideoIDNullException $e) {}
+      }
     }
     return $videos;
   }
@@ -83,8 +91,24 @@ class YoutubeAPI {
       'maxResults' => 25,
       'playlistId' => $playlist_id
     ))['items'];
-    $videos = $this->get_video_array($playlist_items);
+    $videos = $this->get_playlist_array($playlist_items);
     return json_encode($videos);
+  }
+
+  public function get_playlist_array($items) {
+    $arr = array();
+    $video_ids = "";
+    foreach ($items as $item) {
+      if ($item['snippet']['resourceId']['videoId'] != "") {
+        $arr[$item['snippet']['resourceId']['videoId']] = array(
+          'title' => html_entity_decode($item['snippet']['title']),
+          'img' => $item['snippet']['thumbnails']['high']['url']
+        );
+        $video_ids .= $item['snippet']['resourceId']['videoId'] . ", ";
+      }
+    }
+    $videos = $this->get_video_details($arr, $video_ids);
+    return $videos;
   }
 
   public static function ISO8601ToSeconds($ISO8601){
