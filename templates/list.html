@@ -187,7 +187,7 @@
       </nav>
     </div>
   </div>
-  {% if video.playing %}
+  {% if video.playing and playlist|length > 1 %}
     <div class="column"><h3>Next:</h3></div>
   {% endif %}
 {% endfor %}
