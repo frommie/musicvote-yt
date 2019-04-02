@@ -38,12 +38,19 @@ $container['view'] = function ($container) {
 };
 
 $app->post('/vote', function ($request, $response) {
+  // create event for clients
   $body = $request->getParsedBody();
   $video_id = $body['video_id'];
   $direction = $body['direction'];
   $video = Video::with_video_id($this->db, $video_id);
   $video->vote(session_id(), $direction);
-  print_r($video->get_votes());
+  new Event($this->db, 'voted', 'client');
+  $votes = $video->get_votes();
+  if ($video->is_playing() && $votes < 0) {
+    // create event for player
+    new Event($this->db, 'skip', 'player');
+  }
+  print_r($votes);
 });
 
 $app->post('/search', function ($request, $response) {
@@ -56,6 +63,7 @@ $app->post('/search', function ($request, $response) {
 });
 
 $app->get('/player', function ($request, $response) {
+  // register player
   $playlist = new Playlist($this->db);
   $response = $this->view->render($response, 'player.html', [
     'video_id' => $playlist->get_top_video()
@@ -65,6 +73,10 @@ $app->get('/player', function ($request, $response) {
 });
 
 $app->get('/play', function ($request, $response) {
+  $session_id = session_id();
+  $client = new Client($this->db, "player", $session_id);
+  $client->login();
+
   $playlist = new Playlist($this->db);
   try {
     print($playlist->get_top_video());
@@ -75,8 +87,10 @@ $app->get('/play', function ($request, $response) {
 
 $app->get('/next', function ($request, $response) {
   $playlist = new Playlist($this->db);
+  // create event for clients
   try {
     $playlist->remove_playing_video();
+    new Event($this->db, 'next', 'client');
     print($playlist->get_top_video());
   } catch (PlaylistEmptyException $e) {
     print("Empty playlist");
@@ -90,7 +104,8 @@ $app->get('/playlist', function ($request, $response) {
 });
 
 $app->get('/playcontrol', function ($request, $response) {
-  $controller = new Controller($this->db);
+  $session_id = session_id();
+  $controller = new Controller($this->db, $session_id);
   $body = $response->getBody();
   $body->write($controller->get_event()."\n\n");
 
@@ -101,13 +116,11 @@ $app->get('/playcontrol', function ($request, $response) {
 });
 
 $app->get('/', function ($request, $response) {
-  $playlist = new Playlist($this->db);
-  $votes = new Votes($this->db, session_id());
+  $session_id = session_id();
+  $client = new Client($this->db, "client", $session_id);
+  $client->login();
 
-  $response = $this->view->render($response, 'list.html', [
-    'playlist' => $playlist->get_playlist(),
-    'votes' => $votes->get_votes()
-  ]);
+  $response = $this->view->render($response, 'list.html');
 
   return $response;
 });

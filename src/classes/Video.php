@@ -12,7 +12,7 @@ class Video {
   protected $votes;
   protected $playing;
 
-  public function __construct($db, $video_id, $title, $img, $duration) {
+  public function __construct($db, $video_id, $title, $img, $duration, $playing = false) {
     if ($video_id != "") {
       $this->db = $db;
       $this->video_id = $video_id;
@@ -20,18 +20,19 @@ class Video {
       $this->img = $img;
       $this->duration = $duration;
       $this->votes = $this->get_votes();
+      $this->playing = $playing;
     } else {
       throw new VideoIDNullException();
     }
   }
 
   public static function with_video_id($db, $video_id) {
-    $sql = "SELECT title, img, duration FROM videos WHERE video_id = :video_id";
+    $sql = "SELECT v.title, v.img, v.duration, p.playing FROM videos v LEFT JOIN playlist p ON v.video_id = p.video_id WHERE v.video_id = :video_id";
     $stmt = $db->prepare($sql);
     $stmt->execute(["video_id" => $video_id]);
     if ($stmt->rowCount() > 0) {
       $result = $stmt->fetch();
-      return new self($db, $video_id, $result['title'], $result['img'], $result['duration']);
+      return new self($db, $video_id, $result['title'], $result['img'], $result['duration'], $result['playing']);
     } else {
       throw new VideoNotFoundException();
     }
@@ -50,6 +51,10 @@ class Video {
     } else {
       return 0;
     }
+  }
+
+  public function is_playing() {
+    return $this->playing;
   }
 
   public function save() {

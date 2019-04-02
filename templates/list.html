@@ -3,7 +3,7 @@
 {% block script %}
 <script>
   $(document).ready(function(){
-    set_votes();
+    get_playlist();
     $("#search").click(function(){
       search();
     });
@@ -14,6 +14,68 @@
       }
     });
   });
+
+  var source = new EventSource("/playcontrol");
+  source.onmessage = function(event) {
+    if (event.data == "voted") {
+      set_votes();
+    }
+    if (event.data == "next") {
+      get_playlist();
+    }
+  };
+
+  function get_playlist() {
+    $.get("/playlist", function(data) {
+      document.getElementById("playlist").innerHTML = construct_playlist(JSON.parse(data));
+      set_votes();
+    });
+  }
+
+  function construct_playlist(data) {
+    var html = "";
+    data.forEach(function(video) {
+      if (video['playing']) {
+        html += '<div class="box columns" style="margin: 10px; box-shadow: 0 5px 10px rgba(10,10,10,.1), 0 0 0 2px rgba(26, 204, 14, 0.77);">';
+      } else {
+        html += '<div class="box columns" style="margin: 10px;">';
+      }
+      html += '<div class="column">';
+      html += ' <figure class="image is-4by3">';
+      html +=    '<img src="' + video['img'] + '" alt="Image">';
+      html +=  '</figure>';
+      html += '</div>';
+      html += '<div class="column is-half">';
+      html +=  '<p class="is-large">';
+      html +=    '<strong>' + video['title'] + '</strong>';
+      html +=  '</p>';
+      html += '</div>';
+      html += '<div class="column is-one-fifth">';
+      html +=  '<nav class="level is-mobile">';
+      html +=    '<div class="level-left">';
+      html +=      '<a class="level-item" onClick="vote(\'' + video['video_id'] + '\', \'+\')">';
+      html +=        '<span class="icon is-medium has-text-grey-lighter" id="' + video['video_id'] + '_up">';
+      html +=          '<i class="fas fa-arrow-alt-circle-up fa-2x" aria-hidden="true"></i>';
+      html +=        '</span>';
+      html +=      '</a>';
+      html +=      '<a class="level-item">';
+      html +=        '<span class="is-size-3" id="votes_' + video['video_id'] + '">' + video['votes'] + '</span>';
+      html +=      '</a>';
+      html +=      '<a class="level-item" onClick="vote(\'' + video['video_id'] + '\', \'-\')">';
+      html +=        '<span class="icon is-medium has-text-grey-lighter" id="' + video['video_id'] + '_down">';
+      html +=          '<i class="fas fa-arrow-alt-circle-down fa-2x" aria-hidden="true"></i>';
+      html +=        '</span>';
+      html +=      '</a>';
+      html +=    '</div>';
+      html +=  '</nav>';
+      html += '</div>';
+      html += '</div>';
+      if (video['playing'] && data.length > 1) {
+        html += '<div class="column"><h3>Next:</h3></div>';
+      }
+    });
+    return html;
+  }
 
   function set_votes() {
     {% for vote in votes %}
@@ -31,7 +93,6 @@
     },
     function(data, status){
       document.getElementById("search_result").innerHTML = "";
-      console.log(JSON.parse(data));
       document.getElementById("search-modal").className = "modal is-active";
 
       document.getElementById("search_result").appendChild(show_result(JSON.parse(data)));
@@ -112,6 +173,7 @@
       direction: direction
     },
     function(data, status){
+      console.log(data);
       // update vote number
       if (data == "") {
         data = 0;
@@ -155,6 +217,8 @@
   </div>
   <button class="modal-close is-large" aria-label="close"  onClick="close_search_modal()"></button>
 </div>
+
+<div id="playlist"><div>
 
 {% for video in playlist %}
   {% if video.playing %}

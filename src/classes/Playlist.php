@@ -67,7 +67,7 @@ class Playlist {
         $arr[$key]['playing'] = 0;
       }
     }
-    return $arr;
+    return json_encode($arr);
   }
 
   public function remove($video_id) {
