@@ -36,6 +36,7 @@ class Client {
     } else {
       return false;
     }
+    $stmt->closeCursor();
   }
 
   public function register() {
@@ -66,6 +67,8 @@ class Client {
     $sql = "SELECT session_id FROM clients WHERE client_type = :client_type";
     $stmt = $db->prepare($sql);
     $stmt->execute(["client_type" => $client_type]);
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $ret = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $stmt->closeCursor();
+    return $ret;
   }
 }

@@ -16,6 +16,7 @@ class Playlist {
 
     $results = [];
     $rows = $stmt->fetchAll();
+    $stmt->closeCursor();
 
     foreach ($rows as $row) {
       $videos[] = array('video_id' => $row['video_id'], 'playing' => $row['playing']);
@@ -108,6 +109,7 @@ class Playlist {
     $stmt = $this->db->prepare($sql);
     $stmt->execute();
     $result = $stmt->fetchAll()[0];
+    $stmt->closeCursor();
     if (!empty($result)) {
       // return random video from db
       return Video::with_video_id($this->db, $result['video_id']);

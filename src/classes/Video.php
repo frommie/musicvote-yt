@@ -31,6 +31,7 @@ class Video {
     $stmt = $db->prepare($sql);
     $stmt->execute(["video_id" => $video_id]);
     $result = $stmt->fetchAll()[0];
+    $stmt->closeCursor();
     if (!empty($result)) {
       return new self($db, $video_id, $result['title'], $result['img'], $result['duration'], $result['playing']);
     } else {
@@ -47,6 +48,7 @@ class Video {
     $stmt = $this->db->prepare($sql);
     $stmt->execute(["video_id" => $this->video_id]);
     $result = $stmt->fetchAll()[0];
+    $stmt->closeCursor();
     if (!empty($result)) {
       return $result['votes'];
     } else {
@@ -76,6 +78,7 @@ class Video {
     $stmt = $this->db->prepare($sql);
     $stmt->execute(["video_id" => $this->video_id]);
     $result = $stmt->fetchAll()[0];
+    $stmt->closeCursor();
     if (!empty($result)) {
       return true;
     } else {
@@ -88,6 +91,7 @@ class Video {
     $stmt = $this->db->prepare($sql);
     $stmt->execute(["video_id" => $this->video_id]);
     $result = $stmt->fetchAll()[0];
+    $stmt->closeCursor();
     if (!empty($result)) {
       return true;
     } else {
@@ -105,6 +109,7 @@ class Video {
     ]);
 
     $result = $stmt->fetchAll()[0];
+    $stmt->closeCursor();
 
     if (!empty($result)) {
       // already voted

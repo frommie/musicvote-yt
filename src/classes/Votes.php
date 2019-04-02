@@ -13,6 +13,7 @@ class Votes {
     while ($row = $stmt->fetch()) {
       $this->votes[] = array('video_id' => $row['video_id'], 'direction' => $row['direction']);
     }
+    $stmt->closeCursor();
   }
 
   public function get_votes() {

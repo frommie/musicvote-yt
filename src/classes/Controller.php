@@ -16,6 +16,7 @@ class Controller {
     $stmt = $this->db->prepare($sql);
     $stmt->execute(["session_id" => $this->session_id]);
     $result = $stmt->fetchAll()[0];
+    $stmt->closeCursor();
     if (!empty($result)) {
       return $result['client_type'];
     } else {

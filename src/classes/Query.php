@@ -14,6 +14,7 @@ class Query {
     $stmt = $this->db->prepare($sql);
     $stmt->execute(["session_id" => $this->session_id]);
     $result = $stmt->fetchAll()[0];
+    $stmt->closeCursor();
     if (!empty($result)) {
       $queried_event = $result['event_type'];
       $this->delete_queried_event($queried_event);
