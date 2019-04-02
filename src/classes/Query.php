@@ -13,8 +13,9 @@ class Query {
     $sql = "SELECT event_type FROM query WHERE session_id = :session_id LIMIT 1";
     $stmt = $this->db->prepare($sql);
     $stmt->execute(["session_id" => $this->session_id]);
-    if ($stmt->rowCount() > 0) {
-      $queried_event = $stmt->fetch()['event_type'];
+    $result = $stmt->fetchAll()[0];
+    if (!empty($result)) {
+      $queried_event = $result['event_type'];
       $this->delete_queried_event($queried_event);
       return $queried_event;
     } else {

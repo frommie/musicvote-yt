@@ -31,7 +31,7 @@ class Video {
     $stmt = $db->prepare($sql);
     $stmt->execute(["video_id" => $video_id]);
     $result = $stmt->fetchAll()[0];
-    if (count($result) > 0) {
+    if (!empty($result)) {
       return new self($db, $video_id, $result['title'], $result['img'], $result['duration'], $result['playing']);
     } else {
       throw new VideoNotFoundException();
@@ -74,8 +74,9 @@ class Video {
   public function exists_on_db() {
     $sql = "SELECT * FROM videos WHERE video_id = :video_id";
     $stmt = $this->db->prepare($sql);
-    $result = $stmt->execute(["video_id" => $this->video_id]);
-    if ($stmt->rowCount() > 0) {
+    $stmt->execute(["video_id" => $this->video_id]);
+    $result = $stmt->fetchAll()[0];
+    if (!empty($result)) {
       return true;
     } else {
       return false;

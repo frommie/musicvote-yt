@@ -25,9 +25,10 @@ class Client {
     $sql = "SELECT * FROM clients WHERE session_id = :session_id";
     $stmt = $this->db->prepare($sql);
     $stmt->execute(["session_id" => $this->session_id]);
-    if ($stmt->rowCount() > 0) {
+    $result = $stmt->fetchAll()[0];
+    if (!empty($result)) {
       // check if correct client_type
-      if ($stmt->fetch()['client_type'] == $this->client_type) {
+      if ($result['client_type'] == $this->client_type) {
         return true;
       } else {
         $this->log_activity();

@@ -15,8 +15,9 @@ class Controller {
     $sql = "SELECT client_type FROM clients WHERE session_id = :session_id LIMIT 1";
     $stmt = $this->db->prepare($sql);
     $stmt->execute(["session_id" => $this->session_id]);
-    if ($stmt->rowCount() > 0) {
-      return $stmt->fetch()['client_type'];
+    $result = $stmt->fetchAll()[0];
+    if (!empty($result)) {
+      return $result['client_type'];
     } else {
       return;
     }
