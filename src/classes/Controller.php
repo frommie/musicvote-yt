@@ -31,4 +31,10 @@ class Controller {
       return;
     }
   }
+
+  public function cleanup() {
+    // last_activity older than 60 minutes
+    // clean clients
+    // clean query
+  }
 }

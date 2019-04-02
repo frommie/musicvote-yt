@@ -15,17 +15,27 @@ class Playlist {
     $stmt = $this->db->query($sql);
 
     $results = [];
-    while ($row = $stmt->fetch()) {
-        $results[] = $video = Video::with_video_id($this->db, $row['video_id']);
-        if ($row['playing']) {
-          $this->playing = $row['video_id'];
-        }
+    $rows = $stmt->fetchAll();
+
+    foreach ($rows as $row) {
+      $videos[] = array('video_id' => $row['video_id'], 'playing' => $row['playing']);
+    }
+
+    foreach ($videos as $video) {
+      $results[] = Video::with_video_id($this->db, $video['video_id']);
+      if ($video['playing']) {
+        $this->playing = $video['video_id'];
+      }
     }
     if (count($results) == 0) {
       $results[0] = $this->get_fallback_video();
       $results[0]->insert_in_playlist();
     }
     $this->playlist = $results;
+  }
+
+  public function pr() {
+    return $this->playlist;
   }
 
   public function get_top_video() {
@@ -97,9 +107,10 @@ class Playlist {
     }
     $stmt = $this->db->prepare($sql);
     $stmt->execute();
-    if ($stmt->rowCount() > 0) {
+    $result = $stmt->fetchAll()[0];
+    if (!empty($result)) {
       // return random video from db
-      return Video::with_video_id($this->db, $stmt->fetch()['video_id']);
+      return Video::with_video_id($this->db, $result['video_id']);
     } else {
       if ($this->load_fallback_playlist()) {
         // call again

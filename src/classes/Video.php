@@ -27,11 +27,11 @@ class Video {
   }
 
   public static function with_video_id($db, $video_id) {
-    $sql = "SELECT v.title, v.img, v.duration, p.playing FROM videos v LEFT JOIN playlist p ON v.video_id = p.video_id WHERE v.video_id = :video_id";
+    $sql = "SELECT v.title, v.img, v.duration, p.playing, p.votes FROM videos v LEFT JOIN playlist p ON v.video_id = p.video_id WHERE v.video_id = :video_id";
     $stmt = $db->prepare($sql);
     $stmt->execute(["video_id" => $video_id]);
-    if ($stmt->rowCount() > 0) {
-      $result = $stmt->fetch();
+    $result = $stmt->fetchAll()[0];
+    if (count($result) > 0) {
       return new self($db, $video_id, $result['title'], $result['img'], $result['duration'], $result['playing']);
     } else {
       throw new VideoNotFoundException();
@@ -45,9 +45,10 @@ class Video {
   public function get_votes() {
     $sql = "SELECT votes FROM playlist WHERE video_id = :video_id";
     $stmt = $this->db->prepare($sql);
-    $result = $stmt->execute(["video_id" => $this->video_id]);
-    if ($stmt->rowCount() > 0) {
-      return $stmt->fetch()['votes'];
+    $stmt->execute(["video_id" => $this->video_id]);
+    $result = $stmt->fetchAll()[0];
+    if (!empty($result)) {
+      return $result['votes'];
     } else {
       return 0;
     }
@@ -84,8 +85,9 @@ class Video {
   public function exists_in_playlist() {
     $sql = "SELECT * FROM playlist WHERE video_id = :video_id";
     $stmt = $this->db->prepare($sql);
-    $result = $stmt->execute(["video_id" => $this->video_id]);
-    if ($stmt->rowCount() > 0) {
+    $stmt->execute(["video_id" => $this->video_id]);
+    $result = $stmt->fetchAll()[0];
+    if (!empty($result)) {
       return true;
     } else {
       return false;
@@ -96,14 +98,16 @@ class Video {
     // check if already voted for that ID
     $sql = "SELECT direction FROM votes WHERE video_id = :video_id AND session_id = :session_id";
     $stmt = $this->db->prepare($sql);
-    $result = $stmt->execute([
+    $stmt->execute([
       "video_id" => $this->video_id,
       "session_id" => $session_id
     ]);
 
-    if ($stmt->rowCount() > 0) {
+    $result = $stmt->fetchAll()[0];
+
+    if (!empty($result)) {
       // already voted
-      $before_direction = $stmt->fetch()['direction'];
+      $before_direction = $result['direction'];
       if ($before_direction != $direction) { // only senseful case
         if ($before_direction == "+") { // before it was upvoted, so downvote now
           $direction = "-";

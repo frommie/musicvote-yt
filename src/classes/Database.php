@@ -2,7 +2,7 @@
 
 class Database {
   protected $pdo;
-  
+
   public function __construct() {
     $db = $this->get_credentials();
     $this->pdo = new PDO($db['adapter'] . ':host=' . $db['host'] . ';dbname=' . $db['name'], $db['user'], $db['pass']);
@@ -40,6 +40,7 @@ class Database {
     return $db_config;
   }
   public function get_connection() {
+    $this->pdo->setAttribute(PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, false);
     return $this->pdo;
   }
 

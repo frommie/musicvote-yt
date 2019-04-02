@@ -62,21 +62,7 @@ $app->post('/search', function ($request, $response) {
   print_r($content);
 });
 
-$app->get('/player', function ($request, $response) {
-  // register player
-  $playlist = new Playlist($this->db);
-  $response = $this->view->render($response, 'player.html', [
-    'video_id' => $playlist->get_top_video()
-  ]);
-
-  return $response;
-});
-
 $app->get('/play', function ($request, $response) {
-  $session_id = session_id();
-  $client = new Client($this->db, "player", $session_id);
-  $client->login();
-
   $playlist = new Playlist($this->db);
   try {
     print($playlist->get_top_video());
@@ -103,6 +89,11 @@ $app->get('/playlist', function ($request, $response) {
   print_r($playlist->get_playlist());
 });
 
+$app->get('/test', function ($request, $response) {
+  $pl = new Playlist($this->db);
+  print_r($pl->pr());
+});
+
 $app->get('/playcontrol', function ($request, $response) {
   $session_id = session_id();
   $controller = new Controller($this->db, $session_id);
@@ -113,6 +104,20 @@ $app->get('/playcontrol', function ($request, $response) {
     ->withHeader('Content-Type', 'text/event-stream')
     ->withHeader('Cache-Control', 'no-cache')
     ->withBody($body);
+});
+
+$app->get('/player', function ($request, $response) {
+  // register player
+  $session_id = session_id();
+  $client = new Client($this->db, "player", $session_id);
+  $client->login();
+
+  $playlist = new Playlist($this->db);
+  $response = $this->view->render($response, 'player.html', [
+    'video_id' => $playlist->get_top_video()
+  ]);
+
+  return $response;
 });
 
 $app->get('/', function ($request, $response) {

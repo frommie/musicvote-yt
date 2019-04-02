@@ -26,7 +26,12 @@ class Client {
     $stmt = $this->db->prepare($sql);
     $stmt->execute(["session_id" => $this->session_id]);
     if ($stmt->rowCount() > 0) {
-      return true;
+      // check if correct client_type
+      if ($stmt->fetch()['client_type'] == $this->client_type) {
+        return true;
+      } else {
+        $this->log_activity();
+      }
     } else {
       return false;
     }
@@ -44,10 +49,12 @@ class Client {
 
   public function log_activity() {
     if ($this->registered()) {
-      $sql = "UPDATE clients SET last_activity = :curr_time";
+      $sql = "UPDATE clients SET client_type = :client_type, last_activity = :curr_time WHERE session_id = :session_id";
       $stmt = $this->db->prepare($sql);
       $result = $stmt->execute([
-        'curr_time' => date("Y-m-d H:i:s")
+        'client_type' => $this->client_type,
+        'curr_time' => date("Y-m-d H:i:s"),
+        'session_id' => $this->session_id
       ]);
     } else {
       $this->register();
@@ -60,6 +67,4 @@ class Client {
     $stmt->execute(["client_type" => $client_type]);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
   }
-
-  // TODO clean where current_time - last_activity > 60min
 }
