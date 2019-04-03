@@ -34,7 +34,7 @@ class QueryMigration extends AbstractMigration
     {
       $table = $this->table('query', [
         'id' => false,
-        'primary_key' => 'session_id'
+        'primary_key' => ['session_id', 'event_type']
       ]);
       $table->addColumn('session_id', 'string')
             ->addColumn('event_type', 'string')
