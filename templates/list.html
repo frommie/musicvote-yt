@@ -18,17 +18,23 @@
   var source = new EventSource("/playcontrol");
   source.onmessage = function(event) {
     if (event.data == "voted") {
-      set_votes();
+      update_all_votes();
     }
     if (event.data == "next") {
-      get_playlist();
+      update_playlist();
     }
   };
 
   function get_playlist() {
     $.get("/playlist", function(data) {
       document.getElementById("playlist").innerHTML = construct_playlist(JSON.parse(data));
-      set_votes();
+      update_user_votes();
+    });
+  }
+
+  function update_playlist() {
+    $.get("/playlist", function(data) {
+      document.getElementById("playlist").innerHTML = construct_playlist(JSON.parse(data));
     });
   }
 
@@ -77,14 +83,35 @@
     return html;
   }
 
-  function set_votes() {
-    {% for vote in votes %}
-      {% if vote.direction == "+" %}
-        document.getElementById("{{ vote.video_id }}_up").className = "icon is-medium has-text-success";
-      {% else %}
-        document.getElementById("{{ vote.video_id }}_down").className = "icon is-medium has-text-danger";
-      {% endif %}
-    {% endfor %}
+  function update_all_votes() {
+    // set votes
+    $.get("/get_all_votes", function(data) {
+      set_all_votes(JSON.parse(data));
+    });
+  }
+
+  function set_all_votes(votes) {
+    votes.forEach(function (vote) {
+      document.getElementById("votes_" + vote['video_id']).innerHTML = vote['votes'];
+    });
+  }
+
+  function update_user_votes() {
+    $.get("/get_user_votes", function(data) {
+      set_user_votes(JSON.parse(data));
+    });
+  }
+
+  function set_user_votes(user_votes) {
+    if (user_votes.length > 0) {
+      user_votes.forEach(function (user_vote) {
+        if (user_vote['direction'] == "+") {
+          document.getElementById(user_vote['video_id'] + "_up").className = "icon is-medium has-text-success";
+        } else {
+          document.getElementById(user_vote['video_id'] + "_down").className = "icon is-medium has-text-danger";
+        }
+      });
+    }
   }
 
   function search() {
@@ -173,7 +200,6 @@
       direction: direction
     },
     function(data, status){
-      console.log(data);
       // update vote number
       if (data == "") {
         data = 0;

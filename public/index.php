@@ -62,6 +62,16 @@ $app->post('/search', function ($request, $response) {
   print_r($content);
 });
 
+$app->get('/get_all_votes', function ($request, $response) {
+  $votes = new Votes($this->db, session_id());
+  print_r(json_encode($votes->get_all_votes()));
+});
+
+$app->get('/get_user_votes', function ($request, $response) {
+  $votes = new Votes($this->db, session_id());
+  print_r(json_encode($votes->get_user_votes()));
+});
+
 $app->get('/play', function ($request, $response) {
   $playlist = new Playlist($this->db);
   try {
