@@ -32,7 +32,10 @@ class VideosMigration extends AbstractMigration
      */
     public function change()
     {
-      $table = $this->table('videos');
+      $table = $this->table('videos', [
+        'id' => false,
+        'primary_key' => 'video_id'
+      ]);
       $table->addColumn('video_id', 'string')
             ->addColumn('title', 'string')
             ->addColumn('img', 'string')

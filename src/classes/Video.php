@@ -47,10 +47,10 @@ class Video {
     $sql = "SELECT votes FROM playlist WHERE video_id = :video_id";
     $stmt = $this->db->prepare($sql);
     $stmt->execute(["video_id" => $this->video_id]);
-    $result = $stmt->fetchAll()[0];
+    $result = $stmt->fetchAll();
     $stmt->closeCursor();
     if (!empty($result)) {
-      return $result['votes'];
+      return $result[0]['votes'];
     } else {
       return 0;
     }
@@ -77,9 +77,9 @@ class Video {
     $sql = "SELECT * FROM videos WHERE video_id = :video_id";
     $stmt = $this->db->prepare($sql);
     $stmt->execute(["video_id" => $this->video_id]);
-    $result = $stmt->fetchAll()[0];
+    $result = $stmt->fetchAll();
     $stmt->closeCursor();
-    if (!empty($result)) {
+    if (!empty($result[0])) {
       return true;
     } else {
       return false;
@@ -90,9 +90,9 @@ class Video {
     $sql = "SELECT * FROM playlist WHERE video_id = :video_id";
     $stmt = $this->db->prepare($sql);
     $stmt->execute(["video_id" => $this->video_id]);
-    $result = $stmt->fetchAll()[0];
+    $result = $stmt->fetchAll();
     $stmt->closeCursor();
-    if (!empty($result)) {
+    if (!empty($result[0])) {
       return true;
     } else {
       return false;
@@ -108,10 +108,11 @@ class Video {
       "session_id" => $session_id
     ]);
 
-    $result = $stmt->fetchAll()[0];
+    $result = $stmt->fetchAll();
     $stmt->closeCursor();
 
-    if (!empty($result)) {
+    if (!empty($result[0])) {
+      $result = $result[0];
       // already voted
       $before_direction = $result['direction'];
       if ($before_direction != $direction) { // only senseful case

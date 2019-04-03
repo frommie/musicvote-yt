@@ -32,7 +32,10 @@ class VotesMigration extends AbstractMigration
      */
     public function change()
     {
-      $table = $this->table('votes');
+      $table = $this->table('votes', [
+        'id' => false,
+        'primary_key' => ['video_id', 'session_id']
+      ]);
       $table->addColumn('video_id', 'string')
             ->addColumn('session_id', 'string')
             ->addColumn('direction', 'string', [

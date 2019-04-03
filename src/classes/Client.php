@@ -13,30 +13,26 @@ class Client {
 
   public function login() {
     // check if already in db
-    if (!$this->registered()) {
-      $this->register();
-    } else {
+    $registered = $this->registered();
+    if ($registered) {
       // log activity
       $this->log_activity();
+    } else {
+      $this->register();
     }
   }
 
   public function registered() {
-    $sql = "SELECT * FROM clients WHERE session_id = :session_id";
+    $sql = "SELECT client_type FROM clients WHERE session_id = :session_id";
     $stmt = $this->db->prepare($sql);
     $stmt->execute(["session_id" => $this->session_id]);
-    $result = $stmt->fetchAll()[0];
+    $result = $stmt->fetch();
+    $stmt->closeCursor();
     if (!empty($result)) {
-      // check if correct client_type
-      if ($result['client_type'] == $this->client_type) {
-        return true;
-      } else {
-        $this->log_activity();
-      }
+      return true;
     } else {
       return false;
     }
-    $stmt->closeCursor();
   }
 
   public function register() {

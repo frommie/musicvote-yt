@@ -32,7 +32,10 @@ class PlaylistMigration extends AbstractMigration
      */
     public function change()
     {
-      $table = $this->table('playlist');
+      $table = $this->table('playlist', [
+        'id' => false,
+        'primary_key' => 'video_id'
+      ]);
       $table->addColumn('video_id', 'string')
             ->addColumn('votes', 'integer')
             ->addColumn('playing', 'boolean', [

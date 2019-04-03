@@ -32,7 +32,10 @@ class FallbackMigration extends AbstractMigration
      */
     public function change()
     {
-      $table = $this->table('fallback_playlist');
+      $table = $this->table('fallback_playlist', [
+        'id' => false,
+        'primary_key' => 'video_id'
+      ]);
       $table->addColumn('video_id', 'string')
             ->create();
     }

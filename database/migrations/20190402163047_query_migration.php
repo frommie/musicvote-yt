@@ -32,7 +32,10 @@ class QueryMigration extends AbstractMigration
      */
     public function change()
     {
-      $table = $this->table('query');
+      $table = $this->table('query', [
+        'id' => false,
+        'primary_key' => 'session_id'
+      ]);
       $table->addColumn('session_id', 'string')
             ->addColumn('event_type', 'string')
             ->create();

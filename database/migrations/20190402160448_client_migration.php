@@ -32,7 +32,10 @@ class ClientMigration extends AbstractMigration
      */
     public function change()
     {
-      $table = $this->table('clients');
+      $table = $this->table('clients', [
+        'id' => false,
+        'primary_key' => 'session_id'
+      ]);
       $table->addColumn('session_id', 'string')
             ->addColumn('client_type', 'string')
             ->addColumn('last_activity', 'timestamp')
