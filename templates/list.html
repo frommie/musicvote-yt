@@ -91,9 +91,11 @@
   }
 
   function set_all_votes(votes) {
-    votes.forEach(function (vote) {
-      document.getElementById("votes_" + vote['video_id']).innerHTML = vote['votes'];
-    });
+    if (votes.length > 0) {
+      votes.forEach(function (vote) {
+        document.getElementById("votes_" + vote['video_id']).innerHTML = vote['votes'];
+      });
+    }
   }
 
   function update_user_votes() {
