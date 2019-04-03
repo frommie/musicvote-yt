@@ -93,7 +93,9 @@
   function set_all_votes(votes) {
     if (votes.length > 0) {
       votes.forEach(function (vote) {
-        document.getElementById("votes_" + vote['video_id']).innerHTML = vote['votes'];
+        if (document.getElementById("votes_" + vote['video_id']) !== null) {
+          document.getElementById("votes_" + vote['video_id']).innerHTML = vote['votes'];
+        }
       });
     }
   }
@@ -108,9 +110,13 @@
     if (user_votes.length > 0) {
       user_votes.forEach(function (user_vote) {
         if (user_vote['direction'] == "+") {
-          document.getElementById(user_vote['video_id'] + "_up").className = "icon is-medium has-text-success";
+          if (document.getElementById(user_vote['video_id'] + "_up") !== null) {
+            document.getElementById(user_vote['video_id'] + "_up").className = "icon is-medium has-text-success";
+          }
         } else {
-          document.getElementById(user_vote['video_id'] + "_down").className = "icon is-medium has-text-danger";
+          if (document.getElementById(user_vote['video_id'] + "_down") !== null) {
+            document.getElementById(user_vote['video_id'] + "_down").className = "icon is-medium has-text-danger";
+          }
         }
       });
     }
@@ -206,13 +212,15 @@
       if (data == "") {
         data = 0;
       }
-      document.getElementById("votes_" + video_id).innerHTML = data;
-      if (direction == "+") {
-        document.getElementById(video_id + "_up").className = "icon is-medium has-text-success";
-        document.getElementById(video_id + "_down").className = "icon is-medium has-text-grey-lighter";
-      } else {
-        document.getElementById(video_id + "_up").className = "icon is-medium has-text-grey-lighter";
-        document.getElementById(video_id + "_down").className = "icon is-medium has-text-danger";
+      if (document.getElementById("votes_" + video_id) !== null) {
+        document.getElementById("votes_" + video_id).innerHTML = data;
+        if (direction == "+") {
+          document.getElementById(video_id + "_up").className = "icon is-medium has-text-success";
+          document.getElementById(video_id + "_down").className = "icon is-medium has-text-grey-lighter";
+        } else {
+          document.getElementById(video_id + "_up").className = "icon is-medium has-text-grey-lighter";
+          document.getElementById(video_id + "_down").className = "icon is-medium has-text-danger";
+        }
       }
     });
   }
