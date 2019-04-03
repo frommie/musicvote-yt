@@ -14,7 +14,7 @@ class Event {
 
   public function enqueue($session_id, $event_type) {
     if (!$this->queried($session_id, $event_type)) {
-      $sql = "INSERT INTO query (session_id, event_type) VALUES (:session_id, :event_type)";
+      $sql = "INSERT IGNORE INTO query (session_id, event_type) VALUES (:session_id, :event_type)";
       $stmt = $this->db->prepare($sql);
       $result = $stmt->execute([
         'session_id' => $session_id,
