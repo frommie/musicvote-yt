@@ -177,7 +177,7 @@
     // TODO path_for cant be used here so the link to vote is a thing to improve
     div_box.innerHTML = '<div class="column"> \
         <figure class="image is-4by3"> \
-          <img src="' + vid['img'] + '" alt="Image"> \
+          <a onClick="add(\'' + vid['video_id'] + '\')"><img src="' + vid['img'] + '" alt="Image"></a> \
         </figure> \
       </div> \
       <div class="column is-half"> \

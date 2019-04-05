@@ -1,3 +1,7 @@
 .box {
   margin: 10px -12px;
 }
+
+#search_result {
+  -webkit-overflow-scrolling: touch;
+}
