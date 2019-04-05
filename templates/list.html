@@ -17,10 +17,7 @@
 
   var source = new EventSource("/playcontrol");
   source.onmessage = function(event) {
-    if (event.data == "voted") {
-      update_all_votes();
-    }
-    if (event.data == "next") {
+    if (event.data == "voted" || event.data == "next") {
       update_playlist();
     }
   };
