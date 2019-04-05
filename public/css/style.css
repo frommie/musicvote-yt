@@ -2,6 +2,6 @@
   margin: 10px -12px;
 }
 
-#search_result {
+#search-modal, .modal-content, #search_result, * {
   -webkit-overflow-scrolling: touch;
 }
