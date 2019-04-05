@@ -1,7 +1,8 @@
-.box {
-  margin: 10px -12px;
+* {
+  -webkit-overflow-scrolling: touch;
+  overflow-y: scroll !important;
 }
 
-#search-modal, .modal-content, #search_result, * {
-  -webkit-overflow-scrolling: touch;
+.box {
+  margin: 10px -12px;
 }
