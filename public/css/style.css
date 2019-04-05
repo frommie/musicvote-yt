@@ -1,8 +1,7 @@
-* {
-  -webkit-overflow-scrolling: touch;
-  overflow-y: scroll !important;
-}
-
 .box {
   margin: 10px -12px;
+}
+
+.modal {
+  -webkit-overflow-scrolling: touch;
 }
