@@ -94,9 +94,10 @@ $app->get('/next', function ($request, $response) {
 });
 
 $app->get('/playlist', function ($request, $response) {
+  $session_id = session_id();
   $playlist = new Playlist($this->db);
 
-  print_r($playlist->get_playlist());
+  print_r($playlist->get_playlist($session_id));
 });
 
 $app->get('/test', function ($request, $response) {

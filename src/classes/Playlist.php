@@ -66,11 +66,15 @@ class Playlist {
     array_splice($this->playlist, 0, 1);
   }
 
-  public function get_playlist() {
+  public function get_playlist($session_id) {
     $arr = array();
     foreach ($this->playlist as $video) {
-      $arr[] = json_decode(strval($video), true);
+      $arr[$video->get_video_id()] = json_decode(strval($video), true);
     }
+
+    $votes = new Votes($this->db, $session_id);
+    $user_votes = $votes->get_user_votes();
+
     foreach ($arr as $key => $item) {
       if ($item['video_id'] == $this->playing) {
         $arr[$key]['playing'] = 1;
@@ -78,6 +82,11 @@ class Playlist {
         $arr[$key]['playing'] = 0;
       }
     }
+
+    foreach ($user_votes as $user_vote) {
+      $arr[$user_vote['video_id']]['direction'] = $user_vote['direction'];
+    }
+    $arr = array_values($arr);
     return json_encode($arr);
   }
 

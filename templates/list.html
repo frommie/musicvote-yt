@@ -57,7 +57,11 @@
       html +=  '<nav class="level is-mobile">';
       html +=    '<div class="level-left">';
       html +=      '<a class="level-item" onClick="vote(\'' + video['video_id'] + '\', \'+\')">';
-      html +=        '<span class="icon is-medium has-text-grey-lighter" id="' + video['video_id'] + '_up">';
+      if (video['direction'] == "+") {
+        html +=        '<span class="icon is-medium has-text-success" id="' + video['video_id'] + '_up">';
+      } else {
+        html +=        '<span class="icon is-medium has-text-grey-lighter" id="' + video['video_id'] + '_up">';
+      }
       html +=          '<i class="fas fa-arrow-alt-circle-up fa-2x" aria-hidden="true"></i>';
       html +=        '</span>';
       html +=      '</a>';
@@ -65,7 +69,11 @@
       html +=        '<span class="is-size-3" id="votes_' + video['video_id'] + '">' + video['votes'] + '</span>';
       html +=      '</a>';
       html +=      '<a class="level-item" onClick="vote(\'' + video['video_id'] + '\', \'-\')">';
-      html +=        '<span class="icon is-medium has-text-grey-lighter" id="' + video['video_id'] + '_down">';
+      if (video['direction'] == "-") {
+        html +=        '<span class="icon is-medium has-text-danger" id="' + video['video_id'] + '_down">';
+      } else {
+        html +=        '<span class="icon is-medium has-text-grey-lighter" id="' + video['video_id'] + '_down">';
+      }
       html +=          '<i class="fas fa-arrow-alt-circle-down fa-2x" aria-hidden="true"></i>';
       html +=        '</span>';
       html +=      '</a>';
