@@ -15,8 +15,10 @@
 }
 
 .modal-body {
-  max-height: calc(100vh - 210px);
-  overflow-y: auto;
+  -webkit-overflow-scrolling: touch !important;
+  overflow-y: scroll !important;
+  max-height: calc(100vh - 105px);
+  top: 105px;
 }
 
 .modal-xl {
