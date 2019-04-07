@@ -36,56 +36,44 @@
   }
 
   function construct_playlist(data) {
-    var html = "";
+    var html = document.createElement("div");
     data.forEach(function(video) {
-      if (video['playing']) {
-        html += '<div class="box columns" style="margin: 10px; box-shadow: 0 5px 10px rgba(10,10,10,.1), 0 0 0 2px rgba(26, 204, 14, 0.77);">';
-      } else {
-        html += '<div class="box columns" style="margin: 10px;">';
+      if (video.direction == "+") {
+        video.direction_up = 1;
       }
-      html += '<div class="column">';
-      html += ' <figure class="image is-4by3">';
-      html +=    '<img src="' + video['img'] + '" alt="Image">';
-      html +=  '</figure>';
-      html += '</div>';
-      html += '<div class="column is-half">';
-      html +=  '<p class="is-large">';
-      html +=    '<strong>' + video['title'] + '</strong>';
-      html +=  '</p>';
-      html += '</div>';
-      html += '<div class="column is-one-fifth">';
-      html +=  '<nav class="level is-mobile">';
-      html +=    '<div class="level-left">';
-      html +=      '<a class="level-item" onClick="vote(\'' + video['video_id'] + '\', \'+\')">';
-      if (video['direction'] == "+") {
-        html +=        '<span class="icon is-medium has-text-success" id="' + video['video_id'] + '_up">';
-      } else {
-        html +=        '<span class="icon is-medium has-text-grey-lighter" id="' + video['video_id'] + '_up">';
+      if (video.direction == "-") {
+        video.direction_down = 1;
       }
-      html +=          '<i class="fas fa-arrow-alt-circle-up fa-2x" aria-hidden="true"></i>';
-      html +=        '</span>';
-      html +=      '</a>';
-      html +=      '<a class="level-item">';
-      html +=        '<span class="is-size-3" id="votes_' + video['video_id'] + '">' + video['votes'] + '</span>';
-      html +=      '</a>';
-      html +=      '<a class="level-item" onClick="vote(\'' + video['video_id'] + '\', \'-\')">';
-      if (video['direction'] == "-") {
-        html +=        '<span class="icon is-medium has-text-danger" id="' + video['video_id'] + '_down">';
-      } else {
-        html +=        '<span class="icon is-medium has-text-grey-lighter" id="' + video['video_id'] + '_down">';
-      }
-      html +=          '<i class="fas fa-arrow-alt-circle-down fa-2x" aria-hidden="true"></i>';
-      html +=        '</span>';
-      html +=      '</a>';
-      html +=    '</div>';
-      html +=  '</nav>';
-      html += '</div>';
-      html += '</div>';
-      if (video['playing'] && data.length > 1) {
-        html += '<div class="column"><h3>Next:</h3></div>';
-      }
+      const box_markup = `
+      <div class="box columns ${video.playing ? 'is-playing' : 'is-playlist-item'}">
+        <div class="column is-one-fifth">
+          <figure class="image is-4by3">
+            <img src="${video.img}" alt="Image">
+          </figure>
+        </div>
+        <div class="column is-three-fifth">
+          <p class="is-large">
+            <strong>${video.title}</strong>
+          </p>
+        </div>
+        <div class="column is-one-fifth vote-column">
+          <a class="level-item" onClick="vote('${video.video_id}', '+')">
+            <span class="icon is-medium ${video.direction_up ? 'has-text-success' : 'has-text-grey-lighter'}" id="${video.video_id}_up">
+              <i class="fas fa-arrow-alt-circle-up fa-2x" aria-hidden="true"></i>
+            </span>
+          </a>
+          <span class="is-size-3 vote-number" id="votes_${video.video_id}">${video.votes}</span>
+          <a class="level-item" onClick="vote('${video.video_id}', '-')">
+            <span class="icon is-medium ${video.direction_down ? 'has-text-danger' : 'has-text-grey-lighter'}" id="${video.video_id}_down">
+              <i class="fas fa-arrow-alt-circle-down fa-2x" aria-hidden="true"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+      `;
+      html.innerHTML += box_markup;
     });
-    return html;
+    return html.outerHTML;
   }
 
   function update_all_votes() {
@@ -175,30 +163,33 @@
     div_box.className = "box columns";
     div_box.setAttribute("style", "margin: 10px;");
     // TODO path_for cant be used here so the link to vote is a thing to improve
-    div_box.innerHTML = '<div class="column"> \
-        <figure class="image is-4by3"> \
-          <a onClick="add(\'' + vid['video_id'] + '\')"><img src="' + vid['img'] + '" alt="Image"></a> \
-        </figure> \
-      </div> \
-      <div class="column is-half"> \
-        <p class="is-large"> \
-          <strong>' + vid['title'] + '</strong> \
-        </p> \
-      </div> \
-      <div class="column"> \
-        <p>' + duration + '</p> \
-      </div> \
-      <div class="column is-one-fifth"> \
-        <nav class="level is-mobile"> \
-          <div class="level-left"> \
-            <a class="level-item" onClick="add(\'' + vid['video_id'] + '\')" aria-label="reply"> \
-              <span class="icon is-medium" id="' + vid['video_id'] + '_add"> \
-                <i class="fas fa-plus-circle fa-2x" aria-hidden="true"></i> \
-              </span> \
-            </a> \
-          </div> \
-        </nav> \
-      </div>';
+    const box_markup = `
+      <div class="column">
+        <figure class="image is-4by3">
+          <a onClick="add('${vid.video_id}')"><img src="${vid.img}" alt="Image"></a>
+        </figure>
+      </div>
+      <div class="column is-half">
+        <p class="is-large">
+          <strong>${vid.title}</strong>
+        </p>
+      </div>
+      <div class="column">
+        <p>${duration}</p>
+      </div>
+      <div class="column is-one-fifth">
+        <nav class="level is-mobile">
+          <div class="level-left">
+            <a class="level-item" onClick="add('${vid.video_id}')" aria-label="reply">
+              <span class="icon is-medium" id="${vid.video_id}_add">
+                <i class="fas fa-plus-circle fa-2x" aria-hidden="true"></i>
+              </span>
+            </a>
+          </div>
+        </nav>
+      </div>
+    `;
+    div_box.innerHTML = box_markup;
     return div_box;
   }
 

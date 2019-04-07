@@ -5,3 +5,16 @@
 .modal {
   -webkit-overflow-scrolling: touch;
 }
+
+.is-playing {
+  box-shadow: 0 5px 10px rgba(10,10,10,.1), 0 0 0 2px rgba(26, 204, 14, 0.77);
+}
+
+.vote-column a, .vote-column span {
+  display: inline-block;
+  margin: 3px;
+}
+
+.vote-number {
+  text-align: center;
+}
