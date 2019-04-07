@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 
-{% block script %}
+{% block head %}
 <script>
   $(document).ready(function(){
     get_playlist();
@@ -45,26 +45,22 @@
         video.direction_down = 1;
       }
       const box_markup = `
-      <div class="box columns ${video.playing ? 'is-playing' : 'is-playlist-item'}">
-        <div class="column is-one-fifth">
-          <figure class="image is-4by3">
-            <img src="${video.img}" alt="Image">
-          </figure>
+      <div class="row media ${video.playing ? 'is-playing' : 'is-playlist-item'}">
+        <div class="col-md-4">
+          <img src="${video.img}" class="mr-3" alt="Image">
         </div>
-        <div class="column is-three-fifth">
-          <p class="is-large">
-            <strong>${video.title}</strong>
-          </p>
+        <div class="col-md-6">
+          <h5>${video.title}</h5>
         </div>
-        <div class="column is-one-fifth vote-column">
+        <div class="col-md-2">
           <a class="level-item" onClick="vote('${video.video_id}', '+')">
-            <span class="icon is-medium ${video.direction_up ? 'has-text-success' : 'has-text-grey-lighter'}" id="${video.video_id}_up">
+            <span class="icon is-medium ${video.direction_up ? 'text-success' : 'text-secondary'}" id="${video.video_id}_up">
               <i class="fas fa-arrow-alt-circle-up fa-2x" aria-hidden="true"></i>
             </span>
           </a>
           <span class="is-size-3 vote-number" id="votes_${video.video_id}">${video.votes}</span>
           <a class="level-item" onClick="vote('${video.video_id}', '-')">
-            <span class="icon is-medium ${video.direction_down ? 'has-text-danger' : 'has-text-grey-lighter'}" id="${video.video_id}_down">
+            <span class="icon is-medium ${video.direction_down ? 'text-danger' : 'text-secondary'}" id="${video.video_id}_down">
               <i class="fas fa-arrow-alt-circle-down fa-2x" aria-hidden="true"></i>
             </span>
           </a>
@@ -104,11 +100,11 @@
       user_votes.forEach(function (user_vote) {
         if (user_vote['direction'] == "+") {
           if (document.getElementById(user_vote['video_id'] + "_up") !== null) {
-            document.getElementById(user_vote['video_id'] + "_up").className = "icon is-medium has-text-success";
+            document.getElementById(user_vote['video_id'] + "_up").className = "icon is-medium text-success";
           }
         } else {
           if (document.getElementById(user_vote['video_id'] + "_down") !== null) {
-            document.getElementById(user_vote['video_id'] + "_down").className = "icon is-medium has-text-danger";
+            document.getElementById(user_vote['video_id'] + "_down").className = "icon is-medium text-danger";
           }
         }
       });
@@ -121,9 +117,8 @@
     },
     function(data, status){
       document.getElementById("search_result").innerHTML = "";
-      document.getElementById("search-modal").className = "modal is-active";
-
       document.getElementById("search_result").appendChild(show_result(JSON.parse(data)));
+      $('#search-modal').modal('show');
     });
   }
 
@@ -160,24 +155,25 @@
     }
 
     var div_box = document.createElement("div");
-    div_box.className = "box columns";
+    div_box.className = "row";
+    div_box.setAttribute("onClick", "add('"+vid.video_id+"')")
     div_box.setAttribute("style", "margin: 10px;");
     // TODO path_for cant be used here so the link to vote is a thing to improve
     const box_markup = `
-      <div class="column">
+      <div class="col-md-2">
         <figure class="image is-4by3">
           <a onClick="add('${vid.video_id}')"><img src="${vid.img}" alt="Image"></a>
         </figure>
       </div>
-      <div class="column is-half">
+      <div class="col-md-6">
         <p class="is-large">
           <strong>${vid.title}</strong>
         </p>
       </div>
-      <div class="column">
+      <div class="col-md-2">
         <p>${duration}</p>
       </div>
-      <div class="column is-one-fifth">
+      <div class="col-md-2">
         <nav class="level is-mobile">
           <div class="level-left">
             <a class="level-item" onClick="add('${vid.video_id}')" aria-label="reply">
@@ -194,7 +190,7 @@
   }
 
   function add(video_id) {
-    document.getElementById(video_id + "_add").className = "icon is-medium has-text-success";
+    document.getElementById(video_id + "_add").className = "icon is-medium text-success";
     vote(video_id, '+');
   }
 
@@ -211,11 +207,11 @@
       if (document.getElementById("votes_" + video_id) !== null) {
         document.getElementById("votes_" + video_id).innerHTML = data;
         if (direction == "+") {
-          document.getElementById(video_id + "_up").className = "icon is-medium has-text-success";
-          document.getElementById(video_id + "_down").className = "icon is-medium has-text-grey-lighter";
+          document.getElementById(video_id + "_up").className = "icon is-medium text-success";
+          document.getElementById(video_id + "_down").className = "icon is-medium text-secondary";
         } else {
-          document.getElementById(video_id + "_up").className = "icon is-medium has-text-grey-lighter";
-          document.getElementById(video_id + "_down").className = "icon is-medium has-text-danger";
+          document.getElementById(video_id + "_up").className = "icon is-medium text-secondary";
+          document.getElementById(video_id + "_down").className = "icon is-medium text-danger";
         }
       }
     });
@@ -224,30 +220,33 @@
 {% endblock %}
 
 {% block content %}
-<div class="columns is-desktop">
-  <div class="column">
+<div class="row">
+  <div class="col-md-8">
     <h1 class="title">Vote Your Music</h1>
   </div>
-  <div class="column">
-    <div class="field has-addons">
-      <div class="control" style="width:100%;">
-        <input class="input" type="text" id="search_query" placeholder="" autocorrect="off">
-      </div>
-      <div class="control">
-        <a class="button is-info" id="search">
-          Suche
-        </a>
+  <div class="col-md-4">
+    <div class="input-group mb-3">
+      <input type="text" class="form-control" id="search_query" placeholder="" autocorrect="off" aria-label="Search query" aria-describedby="search">
+      <div class="input-group-append">
+        <button class="btn btn-outline-secondary" type="button" id="search">Suche</button>
       </div>
     </div>
   </div>
 </div>
 
-<div id="search-modal" class="modal">
-  <div class="modal-background" onClick="close_search_modal()"></div>
-  <div class="modal-content">
-    <div id="search_result"></div>
+<div id="search-modal" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Suche</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="search_result">
+      </div>
+    </div>
   </div>
-  <button class="modal-close is-large" aria-label="close"  onClick="close_search_modal()"></button>
 </div>
 
 <div id="playlist"><div>
