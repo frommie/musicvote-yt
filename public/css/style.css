@@ -11,7 +11,7 @@
 }
 
 .modal {
-  -webkit-overflow-scrolling: touch;
+  -webkit-overflow-scrolling: touch !important;
   padding: 0 !important;
 }
 
@@ -45,10 +45,12 @@
 
 .image a img {
   width: 100%;
+  max-width: 100%;
 }
 
 img.mr-3 {
-  width: 256px;
+  width: 100%;
+  max-width: 100%;
 }
 
 .vote-number {
