@@ -11,7 +11,12 @@
 }
 
 .modal {
+  -webkit-overflow-scrolling: touch;
   padding: 0 !important;
+}
+
+.modal-body {
+  -webkit-overflow-scrolling: touch;
 }
 
 .modal-xl {
