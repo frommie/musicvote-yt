@@ -118,7 +118,7 @@
     function(data, status){
       document.getElementById("search_result").innerHTML = "";
       document.getElementById("search_result").appendChild(show_result(JSON.parse(data)));
-      $('#search-modal').scrollTop(0);
+      $('#search-modal').animate({ scrollTop: 0 }, 'slow');
       $('#search-modal').modal('show');
     });
   }
