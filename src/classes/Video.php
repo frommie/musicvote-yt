@@ -1,8 +1,18 @@
 <?php
 
+/*
+ * VideoIDNullException is thrown if video_id is empty
+ */
 class VideoIDNullException extends Exception {}
+
+/*
+ * VideoNotFoundException is thrown if video_id was not found in video table
+ */
 class VideoNotFoundException extends Exception {}
 
+/*
+ * Manages video information
+ */
 class Video {
   protected $db;
   protected $video_id;
@@ -12,6 +22,15 @@ class Video {
   protected $votes;
   protected $playing;
 
+  /*
+   * Constructor
+   * @db PDO connection
+   * @video_id Video id of video
+   * @title Title information for video
+   * @img URL to thumbnail image
+   * @duration Duration of video in seconds
+   * @playing True if current playing in playlist, default false
+   */
   public function __construct($db, $video_id, $title, $img, $duration, $playing = false) {
     if ($video_id != "") {
       $this->db = $db;
@@ -26,6 +45,12 @@ class Video {
     }
   }
 
+  /*
+   * Loads video object by video_id
+   * @db PDO connection
+   * @video_id Video id of video to load
+   * returns Video object
+   */
   public static function with_video_id($db, $video_id) {
     $sql = "SELECT v.title, v.img, v.duration, p.playing, p.votes FROM videos v LEFT JOIN playlist p ON v.video_id = p.video_id WHERE v.video_id = :video_id";
     $stmt = $db->prepare($sql);
@@ -39,10 +64,18 @@ class Video {
     }
   }
 
+  /*
+   * Gets id of video
+   * returns Video id
+   */
   public function get_video_id() {
     return $this->video_id;
   }
 
+  /*
+   * Gets votes for video
+   * returns Number of votes for video id
+   */
   public function get_votes() {
     $sql = "SELECT votes FROM playlist WHERE video_id = :video_id";
     $stmt = $this->db->prepare($sql);
@@ -56,10 +89,17 @@ class Video {
     }
   }
 
+  /*
+   * Returns playing information
+   * returns True if curently playing
+   */
   public function is_playing() {
     return $this->playing;
   }
 
+  /*
+   * Saves video to videos table
+   */
   public function save() {
     if (!$this->exists_on_db()) {
       $sql = "INSERT INTO videos (video_id, title, img, duration) VALUES (:video_id, :title, :img, :duration)";
@@ -73,6 +113,10 @@ class Video {
     }
   }
 
+  /*
+  * Checks if video already exists in videos table
+  * returns True if video already exists in videos table
+   */
   public function exists_on_db() {
     $sql = "SELECT * FROM videos WHERE video_id = :video_id";
     $stmt = $this->db->prepare($sql);
@@ -86,6 +130,10 @@ class Video {
     }
   }
 
+  /*
+   * Checks if video already exists in playlist
+   * returns True if video already exists in playlist
+   */
   public function exists_in_playlist() {
     $sql = "SELECT * FROM playlist WHERE video_id = :video_id";
     $stmt = $this->db->prepare($sql);
@@ -99,6 +147,13 @@ class Video {
     }
   }
 
+  /*
+   * Sets vote number for video by checking for before votes by user, so it correct the voting
+   * e.g. User votes '-' before and now '+' --> video should be voted +2
+   * TODO extend for '-' and '-' to remove vote
+   * @session_id Client session id
+   * @direction Direction of vote ('+' or '-')
+   */
   public function vote($session_id, $direction) {
     // check if already voted for that ID
     $sql = "SELECT direction FROM votes WHERE video_id = :video_id AND session_id = :session_id";
@@ -146,6 +201,11 @@ class Video {
     }
   }
 
+  /*
+   * Saves vote to database
+   * @operation Vote direction ('-' or '+')
+   * @count Number of votes to save
+   */
   public function save_vote($operation, $count) {
     // not voted yet
     // check if already in playlist
@@ -167,6 +227,11 @@ class Video {
     }
   }
 
+  /*
+   * Logs vote for user
+   * @session_id Client session id
+   * @direction Direction of vote
+   */
   public function log_vote($session_id, $direction) {
     $sql = "INSERT INTO votes (session_id, video_id, direction) VALUES (:session_id, :video_id, :direction)";
     $stmt = $this->db->prepare($sql);
@@ -180,6 +245,9 @@ class Video {
     }
   }
 
+  /*
+   * Inserts video in playlist and sets vote to 1
+   */
   public function insert_in_playlist_and_vote() {
     $sql = "INSERT INTO playlist (video_id, votes) VALUES (:video_id, :votes)";
     $stmt = $this->db->prepare($sql);
@@ -192,6 +260,9 @@ class Video {
     }
   }
 
+  /*
+   * Inserts video in playlist
+   */
   public function insert_in_playlist() {
     $sql = "INSERT INTO playlist (video_id, votes) VALUES (:video_id, :votes)";
     $stmt = $this->db->prepare($sql);
@@ -204,6 +275,9 @@ class Video {
     }
   }
 
+  /*
+   * Sets playing attribute to video
+   */
   public function playing() {
     $this->playing = 1;
     // set playing status in db
@@ -218,6 +292,10 @@ class Video {
     }
   }
 
+  /*
+   * Returns video information in JSON String
+   * returns JSON
+   */
   public function __toString() {
     $arr = array(
       'video_id' => $this->video_id,

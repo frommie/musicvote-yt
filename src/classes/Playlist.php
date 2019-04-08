@@ -1,12 +1,22 @@
 <?php
 
+/*
+ * Empty Playlist Exception
+ */
 class PlaylistEmptyException extends Exception {}
 
+/*
+ * Manages playlist
+ */
 class Playlist {
   protected $db;
   protected $playlist;
   protected $playing;
 
+  /*
+   * Constructor
+   * @db PDO connection
+   */
   public function __construct($db) {
     $this->db = $db;
     // get playlist from db
@@ -35,12 +45,20 @@ class Playlist {
     $this->playlist = $results;
   }
 
+  /*
+   * Returns current playlist
+   */
   public function pr() {
     return $this->playlist;
   }
 
+  /*
+   * Gets current top video id
+   * returns top video id
+   */
   public function get_top_video() {
     if (count($this->playlist) == 0) {
+      // if playlist empty try to get fallback video and set as top video in playlist
       try {
         $this->playlist[0] = $this->get_fallback_video();
         $this->playlist[0]->insert_in_playlist();
@@ -55,6 +73,10 @@ class Playlist {
     return $this->playlist[0]->get_video_id();
   }
 
+  /*
+   * Removes the current playing video from playlist
+   * returns Playlist array without current playing video
+   */
   public function remove_playing_video() {
     if (count($this->playlist) == 0) {
       throw new PlaylistEmptyException;
@@ -66,6 +88,9 @@ class Playlist {
     array_splice($this->playlist, 0, 1);
   }
 
+  /*
+   * Gets current playlist with user vote directions and current playing video id
+   */
   public function get_playlist($session_id) {
     $arr = array();
     foreach ($this->playlist as $video) {
@@ -90,6 +115,9 @@ class Playlist {
     return json_encode($arr);
   }
 
+  /*
+   * Removes video id from playlist
+   */
   public function remove($video_id) {
     // remove video from playlist
     $sql = "DELETE FROM playlist WHERE video_id = :video_id";
@@ -99,6 +127,9 @@ class Playlist {
     ]);
   }
 
+  /*
+   * Removes votes for video id
+   */
   public function remove_votes($video_id) {
     // remove votes for video
     $sql = "DELETE FROM votes WHERE video_id = :video_id";
@@ -108,6 +139,10 @@ class Playlist {
     ]);
   }
 
+  /*
+   * Gets fallback video from fallback playlist if set in config
+   * returns fallback video or PlaylistEmptyException if not successfull
+   */
   public function get_fallback_video() {
     // first check if fallback playlist is already in db
     if ($this->db->getAttribute(PDO::ATTR_DRIVER_NAME) == "pgsql") {
@@ -132,6 +167,9 @@ class Playlist {
     }
   }
 
+  /*
+   * Loads fallback playlist id from config or environment variable
+   */
   public function load_fallback_playlist() {
     // check config for playlist id
     $config_file = dirname(__FILE__) . '/../../config.php';
@@ -154,6 +192,10 @@ class Playlist {
     }
   }
 
+  /*
+   * Gets playlist information from Youtube API and saves to db
+   * returns True if videos saved
+   */
   public function save_fallback_playlist($fallback_playlist_id) {
     // API call to get videos from fallback playlist
     $api = new YoutubeAPI($this->db);
