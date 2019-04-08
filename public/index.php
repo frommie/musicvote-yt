@@ -49,7 +49,7 @@ $app->get('/playcontrol', function ($request, $response) {
   return $response
     ->withHeader('Content-Type', 'text/event-stream')
     ->withHeader('Cache-Control', 'no-cache')
-    ->write('data: {$event}\n\n');
+    ->write("data: {$event}\n\n");
 });
 
 /*
