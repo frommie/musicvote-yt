@@ -1,6 +1,5 @@
 <?php
 session_start();
-$session_id = session_id();
 
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
@@ -43,8 +42,7 @@ $container['view'] = function ($container) {
  * returns SSE events
  */
 $app->get('/playcontrol', function ($request, $response) {
-  global $session_id;
-  $controller = new Controller($this->db, $session_id);
+  $controller = new Controller($this->db, session_id());
   $body = $response->getBody();
   $body->write($controller->get_event().'\n\n');
   return $response
@@ -58,8 +56,7 @@ $app->get('/playcontrol', function ($request, $response) {
  * returns Video IDs in playlist with votes by current user as JSON
  */
 $app->get('/get_user_votes', function ($request, $response) {
-  global $session_id;
-  $votes = new Votes($this->db, $session_id);
+  $votes = new Votes($this->db, session_id());
   print_r(json_encode($votes->get_user_votes()));
 });
 
@@ -84,9 +81,8 @@ $app->get('/next', function ($request, $response) {
  * returns Playlist
  */
 $app->get('/playlist', function ($request, $response) {
-  global $session_id;
   $playlist = new Playlist($this->db);
-  print_r($playlist->get_playlist($session_id));
+  print_r($playlist->get_playlist(session_id()));
 });
 
 /*
@@ -110,12 +106,11 @@ $app->post('/search', function ($request, $response) {
  */
 $app->post('/vote', function ($request, $response) {
   // create event for clients
-  global $session_id;
   $body = $request->getParsedBody();
   $video_id = $body['video_id'];
   $direction = $body['direction'];
   $video = Video::with_video_id($this->db, $video_id);
-  $video->vote($session_id, $direction);
+  $video->vote(session_id(), $direction);
   new Event($this->db, 'voted', 'client');
   $votes = $video->get_votes();
   if ($video->is_playing() && $votes < 0) {
@@ -131,8 +126,7 @@ $app->post('/vote', function ($request, $response) {
  */
 $app->get('/player', function ($request, $response) {
   // register player
-  global $session_id;
-  $client = new Client($this->db, 'player', $session_id);
+  $client = new Client($this->db, 'player', session_id());
   $client->login();
   $playlist = new Playlist($this->db);
   $response = $this->view->render($response, 'player.html', [
@@ -146,8 +140,7 @@ $app->get('/player', function ($request, $response) {
  * returns client template
  */
 $app->get('/', function ($request, $response) {
-  global $session_id;
-  $client = new Client($this->db, 'client', $session_id);
+  $client = new Client($this->db, 'client', session_id());
   $client->login();
   $response = $this->view->render($response, 'client.html');
   return $response;
