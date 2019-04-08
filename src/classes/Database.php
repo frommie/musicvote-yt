@@ -28,25 +28,25 @@ class Database {
       require $config_file;
 
       $db_config = Array(
-        "adapter" => "mysql",
-        "host" => $config['db']['host'],
-        "name" => $config['db']['dbname'],
-        "user" => $config['db']['user'],
-        "pass" => $config['db']['pass'],
-        "port" => $config['db']['port'],
+        'adapter' => 'mysql',
+        'host' => $config['db']['host'],
+        'name' => $config['db']['dbname'],
+        'user' => $config['db']['user'],
+        'pass' => $config['db']['pass'],
+        'port' => $config['db']['port'],
       );
     }
 
     // check if deployed to heroku
-    if (getenv("DATABASE_URL") !== false) {
-      $herokudb = parse_url(getenv("DATABASE_URL"));
+    if (getenv('DATABASE_URL') !== false) {
+      $herokudb = parse_url(getenv('DATABASE_URL'));
       $db_config = Array(
-        "adapter" => "pgsql",
-        "host" => $herokudb["host"],
-        "name" => ltrim($herokudb["path"], "/"),
-        "user" => $herokudb["user"],
-        "pass" => $herokudb["pass"],
-        "port" => $herokudb["port"],
+        'adapter' => 'pgsql',
+        'host' => $herokudb['host'],
+        'name' => ltrim($herokudb['path'], '/'),
+        'user' => $herokudb['user'],
+        'pass' => $herokudb['pass'],
+        'port' => $herokudb['port'],
       );
     }
     return $db_config;
@@ -64,6 +64,6 @@ class Database {
    * Returns db name
    */
   public function get_db_name() {
-    return $this->pdo->query("SELECT DATABASE()")->fetchColumn(0);
+    return $this->pdo->query('SELECT DATABASE()')->fetchColumn(0);
   }
 }

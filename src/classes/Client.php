@@ -39,9 +39,9 @@ class Client {
    * returns True if session is in table clients
    */
   public function registered() {
-    $sql = "SELECT client_type FROM clients WHERE session_id = :session_id";
+    $sql = 'SELECT client_type FROM clients WHERE session_id = :session_id';
     $stmt = $this->db->prepare($sql);
-    $stmt->execute(["session_id" => $this->session_id]);
+    $stmt->execute(['session_id' => $this->session_id]);
     $result = $stmt->fetch();
     $stmt->closeCursor();
     if (!empty($result)) {
@@ -55,12 +55,12 @@ class Client {
    * Registers client if not in clients table yet with client type
    */
   public function register() {
-    $sql = "INSERT INTO clients (session_id, client_type, last_activity) VALUES (:session_id, :client_type, :curr_time)";
+    $sql = 'INSERT INTO clients (session_id, client_type, last_activity) VALUES (:session_id, :client_type, :curr_time)';
     $stmt = $this->db->prepare($sql);
     $result = $stmt->execute([
       'session_id' => $this->session_id,
       'client_type' => $this->client_type,
-      'curr_time' => date("Y-m-d H:i:s")
+      'curr_time' => date('Y-m-d H:i:s')
     ]);
   }
 
@@ -69,11 +69,11 @@ class Client {
    */
   public function log_activity() {
     if ($this->registered()) {
-      $sql = "UPDATE clients SET client_type = :client_type, last_activity = :curr_time WHERE session_id = :session_id";
+      $sql = 'UPDATE clients SET client_type = :client_type, last_activity = :curr_time WHERE session_id = :session_id';
       $stmt = $this->db->prepare($sql);
       $result = $stmt->execute([
         'client_type' => $this->client_type,
-        'curr_time' => date("Y-m-d H:i:s"),
+        'curr_time' => date('Y-m-d H:i:s'),
         'session_id' => $this->session_id
       ]);
     } else {
@@ -86,9 +86,9 @@ class Client {
    * returns Current active session ids
    */
   public static function get_sessions($db, $client_type) {
-    $sql = "SELECT session_id FROM clients WHERE client_type = :client_type";
+    $sql = 'SELECT session_id FROM clients WHERE client_type = :client_type';
     $stmt = $db->prepare($sql);
-    $stmt->execute(["client_type" => $client_type]);
+    $stmt->execute(['client_type' => $client_type]);
     $ret = $stmt->fetchAll(PDO::FETCH_ASSOC);
     $stmt->closeCursor();
     return $ret;

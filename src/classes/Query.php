@@ -22,9 +22,9 @@ class Query {
    * returns Queried event, empty if no event queried
    */
   public function get_queried_event() {
-    $sql = "SELECT event_type FROM query WHERE session_id = :session_id LIMIT 1";
+    $sql = 'SELECT event_type FROM query WHERE session_id = :session_id LIMIT 1';
     $stmt = $this->db->prepare($sql);
-    $stmt->execute(["session_id" => $this->session_id]);
+    $stmt->execute(['session_id' => $this->session_id]);
     $result = $stmt->fetchAll();
     $stmt->closeCursor();
     if ($result) {
@@ -41,11 +41,11 @@ class Query {
    * Deletes queried event if event was send to client previously
    */
   public function delete_queried_event($event_type) {
-    $sql = "DELETE FROM query WHERE session_id = :session_id AND event_type = :event_type";
+    $sql = 'DELETE FROM query WHERE session_id = :session_id AND event_type = :event_type';
     $stmt = $this->db->prepare($sql);
     $stmt->execute([
-      "session_id" => $this->session_id,
-      "event_type" => $event_type
+      'session_id' => $this->session_id,
+      'event_type' => $event_type
     ]);
   }
 }

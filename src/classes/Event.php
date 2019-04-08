@@ -27,7 +27,7 @@ class Event {
    */
   public function enqueue($session_id, $event_type) {
     if (!$this->queried($session_id, $event_type)) {
-      $sql = "INSERT IGNORE INTO query (session_id, event_type) VALUES (:session_id, :event_type)";
+      $sql = 'INSERT IGNORE INTO query (session_id, event_type) VALUES (:session_id, :event_type)';
       $stmt = $this->db->prepare($sql);
       $result = $stmt->execute([
         'session_id' => $session_id,
@@ -41,11 +41,11 @@ class Event {
    * returns true if already queried, else false
    */
   public function queried($session_id, $event_type) {
-    $sql = "SELECT * FROM query WHERE session_id = :session_id AND event_type = :event_type";
+    $sql = 'SELECT * FROM query WHERE session_id = :session_id AND event_type = :event_type';
     $stmt = $this->db->prepare($sql);
     $stmt->execute([
-      "session_id" => $session_id,
-      "event_type" => $event_type
+      'session_id' => $session_id,
+      'event_type' => $event_type
     ]);
     if ($stmt->rowCount() > 0) {
       return true;

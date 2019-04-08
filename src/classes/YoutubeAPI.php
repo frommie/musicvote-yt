@@ -28,8 +28,8 @@ class YoutubeAPI {
       require $config_file;
       return $config['api_key'];
     }
-    if (getenv("API_KEY") !== false) {
-      return getenv("API_KEY");
+    if (getenv('API_KEY') !== false) {
+      return getenv('API_KEY');
     }
   }
 
@@ -61,15 +61,15 @@ class YoutubeAPI {
    */
   public function get_video_array($search) {
     $arr = array();
-    $video_ids = "";
+    $video_ids = '';
     $search_count = (int)count($search);
     for ($i = 0; $i < $search_count; $i++) {
-      if ($search[$i]['id']['videoId'] != "") {
+      if ($search[$i]['id']['videoId'] != '') {
         $arr[$search[$i]['id']['videoId']] = array(
           'title' => html_entity_decode($search[$i]['snippet']['title']),
           'img' => $search[$i]['snippet']['thumbnails']['high']['url']
         );
-        $video_ids .= $search[$i]['id']['videoId'] . ", ";
+        $video_ids .= $search[$i]['id']['videoId'] . ', ';
       }
     }
 
@@ -97,7 +97,7 @@ class YoutubeAPI {
 
     // now create Video instances
     foreach ($arr as $video_id => $video) {
-      if ($video['status']['privacyStatus'] == "public" && $video['status']['embeddable'] == true) {
+      if ($video['status']['privacyStatus'] == 'public' && $video['status']['embeddable'] == true) {
         try {
           $video_result = new Video(
             $this->db,
@@ -135,15 +135,15 @@ class YoutubeAPI {
    */
   public function get_playlist_array($items) {
     $arr = array();
-    $video_ids = "";
+    $video_ids = '';
     $items_count = (int)count($search);
     for ($i = 0; $i < $items_count; $i++) {
-      if ($items[$i]['snippet']['resourceId']['videoId'] != "") {
+      if ($items[$i]['snippet']['resourceId']['videoId'] != '') {
         $arr[$item['snippet']['resourceId']['videoId']] = array(
           'title' => html_entity_decode($items[$i]['snippet']['title']),
           'img' => $items[$i]['snippet']['thumbnails']['high']['url']
         );
-        $video_ids .= $items[$i]['snippet']['resourceId']['videoId'] . ", ";
+        $video_ids .= $items[$i]['snippet']['resourceId']['videoId'] . ', ';
       }
     }
     $videos = $this->get_video_details($arr, $video_ids);

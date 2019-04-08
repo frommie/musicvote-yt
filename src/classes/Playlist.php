@@ -21,7 +21,7 @@ class Playlist {
     $this->db = $db;
     // get playlist from db
     // playing video is first
-    $sql = "SELECT video_id, votes, playing FROM playlist ORDER BY playing DESC, votes DESC";
+    $sql = 'SELECT video_id, votes, playing FROM playlist ORDER BY playing DESC, votes DESC';
     $stmt = $this->db->query($sql);
 
     $results = [];
@@ -122,7 +122,7 @@ class Playlist {
    */
   public function remove($video_id) {
     // remove video from playlist
-    $sql = "DELETE FROM playlist WHERE video_id = :video_id";
+    $sql = 'DELETE FROM playlist WHERE video_id = :video_id';
     $stmt = $this->db->prepare($sql);
     $result = $stmt->execute([
       'video_id' => $video_id
@@ -134,7 +134,7 @@ class Playlist {
    */
   public function remove_votes($video_id) {
     // remove votes for video
-    $sql = "DELETE FROM votes WHERE video_id = :video_id";
+    $sql = 'DELETE FROM votes WHERE video_id = :video_id';
     $stmt = $this->db->prepare($sql);
     $result = $stmt->execute([
       'video_id' => $video_id
@@ -147,10 +147,10 @@ class Playlist {
    */
   public function get_fallback_video() {
     // first check if fallback playlist is already in db
-    if ($this->db->getAttribute(PDO::ATTR_DRIVER_NAME) == "pgsql") {
-      $sql = "SELECT video_id FROM fallback_playlist ORDER BY random() LIMIT 1";
+    if ($this->db->getAttribute(PDO::ATTR_DRIVER_NAME) == 'pgsql') {
+      $sql = 'SELECT video_id FROM fallback_playlist ORDER BY random() LIMIT 1';
     } else {
-      $sql = "SELECT video_id FROM fallback_playlist ORDER BY RAND() LIMIT 1";
+      $sql = 'SELECT video_id FROM fallback_playlist ORDER BY RAND() LIMIT 1';
     }
     $stmt = $this->db->prepare($sql);
     $stmt->execute();
@@ -177,17 +177,17 @@ class Playlist {
     $config_file = dirname(__FILE__) . '/../../config.php';
     if (is_readable($config_file)) {
       require $config_file;
-      if ($config['fallback_playlist'] != "") {
+      if ($config['fallback_playlist'] != '') {
         $fallback_playlist_id = $config['fallback_playlist'];
       }
     }
 
     // check if deployed to heroku
-    if (getenv("FALLBACK_PLAYLIST") !== false) {
-      $fallback_playlist_id = getenv("FALLBACK_PLAYLIST");
+    if (getenv('FALLBACK_PLAYLIST') !== false) {
+      $fallback_playlist_id = getenv('FALLBACK_PLAYLIST');
     }
 
-    if ($fallback_playlist_id != "") {
+    if ($fallback_playlist_id != '') {
       return $this->save_fallback_playlist($fallback_playlist_id);
     } else {
       return false;
@@ -207,13 +207,13 @@ class Playlist {
     } else {
       $fallback_count =(int)count($fallback_videos);
       for ($i = 0; $i < $fallback_count; $i++) {
-        $sql = "INSERT INTO fallback_playlist (video_id) VALUES (:video_id)";
+        $sql = 'INSERT INTO fallback_playlist (video_id) VALUES (:video_id)';
         $stmt = $this->db->prepare($sql);
         $result = $stmt->execute([
           'video_id' => $fallback_videos[$i]['video_id']
         ]);
         if(!$result) {
-          throw new Exception("could not save record");
+          throw new Exception('could not save record');
         }
       }
       return true;

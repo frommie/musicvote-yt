@@ -24,9 +24,9 @@ class Controller {
    * returns client type (client / player)
    */
   public function get_client_type() {
-    $sql = "SELECT client_type FROM clients WHERE session_id = :session_id LIMIT 1";
+    $sql = 'SELECT client_type FROM clients WHERE session_id = :session_id LIMIT 1';
     $stmt = $this->db->prepare($sql);
-    $stmt->execute(["session_id" => $this->session_id]);
+    $stmt->execute(['session_id' => $this->session_id]);
     $result = $stmt->fetchAll()[0];
     $stmt->closeCursor();
     if (!empty($result)) {
@@ -44,7 +44,7 @@ class Controller {
     $query = new Query($this->db, $this->session_id);
     $event = $query->get_queried_event();
     if ($event) {
-      return "data: " . $event;
+      return 'data: ' . $event;
     } else {
       return;
     }
