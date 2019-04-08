@@ -46,10 +46,13 @@ $app->get('/playcontrol', function ($request, $response) {
   global $session_id;
   $controller = new Controller($this->db, $session_id);
   $event = $controller->get_event();
+  if ($event) {
+    $body = "data: {$event}\n\n"; // keep double quotes!
+  }
   return $response
     ->withHeader('Content-Type', 'text/event-stream')
     ->withHeader('Cache-Control', 'no-cache')
-    ->write("data: {$event}\n\n");
+    ->write($body);
 });
 
 /*
