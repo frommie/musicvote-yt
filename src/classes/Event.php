@@ -16,8 +16,9 @@ class Event {
     $this->db = $db;
     // get all clients where client_type
     $sessions = Client::get_sessions($this->db, $client_type);
-    foreach ($sessions as $session) {
-      $this->enqueue($session['session_id'], $event_type);
+    $session_count = (int)count($sessions);
+    for ($i = 0; $i < $sessions_count; $i++) {
+      $this->enqueue($sessions[$i]['session_id'], $event_type);
     }
   }
 

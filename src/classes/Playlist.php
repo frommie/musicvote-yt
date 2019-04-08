@@ -27,15 +27,16 @@ class Playlist {
     $results = [];
     $rows = $stmt->fetchAll();
     $stmt->closeCursor();
-
-    foreach ($rows as $row) {
-      $videos[] = array('video_id' => $row['video_id'], 'playing' => $row['playing']);
+    $row_count = (int)count($rows);
+    for ($i = 0; $i < $row_count; $i++) {
+      $videos[] = array('video_id' => $rows[$i]['video_id'], 'playing' => $rows[$i]['playing']);
     }
 
-    foreach ($videos as $video) {
-      $results[] = Video::with_video_id($this->db, $video['video_id']);
-      if ($video['playing']) {
-        $this->playing = $video['video_id'];
+    $video_count = (int)count($videos);
+    for ($i = 0; $i < $video_count; $i++) {
+      $results[] = Video::with_video_id($this->db, $videos[$i]['video_id']);
+      if ($videos[$i]['playing']) {
+        $this->playing = $videos[$i]['video_id'];
       }
     }
     if (count($results) == 0) {
@@ -93,8 +94,9 @@ class Playlist {
    */
   public function get_playlist($session_id) {
     $arr = array();
-    foreach ($this->playlist as $video) {
-      $arr[$video->get_video_id()] = json_decode(strval($video), true);
+    $playlist_count = (int)count($this->playlist);
+    for ($i = 0; $i < $playlist_count; $i++) {
+      $arr[$this->playlist[$i]->get_video_id()] = json_decode(strval($this->playlist[$i]), true);
     }
 
     $votes = new Votes($this->db, $session_id);
@@ -203,11 +205,12 @@ class Playlist {
     if (count($fallback_videos) == 0) {
       return false;
     } else {
-      foreach ($fallback_videos as $video) {
+      $fallback_count =(int)count($fallback_videos);
+      for ($i = 0; $i < $fallback_count; $i++) {
         $sql = "INSERT INTO fallback_playlist (video_id) VALUES (:video_id)";
         $stmt = $this->db->prepare($sql);
         $result = $stmt->execute([
-          'video_id' => $video['video_id']
+          'video_id' => $fallback_videos[$i]['video_id']
         ]);
         if(!$result) {
           throw new Exception("could not save record");
