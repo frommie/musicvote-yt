@@ -45,12 +45,11 @@ $container['view'] = function ($container) {
 $app->get('/playcontrol', function ($request, $response) {
   global $session_id;
   $controller = new Controller($this->db, $session_id);
-  $body = $response->getBody();
-  $body->write($controller->get_event().'\n\n');
+  $event = $controller->get_event();
   return $response
     ->withHeader('Content-Type', 'text/event-stream')
     ->withHeader('Cache-Control', 'no-cache')
-    ->withBody($body);
+    ->write('data: {$event}\n\n');
 });
 
 /*

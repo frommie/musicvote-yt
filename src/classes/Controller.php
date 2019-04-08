@@ -44,7 +44,7 @@ class Controller {
     $query = new Query($this->db, $this->session_id);
     $event = $query->get_queried_event();
     if ($event) {
-      return 'data: ' . $event;
+      return $event;
     } else {
       return;
     }
