@@ -46,8 +46,9 @@ $app->get('/playcontrol', function ($request, $response) {
   global $session_id;
   $controller = new Controller($this->db, $session_id);
   $event = $controller->get_event();
+  $body = "";
   if ($event) {
-    $body = "data: ".$event."\n\n"; // keep double quotes!
+    $body = "data: {$event}\n\n"; // keep double quotes!
   }
   return $response
     ->withHeader('Content-Type', 'text/event-stream')
