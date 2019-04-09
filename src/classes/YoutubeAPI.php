@@ -1,9 +1,16 @@
 <?php
 
+/*
+ * Manages Youtube API connection
+ */
 class YoutubeAPI {
   protected $service;
   protected $db;
 
+  /*
+   * Constructor
+   * @db PDO connection
+   */
   public function __construct($db) {
     $this->db = $db;
     $this->client = new Google_Client();
@@ -11,17 +18,26 @@ class YoutubeAPI {
     $this->service = new Google_Service_YouTube($this->client);
   }
 
+  /*
+   * Gets API key from config file or environment variable
+   * returns API Key
+   */
   private function get_api_key() {
     $config_file = dirname(__FILE__) . '/../../config.php';
     if (is_readable($config_file)) {
       require $config_file;
       return $config['api_key'];
     }
-    if (getenv("API_KEY") !== false) {
-      return getenv("API_KEY");
+    if (getenv('API_KEY') !== false) {
+      return getenv('API_KEY');
     }
   }
 
+  /*
+   * Calls search endpoint of Youtube API
+   * @query Search query as String
+   * returns Search result as JSON
+   */
   public function search($query) {
     // call search
     $search = $this->service->search->listSearch('snippet', array(
@@ -39,16 +55,21 @@ class YoutubeAPI {
     return json_encode($videos);
   }
 
+  /*
+   * Gets video information from API return array
+   * returns Videos array
+   */
   public function get_video_array($search) {
     $arr = array();
-    $video_ids = "";
-    foreach ($search as $item) {
-      if ($item['id']['videoId'] != "") {
-        $arr[$item['id']['videoId']] = array(
-          'title' => html_entity_decode($item['snippet']['title']),
-          'img' => $item['snippet']['thumbnails']['high']['url']
+    $video_ids = '';
+    $search_count = (int)count($search);
+    for ($i = 0; $i < $search_count; $i++) {
+      if ($search[$i]['id']['videoId'] != '') {
+        $arr[$search[$i]['id']['videoId']] = array(
+          'title' => html_entity_decode($search[$i]['snippet']['title']),
+          'img' => $search[$i]['snippet']['thumbnails']['high']['url']
         );
-        $video_ids .= $item['id']['videoId'] . ", ";
+        $video_ids .= $search[$i]['id']['videoId'] . ', ';
       }
     }
 
@@ -56,20 +77,27 @@ class YoutubeAPI {
     return $videos;
   }
 
+  /*
+   * Gets detailed video information for video ids from Videos API endpoint
+   * @arr Current video array
+   * @video_ids Video ids to get detailed information for
+   * returns Videos array
+   */
   public function get_video_details($arr, $video_ids) {
     $videos = array();
     // call contentDetails for video IDs
     $search = $this->service->videos->listVideos('contentDetails,status', array(
       'id' => $video_ids,
     ))['items'];
-    foreach ($search as $item) {
-      $arr[$item['id']]['duration'] = YoutubeAPI::ISO8601ToSeconds($item['contentDetails']['duration']);
-      $arr[$item['id']]['status'] = $item['status'];
+    $search_count = (int)count($search);
+    for ($i = 0; $i < $search_count; $i++) {
+      $arr[$search[$i]['id']]['duration'] = YoutubeAPI::ISO8601ToSeconds($search[$i]['contentDetails']['duration']);
+      $arr[$search[$i]['id']]['status'] = $search[$i]['status'];
     }
 
     // now create Video instances
     foreach ($arr as $video_id => $video) {
-      if ($video['status']['privacyStatus'] == "public" && $video['status']['embeddable'] == true) {
+      if ($video['status']['privacyStatus'] == 'public' && $video['status']['embeddable'] == true) {
         try {
           $video_result = new Video(
             $this->db,
@@ -86,6 +114,11 @@ class YoutubeAPI {
     return $videos;
   }
 
+  /*
+   * Gets playlist items from playlist API endpoint
+   * @playlist_id Playlist id to get informations for
+   * returns Videos JSON array
+   */
   public function get_playlist_items($playlist_id) {
     $playlist_items = $this->service->playlistItems->listPlaylistItems('snippet', array(
       'maxResults' => 25,
@@ -95,22 +128,32 @@ class YoutubeAPI {
     return json_encode($videos);
   }
 
+  /*
+   * Gets playlist information from API return array
+   * @items Returned playlist items
+   * returns Videos array
+   */
   public function get_playlist_array($items) {
     $arr = array();
-    $video_ids = "";
-    foreach ($items as $item) {
-      if ($item['snippet']['resourceId']['videoId'] != "") {
+    $video_ids = '';
+    $items_count = (int)count($search);
+    for ($i = 0; $i < $items_count; $i++) {
+      if ($items[$i]['snippet']['resourceId']['videoId'] != '') {
         $arr[$item['snippet']['resourceId']['videoId']] = array(
-          'title' => html_entity_decode($item['snippet']['title']),
-          'img' => $item['snippet']['thumbnails']['high']['url']
+          'title' => html_entity_decode($items[$i]['snippet']['title']),
+          'img' => $items[$i]['snippet']['thumbnails']['high']['url']
         );
-        $video_ids .= $item['snippet']['resourceId']['videoId'] . ", ";
+        $video_ids .= $items[$i]['snippet']['resourceId']['videoId'] . ', ';
       }
     }
     $videos = $this->get_video_details($arr, $video_ids);
     return $videos;
   }
 
+  /*
+   * Static function to convert ISO 8601 time format to DateInterval
+   * return DateInterval
+   */
   public static function ISO8601ToSeconds($ISO8601){
   	$interval = new \DateInterval($ISO8601);
 

@@ -1,5 +1,6 @@
 <?php
 session_start();
+$session_id = session_id();
 
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
@@ -37,13 +38,87 @@ $container['view'] = function ($container) {
     return $view;
 };
 
+/*
+ * Controller for playback, used in client and player
+ * returns SSE events
+ */
+$app->get('/playcontrol', function ($request, $response) {
+  global $session_id;
+  $controller = new Controller($this->db, $session_id);
+  $event = $controller->get_event();
+  $body = "";
+  if ($event) {
+    $body = "data: {$event}\n\n"; // keep double quotes!
+  }
+  return $response
+    ->withHeader('Content-Type', 'text/event-stream')
+    ->withHeader('Cache-Control', 'no-cache')
+    ->write($body);
+});
+
+/*
+ * Gets all votes set by current user using session id
+ * returns Video IDs in playlist with votes by current user as JSON
+ */
+$app->get('/get_user_votes', function ($request, $response) {
+  global $session_id;
+  $votes = new Votes($this->db, $session_id);
+  print_r(json_encode($votes->get_user_votes()));
+});
+
+/*
+ * Selects next video in playlist and removes top video
+ * returns 2nd top video as top video gets removed
+ */
+$app->get('/next', function ($request, $response) {
+  $playlist = new Playlist($this->db);
+  // create event for clients
+  try {
+    $playlist->remove_playing_video();
+    new Event($this->db, 'next', 'client');
+    print($playlist->get_top_video());
+  } catch (PlaylistEmptyException $e) {
+    print('Empty playlist');
+  }
+});
+
+/*
+ * Gets the current playlist
+ * returns Playlist
+ */
+$app->get('/playlist', function ($request, $response) {
+  global $session_id;
+  $playlist = new Playlist($this->db);
+  print_r($playlist->get_playlist($session_id));
+});
+
+/*
+ * Search route to get search results
+ * @query Search query
+ * returns Search array
+ */
+$app->post('/search', function ($request, $response) {
+  $search_query = $request->getParsedBody()['query'];
+  //$response = new Search($search_query);
+  $api = new YoutubeAPI($this->db);
+  $content = $api->search($search_query);
+  print_r($content);
+});
+
+/*
+ * Vote route to set a vote to a video id
+ * @video_id Video ID to set a vote to
+ * @direction Direction of vote (either '+' or '-')
+ * returns Number of votes for voted video
+ */
 $app->post('/vote', function ($request, $response) {
   // create event for clients
+  global $session_id;
   $body = $request->getParsedBody();
   $video_id = $body['video_id'];
   $direction = $body['direction'];
   $video = Video::with_video_id($this->db, $video_id);
-  $video->vote(session_id(), $direction);
+  $video->vote($session_id, $direction);
   new Event($this->db, 'voted', 'client');
   $votes = $video->get_votes();
   if ($video->is_playing() && $votes < 0) {
@@ -53,91 +128,31 @@ $app->post('/vote', function ($request, $response) {
   print_r($votes);
 });
 
-$app->post('/search', function ($request, $response) {
-  $search_query = $request->getParsedBody()['query'];
-  //$response = new Search($search_query);
-  $api = new YoutubeAPI($this->db);
-  $content = $api->search($search_query);
-
-  print_r($content);
-});
-
-$app->get('/get_all_votes', function ($request, $response) {
-  $votes = new Votes($this->db, session_id());
-  print_r(json_encode($votes->get_all_votes()));
-});
-
-$app->get('/get_user_votes', function ($request, $response) {
-  $votes = new Votes($this->db, session_id());
-  print_r(json_encode($votes->get_user_votes()));
-});
-
-$app->get('/play', function ($request, $response) {
-  $playlist = new Playlist($this->db);
-  try {
-    print($playlist->get_top_video());
-  } catch (PlaylistEmptyException $e) {
-    print("Empty playlist");
-  }
-});
-
-$app->get('/next', function ($request, $response) {
-  $playlist = new Playlist($this->db);
-  // create event for clients
-  try {
-    $playlist->remove_playing_video();
-    new Event($this->db, 'next', 'client');
-    print($playlist->get_top_video());
-  } catch (PlaylistEmptyException $e) {
-    print("Empty playlist");
-  }
-});
-
-$app->get('/playlist', function ($request, $response) {
-  $session_id = session_id();
-  $playlist = new Playlist($this->db);
-
-  print_r($playlist->get_playlist($session_id));
-});
-
-$app->get('/test', function ($request, $response) {
-  $pl = new Playlist($this->db);
-  print_r($pl->pr());
-});
-
-$app->get('/playcontrol', function ($request, $response) {
-  $session_id = session_id();
-  $controller = new Controller($this->db, $session_id);
-  $body = $response->getBody();
-  $body->write($controller->get_event()."\n\n");
-
-  return $response
-    ->withHeader('Content-Type', 'text/event-stream')
-    ->withHeader('Cache-Control', 'no-cache')
-    ->withBody($body);
-});
-
+/*
+ * Player site to show the videos in the playlist
+ * returns player template
+ */
 $app->get('/player', function ($request, $response) {
   // register player
-  $session_id = session_id();
-  $client = new Client($this->db, "player", $session_id);
+  global $session_id;
+  $client = new Client($this->db, 'player', $session_id);
   $client->login();
-
   $playlist = new Playlist($this->db);
   $response = $this->view->render($response, 'player.html', [
     'video_id' => $playlist->get_top_video()
   ]);
-
   return $response;
 });
 
+/*
+ * Client site to show the current playlist and search function
+ * returns client template
+ */
 $app->get('/', function ($request, $response) {
-  $session_id = session_id();
-  $client = new Client($this->db, "client", $session_id);
+  global $session_id;
+  $client = new Client($this->db, 'client', $session_id);
   $client->login();
-
-  $response = $this->view->render($response, 'list.html');
-
+  $response = $this->view->render($response, 'client.html');
   return $response;
 });
 

@@ -3,15 +3,15 @@ require_once 'src/classes/Database.php';
 $db = new Database;
 
 return [
-    "paths" => [
-        "migrations" => "database/migrations"
+    'paths' => [
+        'migrations' => 'database/migrations'
     ],
-    "environments" => [
-        "default_migration_table" => "phinxlog",
-        "default_database" => "dev",
-        "dev" => [
-          "name" => "musicvote",
-          "connection" => $db->get_connection()
+    'environments' => [
+        'default_migration_table' => 'phinxlog',
+        'default_database' => 'dev',
+        'dev' => [
+          'name' => 'musicvote',
+          'connection' => $db->get_connection()
         ]
     ]
 ];
