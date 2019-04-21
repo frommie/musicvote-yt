@@ -144,6 +144,32 @@ $app->get('/player', function ($request, $response) {
   return $response;
 });
 
+$app->get('/spotify/auth', function ($request, $response) {
+  $spotify_api = new SpotifyAPI($this->db);
+  $spotify_uri = $spotify_api->auth();
+  return $spotify_uri;
+});
+
+$app->get('/spotify/cb', function ($request, $response) {
+  $code = $request->getQueryParams()['code'];
+  $spotify_api = new SpotifyAPI($this->db);
+  $response = $spotify_api->callback($code);
+  print_r($response);
+});
+
+$app->get('/spotify/test', function ($request, $response) {
+  $spotify_api = new SpotifyAPI($this->db);
+  $api = $spotify_api->get_api();
+  /*
+  
+  $api->createPlaylist([
+    'name' => 'MusicVote',
+    'public' => false
+  ]);
+  */
+  print_r($api->getMyCurrentTrack());
+});
+
 /*
  * Client site to show the current playlist and search function
  * returns client template

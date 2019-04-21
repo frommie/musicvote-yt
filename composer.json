@@ -4,7 +4,8 @@
     "monolog/monolog": "^1.24",
     "robmorgan/phinx": "^0.10.6",
     "slim/twig-view": "^2.4",
-    "google/apiclient": "^2.2"
+    "google/apiclient": "^2.2",
+    "jwilsson/spotify-web-api-php": "^2.6"
   },
   "autoload": {
     "psr-4": {
