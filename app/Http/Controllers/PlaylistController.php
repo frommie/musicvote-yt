@@ -10,7 +10,11 @@ class PlaylistController extends Controller
   public function playlist() {
     $playlist = \App\Playlist::with('detail')->get();
     foreach ($playlist as $key => $item) {
-      $playlist[$key]['votecount'] = \App\Vote::where('video_id', '=', $item->video_id)->count();
+      $votes = \App\Vote::where('video_id', '=', $item->video_id)->get();
+      $playlist[$key]['votecount'] = 0;
+      foreach ($votes as $vote) {
+        $playlist[$key]['votecount'] += $vote['vote'];
+      }
       $uservotes = \App\Vote::where('video_id', '=', $item->video_id)->where('session_id', '=', Session::getId())->first();
       if ($uservotes) {
         $playlist[$key]['vote'] = $uservotes->vote;

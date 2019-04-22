@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Item extends Model
 {
   protected $keyType = 'string';
+  protected $fillable = ['id', 'title', 'img_url'];
 
   public $incrementing = false;
 

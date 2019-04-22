@@ -7,14 +7,27 @@ use Session;
 
 class ItemController extends Controller
 {
-  public function vote (Request $request) {
+  public function vote(Request $request, $id) {
     $data = $request->validate([
-      'video_id' => 'required|max:255',
+      'vote' => 'required',
     ]);
-    $vote = new \App\Vote();
-    $vote->video_id = (string)$data['video_id'];
-    $vote->session_id = Session::getId();
-    $vote->vote = 1;
+    $vote = \App\Vote::where('session_id', '=', Session::getId())->where('video_id', '=', $id)->first();
+    if ($vote) {
+      // update vote
+      $vote->vote = $data['vote'];
+    } else {
+      $vote = new \App\Vote();
+      $vote->video_id = $id;
+      $vote->session_id = Session::getId();
+      $vote->vote = $data['vote'];
+    }
     $vote->save();
+
+    // check if already in playlist
+    $playlist = \App\Playlist::where('video_id', '=', $id)->first();
+    if (!$playlist) {
+      $item = \App\Playlist::create(['video_id' => $id]);
+    }
+    return "test";
   }
 }

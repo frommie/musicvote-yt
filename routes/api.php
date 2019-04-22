@@ -27,4 +27,4 @@ Route::get('/playlist', 'PlaylistController@playlist');
 
 Route::post('/search', 'BackendController@search');
 
-Route::post('/vote', 'ItemController@vote');
+Route::post('/vote/{id}', 'ItemController@vote');

@@ -12,6 +12,9 @@ import faFreeSolid from '@fortawesome/fontawesome-free-solid';
 fontawesome.library.add(faFreeSolid);
 fontawesome.dom.i2svg();
 
+import VModal from 'vue-js-modal';
+
+
 window.Vue = require('vue');
 
 /**
@@ -26,6 +29,7 @@ window.Vue = require('vue');
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component('playlist-component', require('./components/App.vue').default);
+Vue.use(VModal, { dynamic: true });
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

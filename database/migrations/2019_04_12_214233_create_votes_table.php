@@ -14,10 +14,11 @@ class CreateVotesTable extends Migration
     public function up()
     {
         Schema::create('votes', function (Blueprint $table) {
-            $table->string('video_id');
-            $table->string('session_id');
-            $table->tinyInteger('vote');
-            $table->timestamps();
+          $table->bigIncrements('id');
+          $table->string('video_id');
+          $table->string('session_id');
+          $table->tinyInteger('vote');
+          $table->timestamps();
         });
     }
 

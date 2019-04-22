@@ -8,6 +8,7 @@ class Playlist extends Model
 {
   protected $primaryKey = 'video_id';
   protected $keyType = 'string';
+  protected $fillable = ['video_id'];
 
   public $incrementing = false;
 

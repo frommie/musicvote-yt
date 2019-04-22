@@ -36,9 +36,9 @@ class YoutubeAPI {
       'regionCode' => 'DE'
     ))['items'];
 
-    //$videos = $this->get_video_array($search);
+    $videos = $this->get_video_array($search);
 
-    return json_encode($search);
+    return json_encode($videos);
   }
 
   /*
@@ -85,14 +85,7 @@ class YoutubeAPI {
     foreach ($arr as $video_id => $video) {
       if ($video['status']['privacyStatus'] == 'public' && $video['status']['embeddable'] == true) {
         try {
-          $video_result = new Video(
-            $this->db,
-            $video_id,
-            $video['title'],
-            $video['img'],
-            $video['duration']
-          );
-          $video_result->save();
+          $video_result = \App\Item::FirstOrCreate(['id' => $video_id], ['title' => $video['title'], 'img_url' => $video['img']]);
           array_push($videos, json_decode(strval($video_result)));
         } catch (VideoIDNullException $e) {}
       }
