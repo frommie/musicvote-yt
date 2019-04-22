@@ -17,26 +17,14 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/playcontrol', function () {
-    return 'Hello World';
-});
+Route::get('/playcontrol', 'PlaylistController@control');
 
-Route::get('/get_user_votes', function () {
-    return 'Hello World';
-});
+Route::get('/votes', 'VoteController@get');
 
-Route::get('/next', function () {
-    return 'Hello World';
-});
+Route::get('/next', 'PlaylistController@next');
 
-Route::get('/playlist', function () {
-    return 'Hello World';
-});
+Route::get('/playlist', 'PlaylistController@playlist');
 
-Route::post('/search', function () {
-    return 'Hello World';
-});
+Route::post('/search', 'BackendController@search');
 
-Route::post('/vote', function (Request $request) {
-    return 'Hello World';
-});
+Route::post('/vote', 'ItemController@vote');

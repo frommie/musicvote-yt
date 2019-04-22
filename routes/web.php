@@ -11,14 +11,6 @@
 |
 */
 
-Route::get('/', function () {
-    return view('view');
-});
-
-Route::get('/play', function () {
-    return view('play');
-});
+Route::view('/{path?}', 'app');
 
 Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');

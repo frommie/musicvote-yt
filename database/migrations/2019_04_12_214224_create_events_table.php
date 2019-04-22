@@ -14,7 +14,7 @@ class CreateEventsTable extends Migration
     public function up()
     {
         Schema::create('events', function (Blueprint $table) {
-            $table->string('client_type');
+            $table->string('session_id');
             $table->string('event_type');
             $table->timestamps();
         });
