@@ -7,10 +7,6 @@
 
 require('./bootstrap');
 import 'bulma/css/bulma.css';
-import fontawesome from '@fortawesome/fontawesome';
-import faFreeSolid from '@fortawesome/fontawesome-free-solid';
-fontawesome.library.add(faFreeSolid);
-fontawesome.dom.i2svg();
 
 import VModal from 'vue-js-modal';
 

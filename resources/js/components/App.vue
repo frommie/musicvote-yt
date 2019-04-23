@@ -11,7 +11,7 @@
         v-for="item in playlist"
         v-bind="item"
         class="moving-item"
-        v-bind:style="{ top: ((item.position + 1) * 150) + 'px' }"
+        v-bind:style="{ top: 150 + (item.position * 190) + 'px' }"
         :key="item.video_id"
         v-on:upvote="update(item.id, 1)"
         v-on:downvote="update(item.id, -1)"
