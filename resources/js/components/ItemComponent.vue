@@ -23,7 +23,7 @@
         </span>
       </a>
     </div>
-    {{ id }}   {{ vote }}
+    {{ id }}   {{ vote }} Playing: {{ playing }}
   </div>
 </template>
 <script>

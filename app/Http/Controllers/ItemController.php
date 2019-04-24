@@ -25,9 +25,19 @@ class ItemController extends Controller
 
     // check if already in playlist
     $playlist = \App\Playlist::where('video_id', '=', $id)->first();
-    if (!$playlist) {
+    if (!$playlist) { // not in playlist yet - add
       $item = \App\Playlist::create(['video_id' => $id]);
     }
-    return "test";
+
+    // if playing and votes < 0: Remove from playlist and skip
+    $item = \App\Item::find($id);
+    $playing = \App\Playlist::where('playing', '=', true)->first();
+    $votecount = 0;
+    foreach ($item->votes as $vote) {
+      $votecount += $vote->vote;
+    }
+    if ($votecount < 0 && $item->id == $playing->video_id) {
+      $playing->delete();
+    }
   }
 }

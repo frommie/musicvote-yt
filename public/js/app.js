@@ -1828,11 +1828,7 @@ function Item(item) {
           results: data
         }, {
           height: 'auto'
-        }, {
-          'before-close': function beforeClose(event) {
-            console.log('this will be called before the modal closes');
-          }
-        });
+        }, {});
       });
     },
     read: function read() {
@@ -1840,7 +1836,10 @@ function Item(item) {
 
       window.axios.get('/api/playlist').then(function (_ref2) {
         var data = _ref2.data;
+        var item_ids = [];
         data.forEach(function (item) {
+          item_ids.push(item.video_id); // update votecount
+
           if (_this2.playlist.find(function (pitem) {
             return pitem.id === item.video_id;
           })) {
@@ -1848,7 +1847,14 @@ function Item(item) {
               return pitem.id === item.video_id;
             }).votecount = item.votecount;
           } else {
+            // item doesnt exist yet - add
             _this2.playlist.push(new Item(item));
+          }
+        }); // remove deleted items
+
+        _this2.playlist.forEach(function (item, index, playlist_arr) {
+          if (!item_ids.includes(item.id)) {
+            playlist_arr.splice(index, 1);
           }
         });
 
@@ -38000,7 +38006,7 @@ var render = function() {
             "item-component",
             _vm._b(
               {
-                key: item.video_id,
+                key: item.id,
                 staticClass: "moving-item",
                 style: { top: 150 + item.position * 190 + "px" },
                 on: {
@@ -38124,7 +38130,15 @@ var render = function() {
           ]
         )
       ]),
-      _vm._v("\n  " + _vm._s(_vm.id) + "   " + _vm._s(_vm.vote) + "\n")
+      _vm._v(
+        "\n  " +
+          _vm._s(_vm.id) +
+          "   " +
+          _vm._s(_vm.vote) +
+          " Playing: " +
+          _vm._s(_vm.playing) +
+          "\n"
+      )
     ]
   )
 }
@@ -50552,8 +50566,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /mnt/c/sites/mvlaravel/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /mnt/c/sites/mvlaravel/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /mnt/c/sites/musicvote-laravel/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /mnt/c/sites/musicvote-laravel/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

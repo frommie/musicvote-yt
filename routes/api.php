@@ -21,6 +21,8 @@ Route::get('/playcontrol', 'PlaylistController@control');
 
 Route::get('/votes', 'VoteController@get');
 
+Route::get('/first', 'PlayController@first');
+
 Route::get('/next', 'PlaylistController@next');
 
 Route::get('/playlist', 'PlaylistController@playlist');

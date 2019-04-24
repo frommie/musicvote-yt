@@ -11,6 +11,7 @@
 |
 */
 
+Route::view('/play', 'play');
 Route::view('/{path?}', 'app');
 
 Auth::routes();

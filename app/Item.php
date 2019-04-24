@@ -14,4 +14,8 @@ class Item extends Model
   public function playlist() {
     return $this->belongsTo('App\Playlist', 'id', 'video_id');
   }
+
+  public function votes() {
+    return $this->hasMany('App\Vote', 'video_id');
+  }
 }

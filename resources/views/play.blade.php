@@ -3,10 +3,8 @@
 <head>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>
-  var source = new EventSource("/playcontrol");
+  var source = new EventSource("/api/playcontrol");
   source.onmessage = function(event) {
-    console.log("test");
-    console.log(event.data);
     if (event.data == "skip") {
       get_next_video();
     }
@@ -19,9 +17,7 @@
   var player;
 
   function onYouTubeIframeAPIReady(video_id) {
-    if (video_id == null) {
-      video_id = '{{ video_id }}';
-    }
+    console.log("play " + video_id);
     player = new YT.Player('player', {
       height: '800',
       width: '640',
@@ -47,13 +43,25 @@
 
   function get_next_video() {
     // get next video
-    $.get("/next", {
+    $.get("/api/next", {
     },
     function(data, status){
       player.destroy();
       onYouTubeIframeAPIReady(data);
     });
   }
+
+  function get_first_video() {
+    // get next video
+    $.get("/api/first", {
+    },
+    function(data, status){
+      player.destroy();
+      onYouTubeIframeAPIReady(data);
+    });
+  }
+
+  get_first_video();
   </script>
 </head>
 <body style="margin: 0;">

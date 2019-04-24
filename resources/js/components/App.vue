@@ -12,7 +12,7 @@
         v-bind="item"
         class="moving-item"
         v-bind:style="{ top: 150 + (item.position * 190) + 'px' }"
-        :key="item.video_id"
+        :key="item.id"
         v-on:upvote="update(item.id, 1)"
         v-on:downvote="update(item.id, -1)"
         @update="update"
@@ -74,17 +74,25 @@
           }, {
             height: 'auto'
           }, {
-            'before-close': (event) => { console.log('this will be called before the modal closes'); }
           });
         });
       },
       read() {
         window.axios.get('/api/playlist').then(({ data }) => {
+          var item_ids = [];
           data.forEach(item => {
+            item_ids.push(item.video_id);
+            // update votecount
             if (this.playlist.find(pitem => pitem.id === item.video_id)) {
               this.playlist.find(pitem => pitem.id === item.video_id).votecount = item.votecount;
-            } else {
+            } else { // item doesnt exist yet - add
               this.playlist.push(new Item(item));
+            }
+          });
+          // remove deleted items
+          this.playlist.forEach(function(item, index, playlist_arr) {
+            if (!item_ids.includes(item.id)) {
+              playlist_arr.splice(index, 1);
             }
           });
           this.set_positions();
