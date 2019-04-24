@@ -17,7 +17,7 @@ class CreateVotesTable extends Migration
           $table->bigIncrements('id');
           $table->string('video_id');
           $table->string('session_id');
-          $table->tinyInteger('vote');
+          $table->boolean('vote');
           $table->timestamps();
         });
     }

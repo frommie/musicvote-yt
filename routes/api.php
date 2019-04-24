@@ -23,10 +23,12 @@ Route::get('/votes', 'VoteController@get');
 
 Route::get('/first', 'PlayController@first');
 
-Route::get('/next', 'PlaylistController@next');
+Route::get('/next', 'PlayController@next');
 
 Route::get('/playlist', 'PlaylistController@playlist');
 
 Route::post('/search', 'BackendController@search');
 
-Route::post('/vote/{id}', 'ItemController@vote');
+Route::post('/vote/up/{id}', 'VoteController@upvote');
+
+Route::post('/vote/down/{id}', 'VoteController@downvote');

@@ -1787,7 +1787,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 function Item(item) {
   this.id = item.detail.id;
   this.title = item.detail.title;
@@ -1810,7 +1809,7 @@ function Item(item) {
     create: function create() {// To do
     },
     add: function add(id) {
-      this.update(id, 1);
+      this.upvote(id);
     },
     search: function search(e) {
       var _this = this;
@@ -1888,20 +1887,22 @@ function Item(item) {
         item.position = index;
       });
     },
-    update: function update(id, vote) {
+    upvote: function upvote(id) {
       var _this3 = this;
 
-      vote = parseInt(vote);
-      window.axios.post("/api/vote/".concat(id), {
-        vote: vote
-      }).then(function () {
+      window.axios.post("/api/vote/up/".concat(id)).then(function () {
         // Once AJAX resolves we can update the Crud with the new color
         // update playlist
         _this3.read();
+      });
+    },
+    downvote: function downvote(id) {
+      var _this4 = this;
 
-        _this3.playlist.find(function (item) {
-          return item.id === id;
-        }).vote = vote;
+      window.axios.post("/api/vote/down/".concat(id)).then(function () {
+        // Once AJAX resolves we can update the Crud with the new color
+        // update playlist
+        _this4.read();
       });
     },
     del: function del(id) {// To do
@@ -38011,12 +38012,11 @@ var render = function() {
                 style: { top: 150 + item.position * 190 + "px" },
                 on: {
                   upvote: function($event) {
-                    return _vm.update(item.id, 1)
+                    return _vm.upvote(item.id)
                   },
                   downvote: function($event) {
-                    return _vm.update(item.id, -1)
+                    return _vm.downvote(item.id)
                   },
-                  update: _vm.update,
                   delete: _vm.del
                 }
               },

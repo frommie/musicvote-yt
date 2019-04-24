@@ -8,13 +8,9 @@ use Session;
 class PlaylistController extends Controller
 {
   public function playlist() {
-    $playlist = \App\Playlist::with('detail')->get();
+    $playlist = \App\Playlist::with('detail')->orderBy('upvotes')->orderBy('created_at')->get();
     foreach ($playlist as $key => $item) {
-      $votes = \App\Vote::where('video_id', '=', $item->video_id)->get();
-      $playlist[$key]['votecount'] = 0;
-      foreach ($votes as $vote) {
-        $playlist[$key]['votecount'] += $vote['vote'];
-      }
+      $playlist[$key]['votecount'] = $item->upvotes - $item->downvotes;
       $uservotes = \App\Vote::where('video_id', '=', $item->video_id)->where('session_id', '=', Session::getId())->first();
       if ($uservotes) {
         $playlist[$key]['vote'] = $uservotes->vote;
@@ -23,9 +19,5 @@ class PlaylistController extends Controller
       }
     }
     return $playlist;
-  }
-
-  public function control() {
-    // return events for session
   }
 }

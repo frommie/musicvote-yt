@@ -13,9 +13,8 @@
         class="moving-item"
         v-bind:style="{ top: 150 + (item.position * 190) + 'px' }"
         :key="item.id"
-        v-on:upvote="update(item.id, 1)"
-        v-on:downvote="update(item.id, -1)"
-        @update="update"
+        v-on:upvote="upvote(item.id)"
+        v-on:downvote="downvote(item.id)"
         @delete="del"
       ></item-component>
     </div>
@@ -47,7 +46,7 @@
         // To do
       },
       add(id) {
-        this.update(id, 1);
+        this.upvote(id);
       },
       search: function(e) {
         window.axios.post('/api/search', { query: this.query }).then(({ data }) => {
@@ -124,13 +123,18 @@
           item.position = index;
         });
       },
-      update(id, vote) {
-        vote = parseInt(vote);
-        window.axios.post(`/api/vote/${id}`, { vote }).then(() => {
+      upvote(id) {
+        window.axios.post(`/api/vote/up/${id}`).then(() => {
           // Once AJAX resolves we can update the Crud with the new color
           // update playlist
           this.read();
-          this.playlist.find(item => item.id === id).vote = vote;
+        });
+      },
+      downvote(id) {
+        window.axios.post(`/api/vote/down/${id}`).then(() => {
+          // Once AJAX resolves we can update the Crud with the new color
+          // update playlist
+          this.read();
         });
       },
       del(id) {
