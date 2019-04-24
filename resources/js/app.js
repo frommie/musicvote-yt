@@ -34,5 +34,27 @@ Vue.use(VModal, { dynamic: true });
  */
 
 const app = new Vue({
-    el: '#app'
+    el: '#app',
+    data: {
+      event: null
+    },
+    created() {
+      this.setup_stream();
+    },
+    methods: {
+      setup_stream() {
+        let es = new EventSource('/api/playcontrol');
+        es.addEventListener('message', event => {
+          //let data = JSON.parse(event.data);
+          this.event = event;
+        }, false);
+
+        es.addEventListener('error', event => {
+          if (event.readyState == EventSource.CLOSED) {
+            console.log('Event was closed');
+            console.log(EventSource);
+          }
+        }, false);
+      }
+    }
 });

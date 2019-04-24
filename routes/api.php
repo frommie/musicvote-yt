@@ -17,7 +17,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/playcontrol', 'PlaylistController@control');
+Route::get('/playcontrol', 'BackendController@control');
 
 Route::get('/votes', 'VoteController@get');
 

@@ -6,8 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Client extends Model
 {
-  public $incrementing = false;
-  
+  protected $primaryKey = 'session_id';
+  protected $keyType = 'string';
+  protected $fillable = ['session_id'];
+
   public function events() {
     return $this->hasMany('App\Event');
   }

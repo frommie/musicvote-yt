@@ -49,6 +49,7 @@ class VoteController extends Controller
     }
     if ($votecount < 0 && $item->id == $playing->video_id) {
       $playing->delete();
+      App\Event::create('player', 'skip');
     }
   }
 

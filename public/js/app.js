@@ -50329,7 +50329,30 @@ Vue.use(vue_js_modal__WEBPACK_IMPORTED_MODULE_1___default.a, {
  */
 
 var app = new Vue({
-  el: '#app'
+  el: '#app',
+  data: {
+    event: null
+  },
+  created: function created() {
+    this.setup_stream();
+  },
+  methods: {
+    setup_stream: function setup_stream() {
+      var _this = this;
+
+      var es = new EventSource('/api/playcontrol');
+      es.addEventListener('message', function (event) {
+        //let data = JSON.parse(event.data);
+        _this.event = event;
+      }, false);
+      es.addEventListener('error', function (event) {
+        if (event.readyState == EventSource.CLOSED) {
+          console.log('Event was closed');
+          console.log(EventSource);
+        }
+      }, false);
+    }
+  }
 });
 
 /***/ }),
