@@ -20,17 +20,23 @@ class BackendController extends Controller
 
   public function control(Request $request) {
     $response = new StreamedResponse(function() use ($request) {
-    while(true) {
-      // get event for session
-      echo \App\Event::get(Session::getId());
-      ob_flush();
-      flush();
-      usleep(2000000);
-    }
+      while(true) {
+        // get event for session
+        echo Event::get(Session::getId());
+        ob_flush();
+        flush();
+        usleep(200000);
+      }
     });
     $response->headers->set('Content-Type', 'text/event-stream');
     $response->headers->set('X-Accel-Buffering', 'no');
     $response->headers->set('Cach-Control', 'no-cache');
+    /*$response->setCallback(
+      function() {
+        echo Event::get(Session::getId());
+        ob_flush();
+        flush();
+      });*/
     return $response;
   }
 }

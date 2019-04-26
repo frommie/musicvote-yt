@@ -49,7 +49,7 @@ class VoteController extends Controller
     }
     if ($votecount < 0 && $item->id == $playing->video_id) {
       $playing->delete();
-      App\Event::create('player', 'skip');
+      Event::create('player', 'skip');
     }
   }
 
@@ -58,5 +58,6 @@ class VoteController extends Controller
     $item->upvotes = \App\Vote::where('video_id', $id)->where('vote', true)->count();
     $item->downvotes = \App\Vote::where('video_id', $id)->where('vote', false)->count();
     $item->save();
+    Event::create('client', 'voted');
   }
 }

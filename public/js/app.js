@@ -1839,12 +1839,28 @@ function Item(item) {
         data.forEach(function (item) {
           item_ids.push(item.video_id); // update votecount
 
-          if (_this2.playlist.find(function (pitem) {
+          var updated_item = _this2.playlist.find(function (pitem) {
             return pitem.id === item.video_id;
-          })) {
-            _this2.playlist.find(function (pitem) {
-              return pitem.id === item.video_id;
-            }).votecount = item.votecount;
+          });
+
+          if (updated_item) {
+            if (updated_item.votecount < item.votecount) {
+              // voted up
+              document.getElementById(item.video_id + '_up').children[0].className = 'fas fa-arrow-alt-circle-up fa-2x bounce';
+              setTimeout(function () {
+                document.getElementById(item.video_id + '_up').children[0].className = 'fas fa-arrow-alt-circle-up fa-2x';
+              }, 800);
+            }
+
+            if (updated_item.votecount > item.votecount) {
+              // voted down
+              document.getElementById(item.video_id + '_down').children[0].className = 'fas fa-arrow-alt-circle-down fa-2x bounce';
+              setTimeout(function () {
+                document.getElementById(item.video_id + '_down').children[0].className = 'fas fa-arrow-alt-circle-down fa-2x';
+              }, 800);
+            }
+
+            updated_item.votecount = item.votecount;
           } else {
             // item doesnt exist yet - add
             _this2.playlist.push(new Item(item));
@@ -1909,6 +1925,21 @@ function Item(item) {
     }
   },
   created: function created() {
+    var _this5 = this;
+
+    var es = new EventSource('/api/playcontrol');
+    es.addEventListener('message', function (event) {
+      //let data = JSON.parse(event.data);
+      if (event.data == "voted") {
+        _this5.read();
+      }
+    }, false);
+    es.addEventListener('error', function (event) {
+      if (event.readyState == EventSource.CLOSED) {
+        console.log('Event was closed');
+        console.log(EventSource);
+      }
+    }, false);
     this.read();
   },
   components: {
@@ -50333,8 +50364,7 @@ var app = new Vue({
   data: {
     event: null
   },
-  created: function created() {
-    this.setup_stream();
+  created: function created() {//this.setup_stream();
   },
   methods: {
     setup_stream: function setup_stream() {

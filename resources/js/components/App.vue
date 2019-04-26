@@ -82,8 +82,21 @@
           data.forEach(item => {
             item_ids.push(item.video_id);
             // update votecount
-            if (this.playlist.find(pitem => pitem.id === item.video_id)) {
-              this.playlist.find(pitem => pitem.id === item.video_id).votecount = item.votecount;
+            var updated_item = this.playlist.find(pitem => pitem.id === item.video_id)
+            if (updated_item) {
+              if (updated_item.votecount < item.votecount) { // voted up
+                document.getElementById(item.video_id + '_up').children[0].className = 'fas fa-arrow-alt-circle-up fa-2x bounce';
+                setTimeout(function(){
+                  document.getElementById(item.video_id + '_up').children[0].className = 'fas fa-arrow-alt-circle-up fa-2x';
+                }, 800);
+              }
+              if (updated_item.votecount > item.votecount) { // voted down
+                document.getElementById(item.video_id + '_down').children[0].className = 'fas fa-arrow-alt-circle-down fa-2x bounce';
+                setTimeout(function(){
+                  document.getElementById(item.video_id + '_down').children[0].className = 'fas fa-arrow-alt-circle-down fa-2x';
+                }, 800);
+              }
+              updated_item.votecount = item.votecount;
             } else { // item doesnt exist yet - add
               this.playlist.push(new Item(item));
             }
@@ -142,6 +155,20 @@
       }
     },
     created() {
+      let es = new EventSource('/api/playcontrol');
+      es.addEventListener('message', event => {
+        //let data = JSON.parse(event.data);
+        if (event.data == "voted") {
+          this.read();
+        }
+      }, false);
+
+      es.addEventListener('error', event => {
+        if (event.readyState == EventSource.CLOSED) {
+          console.log('Event was closed');
+          console.log(EventSource);
+        }
+      }, false);
       this.read();
     },
     components: {

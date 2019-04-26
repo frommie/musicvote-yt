@@ -16436,3 +16436,46 @@ a.text-dark:focus {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
 }
 
+.bounce {
+  display: inline-block;
+  position: relative;
+  -webkit-animation: bounce 0.2s infinite linear;
+  animation: bounce 0.2s infinite linear;
+}
+
+@-webkit-keyframes bounce {
+  0% {
+    top: 0;
+  }
+
+  50% {
+    top: -0.2em;
+  }
+
+  70% {
+    top: -0.3em;
+  }
+
+  100% {
+    top: 0;
+  }
+}
+
+@keyframes bounce {
+  0% {
+    top: 0;
+  }
+
+  50% {
+    top: -0.2em;
+  }
+
+  70% {
+    top: -0.3em;
+  }
+
+  100% {
+    top: 0;
+  }
+}
+

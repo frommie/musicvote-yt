@@ -56,7 +56,6 @@
     $.get("/api/first", {
     },
     function(data, status){
-      player.destroy();
       onYouTubeIframeAPIReady(data);
     });
   }

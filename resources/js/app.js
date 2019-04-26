@@ -10,7 +10,6 @@ import 'bulma/css/bulma.css';
 
 import VModal from 'vue-js-modal';
 
-
 window.Vue = require('vue');
 
 /**
@@ -39,7 +38,7 @@ const app = new Vue({
       event: null
     },
     created() {
-      this.setup_stream();
+      //this.setup_stream();
     },
     methods: {
       setup_stream() {
