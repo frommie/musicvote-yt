@@ -23,8 +23,11 @@ window.Vue = require('vue');
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component('playlist-component', require('./components/App.vue').default);
-Vue.use(VModal, { dynamic: true });
+Vue.config.performance = true;
+
+Vue.use(VModal, { dynamic: true, injectModalsContainer: true });
+
+import App from './components/App.vue'
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -34,9 +37,13 @@ Vue.use(VModal, { dynamic: true });
 
 const app = new Vue({
     el: '#app',
+    components: {
+      App
+    },
     data: {
       event: null
     },
+    render: h => h(App),
     created() {
       //this.setup_stream();
     },

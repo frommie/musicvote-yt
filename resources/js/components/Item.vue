@@ -1,11 +1,6 @@
 <template>
-  <div class="box columns" :class="{ 'is-playing': playing }">
-    <div class="column is-one-fifth">
-      <figure class="image is-4by3">
-        <img :src="img" alt="Image">
-      </figure>
-    </div>
-    <div class="column is-three-fifth">
+  <div class="box columns item-box is-mobile" :class="{ 'is-playing': playing }" :style="{ backgroundImage: 'url(\'' + img + '\')' }">
+    <div class="column item-title">
       <p class="is-large">
         <strong>{{ title }}</strong>
       </p>
@@ -23,7 +18,6 @@
         </span>
       </a>
     </div>
-    {{ id }}   {{ vote }} Playing: {{ playing }}
   </div>
 </template>
 <script>

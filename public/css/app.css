@@ -16431,6 +16431,46 @@ a.text-dark:focus {
   }
 }
 
+html,
+body {
+  margin: 0px;
+  height: 100%;
+  width: 100%;
+}
+
+.box.columns {
+  width: 100%;
+  margin: auto;
+  padding: 1.25rem 0;
+}
+
+.item-box {
+  background-size: cover;
+}
+
+.item-title > p {
+  bottom: 0;
+  position: absolute;
+  left: 0;
+  right: 20%;
+  font-size: 0.9em;
+  padding: 3px;
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.item-title > p > strong {
+  color: #ccc;
+}
+
+.vote-column {
+  color: #ccc;
+  text-align: center;
+}
+
+.vote-column > a {
+  margin: 0 !important;
+}
+
 .navbar-laravel {
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);

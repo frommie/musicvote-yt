@@ -21,11 +21,9 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
-  <section class="section" id="app">
-    <div class="container">
-      <main class="py-4">
-        @yield('content')
-      </main>
+  <section class="section">
+    <div class="container" id="app">
+      @yield('content')
     </div>
   </section>
 </body>
