@@ -44,4 +44,9 @@ return [
         ],
     ],
 
+    'youtube' => [
+      'key' => env('YOUTUBE_API_KEY'),
+      'playlist' => env('YOUTUBE_FALLBACK_PLAYLIST'),
+    ],
+
 ];

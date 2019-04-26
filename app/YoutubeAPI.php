@@ -15,7 +15,7 @@ class YoutubeAPI {
    */
   public function __construct() {
     $this->client = new \Google_Client();
-    $this->client->setDeveloperKey(env('YOUTUBE_API_KEY'));
+    $this->client->setDeveloperKey(config('services.youtube.key'));
     $this->service = new \Google_Service_YouTube($this->client);
   }
 
