@@ -24,6 +24,10 @@ html, body {
   padding: 1.25rem 0;
 }
 
+.container {
+  padding-top: 20px;
+}
+
 .item-box {
   background-size: cover;
 }
@@ -50,7 +54,6 @@ html, body {
 .vote-column > a {
   margin: 0 !important;
 }
-
 
 .navbar-laravel {
   background-color: #fff;

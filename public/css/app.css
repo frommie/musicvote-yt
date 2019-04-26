@@ -16444,6 +16444,10 @@ body {
   padding: 1.25rem 0;
 }
 
+.container {
+  padding-top: 20px;
+}
+
 .item-box {
   background-size: cover;
 }
