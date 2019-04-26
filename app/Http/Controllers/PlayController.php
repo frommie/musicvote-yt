@@ -6,11 +6,15 @@ use Illuminate\Http\Request;
 
 class PlayController extends Controller
 {
+  public function play() {
+    return view('play', ['video_id' => $this->first()]);
+  }
+
   public function first() {
     // if video playing return playing video
     $item = \App\Playlist::where('playing', '=', true)->first();
     if ($item) {
-      return $item;
+      return $item->video_id;
     }
     // else get video by max votes
     return $this->get_top_video();

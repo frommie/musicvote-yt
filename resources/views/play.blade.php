@@ -1,6 +1,13 @@
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
+  <style>
+  html, body {
+    margin: 0;
+    height: 100%;
+    width: 100%;
+  }
+  </style>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>
   var source = new EventSource("/api/playcontrol");
@@ -17,6 +24,9 @@
   var player;
 
   function onYouTubeIframeAPIReady(video_id) {
+    if (video_id === undefined) {
+      video_id = '{{ $video_id }}';
+    }
     console.log("play " + video_id);
     player = new YT.Player('player', {
       height: '800',
@@ -42,6 +52,7 @@
   }
 
   function get_next_video() {
+    console.log("next");
     // get next video
     $.get("/api/next", {
     },
@@ -51,19 +62,10 @@
     });
   }
 
-  function get_first_video() {
-    // get next video
-    $.get("/api/first", {
-    },
-    function(data, status){
-      onYouTubeIframeAPIReady(data);
-    });
-  }
-
-  get_first_video();
+  onYouTubeIframeAPIReady('{{ $video_id }}');
   </script>
 </head>
-<body style="margin: 0;">
+<body style="">
   <div id="player" style="width:100%; height:100%;"></div>
 </body>
 </html>
