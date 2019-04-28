@@ -119,12 +119,18 @@ $app->post('/vote', function ($request, $response) {
   $direction = $body['direction'];
   $video = Video::with_video_id($this->db, $video_id);
   $video->vote($session_id, $direction);
-  new Event($this->db, 'voted', 'client');
   $votes = $video->get_votes();
-  if ($video->is_playing() && $votes < 0) {
-    // create event for player
-    new Event($this->db, 'skip', 'player');
+  if ($votes < 0) {
+    if ($video->is_playing()) {
+     // create event for player
+     new Event($this->db, 'skip', 'player');
+   } else {
+     // remove from playlist
+     $playlist = new Playlist($this->db);
+     $playlist->remove($video_id);
+   }
   }
+  new Event($this->db, 'voted', 'client');
   print_r($votes);
 });
 
