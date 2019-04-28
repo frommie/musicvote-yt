@@ -7,7 +7,8 @@
     console.log("test");
     console.log(event.data);
     if (event.data == "skip") {
-      get_next_video();
+      // video was removed from playlist
+      get_top_video();
     }
   };
 
@@ -45,6 +46,16 @@
   }
 
   function get_next_video() {
+    // get next video
+    $.get("/next", {
+    },
+    function(data, status){
+      player.destroy();
+      onYouTubeIframeAPIReady(data);
+    });
+  }
+
+  function get_top_video() {
     // get next video
     $.get("/next", {
     },

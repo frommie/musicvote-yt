@@ -85,7 +85,6 @@ class Playlist {
     // remove current playing video
     $current_playing_id = $this->playlist[0]->get_video_id();
     $this->remove($current_playing_id); // remove from db
-    $this->remove_votes($current_playing_id); // remove votes
     array_splice($this->playlist, 0, 1);
   }
 
@@ -127,6 +126,7 @@ class Playlist {
     $result = $stmt->execute([
       'video_id' => $video_id
     ]);
+    $this->remove_votes($video_id); // remove votes
   }
 
   /*

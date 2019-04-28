@@ -106,6 +106,15 @@ $app->post('/search', function ($request, $response) {
 });
 
 /*
+ * Selects top video in playlist
+ * returns top video
+ */
+$app->get('/top', function ($request, $response) {
+  $playlist = new Playlist($this->db);
+  print($playlist->get_top_video());
+});
+
+/*
  * Vote route to set a vote to a video id
  * @video_id Video ID to set a vote to
  * @direction Direction of vote (either '+' or '-')
@@ -121,13 +130,12 @@ $app->post('/vote', function ($request, $response) {
   $video->vote($session_id, $direction);
   $votes = $video->get_votes();
   if ($votes < 0) {
+    // remove from playlist
+    $playlist = new Playlist($this->db);
+    $playlist->remove($video_id);
     if ($video->is_playing()) {
      // create event for player
      new Event($this->db, 'skip', 'player');
-   } else {
-     // remove from playlist
-     $playlist = new Playlist($this->db);
-     $playlist->remove($video_id);
    }
   }
   new Event($this->db, 'voted', 'client');
