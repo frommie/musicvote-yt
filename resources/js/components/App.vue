@@ -10,8 +10,6 @@
   import PlaylistComponent from './Playlist.vue';
 
   export default {
-    data() {
-    },
     methods: {
     },
     created() {

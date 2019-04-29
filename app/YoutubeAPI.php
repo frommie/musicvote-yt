@@ -85,8 +85,8 @@ class YoutubeAPI {
     foreach ($arr as $video_id => $video) {
       if ($video['status']['privacyStatus'] == 'public' && $video['status']['embeddable'] == true) {
         try {
-          $video_result = \App\Item::FirstOrCreate(['id' => $video_id], ['title' => $video['title'], 'img_url' => $video['img']]);
-          array_push($videos, json_decode(strval($video_result)));
+          $video_result = \App\Item::FirstOrCreate(['id' => $video_id], ['title' => $video['title'], 'img' => $video['img']]);
+          array_push($videos, $video_result);
         } catch (VideoIDNullException $e) {}
       }
     }
@@ -104,6 +104,7 @@ class YoutubeAPI {
       'playlistId' => $playlist_id
     ))['items'];
     $videos = $this->get_playlist_array($playlist_items);
+    return $videos;
     return json_encode($videos);
   }
 
@@ -115,10 +116,10 @@ class YoutubeAPI {
   public function get_playlist_array($items) {
     $arr = array();
     $video_ids = '';
-    $items_count = (int)count($search);
+    $items_count = (int)count($items);
     for ($i = 0; $i < $items_count; $i++) {
       if ($items[$i]['snippet']['resourceId']['videoId'] != '') {
-        $arr[$item['snippet']['resourceId']['videoId']] = array(
+        $arr[$items[$i]['snippet']['resourceId']['videoId']] = array(
           'title' => html_entity_decode($items[$i]['snippet']['title']),
           'img' => $items[$i]['snippet']['thumbnails']['high']['url']
         );

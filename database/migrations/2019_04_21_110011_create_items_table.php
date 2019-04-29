@@ -16,7 +16,7 @@ class CreateItemsTable extends Migration
         Schema::create('items', function (Blueprint $table) {
             $table->string('id')->unique();
             $table->string('title');
-            $table->string('img_url');
+            $table->string('img');
             $table->boolean('fallback')->default(false);
             $table->timestamps();
         });

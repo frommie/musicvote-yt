@@ -3,21 +3,20 @@
     <item-component
       v-for="item in playlist"
       v-bind="item"
-      class="moving-item"
+      class="playlist-item moving-item"
       v-bind:style="{ top: 80 + (item.position * 190) + 'px' }"
-      :key="item.id"
-      v-on:upvote="upvote(item.id)"
-      v-on:downvote="downvote(item.id)"
-      @delete="del"
+      :key="item.item_id"
+      v-on:upvote="upvote(item.item_id)"
+      v-on:downvote="downvote(item.item_id)"
     ></item-component>
   </div>
 </template>
 
 <script>
   function Item(item) {
-    this.id = item.detail.id;
+    this.item_id = item.detail.id;
     this.title = item.detail.title;
-    this.img = item.detail.img_url;
+    this.img = item.detail.img;
     this.playing = item.playing;
     this.votecount = item.votecount;
     this.vote = item.vote;
@@ -29,32 +28,27 @@
     data() {
       return {
         playlist: [],
-        query: "",
-        result: [],
       }
     },
     methods: {
-      create() {
-        // To do
-      },
       read() {
         window.axios.get('/api/playlist').then(({ data }) => {
           var item_ids = [];
           data.forEach(item => {
-            item_ids.push(item.video_id);
+            item_ids.push(item.item_id);
             // update votecount
-            var updated_item = this.playlist.find(pitem => pitem.id === item.video_id)
+            var updated_item = this.playlist.find(pitem => pitem.item_id === item.item_id)
             if (updated_item) {
               if (updated_item.votecount < item.votecount) { // voted up
-                document.getElementById(item.video_id + '_up').children[0].className = 'fas fa-arrow-alt-circle-up fa-2x bounce';
+                document.getElementById(item.item_id + '_up').children[0].className = 'fas fa-arrow-alt-circle-up fa-2x bounce';
                 setTimeout(function(){
-                  document.getElementById(item.video_id + '_up').children[0].className = 'fas fa-arrow-alt-circle-up fa-2x';
+                  document.getElementById(item.item_id + '_up').children[0].className = 'fas fa-arrow-alt-circle-up fa-2x';
                 }, 800);
               }
               if (updated_item.votecount > item.votecount) { // voted down
-                document.getElementById(item.video_id + '_down').children[0].className = 'fas fa-arrow-alt-circle-down fa-2x bounce';
+                document.getElementById(item.item_id + '_down').children[0].className = 'fas fa-arrow-alt-circle-down fa-2x bounce';
                 setTimeout(function(){
-                  document.getElementById(item.video_id + '_down').children[0].className = 'fas fa-arrow-alt-circle-down fa-2x';
+                  document.getElementById(item.item_id + '_down').children[0].className = 'fas fa-arrow-alt-circle-down fa-2x';
                 }, 800);
               }
               updated_item.votecount = item.votecount;
@@ -64,12 +58,13 @@
           });
           // remove deleted items
           this.playlist.forEach(function(item, index, playlist_arr) {
-            if (!item_ids.includes(item.id)) {
+            if (!item_ids.includes(item.item_id)) {
               playlist_arr.splice(index, 1);
             }
           });
           this.set_positions();
           this.sort();
+
         });
       },
       set_positions: function() {
@@ -111,9 +106,6 @@
           this.read();
         });
       },
-      del(id) {
-        // To do
-      }
     },
     created() {
       let es = new EventSource('/api/playcontrol');

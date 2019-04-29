@@ -14,7 +14,7 @@ class CreatePlaylistsTable extends Migration
     public function up()
     {
         Schema::create('playlists', function (Blueprint $table) {
-            $table->string('video_id')->unique();
+            $table->string('item_id')->unique();
             $table->boolean('playing')->default(false);
             $table->string('upvotes')->default(0);
             $table->string('downvotes')->default(0);

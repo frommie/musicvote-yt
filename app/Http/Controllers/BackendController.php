@@ -8,21 +8,15 @@ use Session;
 
 class BackendController extends Controller
 {
-  public function search(Request $request) {
-    $data = $request->validate([
-      'query' => 'required|max:255',
-    ]);
-    $youtube_api = new \App\YoutubeAPI();
-    $result = $youtube_api->search($data['query']);
-
-    return $result;
-  }
-
   public function control(Request $request) {
     $response = new StreamedResponse(function() use ($request) {
+      echo "\n\n";
+      ob_flush();
+      flush();
       while(true) {
         // get event for session
-        echo Event::get(Session::getId());
+        $event = Event::get(Session::getId());
+        echo "data: {$event}\n\n";
         ob_flush();
         flush();
         usleep(200000);
@@ -31,12 +25,16 @@ class BackendController extends Controller
     $response->headers->set('Content-Type', 'text/event-stream');
     $response->headers->set('X-Accel-Buffering', 'no');
     $response->headers->set('Cach-Control', 'no-cache');
-    /*$response->setCallback(
-      function() {
-        echo Event::get(Session::getId());
-        ob_flush();
-        flush();
-      });*/
     return $response;
+  }
+
+  public function search(Request $request) {
+    $data = $request->validate([
+      'query' => 'required|max:255',
+    ]);
+    $youtube_api = new \App\YoutubeAPI();
+    $result = $youtube_api->search($data['query']);
+
+    return $result;
   }
 }

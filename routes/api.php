@@ -32,3 +32,5 @@ Route::post('/search', 'BackendController@search');
 Route::post('/vote/up/{id}', 'VoteController@upvote');
 
 Route::post('/vote/down/{id}', 'VoteController@downvote');
+
+Route::get('/load/fallback', 'PlayController@load_fallback_playlist');

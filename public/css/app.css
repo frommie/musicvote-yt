@@ -16444,30 +16444,37 @@ body {
   padding: 1.25rem 0;
 }
 
-.container {
-  padding-top: 20px;
-}
-
 .item-box {
   background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.column.is-one-fifth.add-column {
+  float: right;
+  color: #fff;
 }
 
 .item-title > p {
+  font-size: 0.9em;
+  padding: 3px;
+  background: rgba(0, 0, 0, 0.7);
   bottom: 0;
   position: absolute;
   left: 0;
   right: 20%;
-  font-size: 0.9em;
-  padding: 3px;
-  background: rgba(0, 0, 0, 0.7);
 }
 
 .item-title > p > strong {
-  color: #ccc;
+  color: #fff;
+}
+
+.is-playing {
+  box-shadow: inset 0 0 14px 4px #26ad44;
 }
 
 .vote-column {
-  color: #ccc;
+  color: #fff;
   text-align: center;
 }
 

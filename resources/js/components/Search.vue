@@ -7,56 +7,41 @@
   </div>
 </template>
 <script>
+  function Item(item) {
+    this.id = item.detail.id;
+    this.title = item.detail.title;
+    this.img = item.detail.img;
+    this.playing = item.playing;
+    this.votecount = item.votecount;
+    this.vote = item.vote;
+  }
+
+  import SearchResult from './SearchResult.vue';
+
   export default {
+    data() {
+      return {
+        results: [],
+        query: "",
+      }
+    },
     computed: {
     },
     methods: {
       search: function(e) {
         window.axios.post('/api/search', { query: this.query }).then(({ data }) => {
-          this.result = data;
-          this.$modal.show({
-            template: `
-              <div class="modal is-active">
-                <div class="modal-background"></div>
-                <div class="modal-card">
-                  <header class="modal-card-head">
-                    <p class="modal-card-title">Suche</p>
-                    <button class="delete" @click="$emit('close')"></button>
-                  </header>
-                  <section class="modal-card-body">
-                    <div v-for="result in results">
-                      <div class="columns" v-on:click="$emit('add', result.id)">
-                        <div class="column">
-                          <img :src="result.img_url" />
-                        </div>
-                        <div class="column">
-                          <p>{{ result.title }}</p>
-                        </div>
-                      </div>
-                    </div>
-                  </section>
-                </div>
-              </div>
-            `,
-            props: ['results']
-          }, {
+          this.$modal.show(SearchResult, {
             results: data
-          }, {
-            height: '100%'
-          }, {
           });
+          this.query = "";
         });
       },
       add(id) {
         window.axios.post(`/api/vote/up/${id}`).then(() => {
-          // Once AJAX resolves we can update the Crud with the new color
           // update playlist
           this.read();
         });
       },
     },
-    props: ['query'],
-    filters: {
-    }
   }
 </script>

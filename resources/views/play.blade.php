@@ -23,15 +23,15 @@
   firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
   var player;
 
-  function onYouTubeIframeAPIReady(video_id) {
-    if (video_id === undefined) {
-      video_id = '{{ $video_id }}';
+  function onYouTubeIframeAPIReady(item_id) {
+    if (item_id === undefined) {
+      item_id = '{{ $item_id }}';
     }
-    console.log("play " + video_id);
+    console.log("play " + item_id);
     player = new YT.Player('player', {
       height: '800',
       width: '640',
-      videoId: video_id,
+      videoId: item_id,
       playerVars: { 'autoplay': 1},
       events: {
         'onReady': onPlayerReady,
@@ -56,13 +56,13 @@
     // get next video
     $.get("/api/next", {
     },
-    function(data, status){
+    function(new_id, status){
       player.destroy();
-      onYouTubeIframeAPIReady(data);
+      onYouTubeIframeAPIReady(new_id);
     });
   }
 
-  onYouTubeIframeAPIReady('{{ $video_id }}');
+  onYouTubeIframeAPIReady('{{ $item_id }}');
   </script>
 </head>
 <body style="">

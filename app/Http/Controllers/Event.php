@@ -17,7 +17,7 @@ class Event
   public static function get($session_id) {
     $event = Redis::spop('session:'.$session_id);
     if ($event) {
-      return "data: {$event}\n\n";
+      return $event;
     } else {
       return;
     }
