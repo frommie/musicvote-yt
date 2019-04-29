@@ -52,7 +52,6 @@
   }
 
   function get_next_video() {
-    console.log("next");
     // get next video
     $.get("/api/next", {
     },
