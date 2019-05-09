@@ -49,4 +49,9 @@ return [
       'playlist' => env('YOUTUBE_FALLBACK_PLAYLIST'),
     ],
 
+    'spotify' => [
+      'clientid' => env('SPOTIFY_CLIENT_ID'),
+      'clientsecret' => env('SPOTIFY_CLIENT_SECRET'),
+    ],
+
 ];
