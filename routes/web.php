@@ -11,7 +11,9 @@
 |
 */
 
+Auth::routes();
+
 Route::get('/play', 'PlayController@play');
 Route::view('/{path?}', 'app');
 
-Auth::routes();
+Route::get('/home', 'HomeController@index')->name('home');

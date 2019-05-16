@@ -6633,7 +6633,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.search-item[data-v-6cc59560] {\r\n  display: inline-block;\n}\r\n", ""]);
+exports.push([module.i, "\n.search-item[data-v-6cc59560] {\n  display: inline-block;\n}\n", ""]);
 
 // exports
 
@@ -51157,8 +51157,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /mnt/c/sites/musicvote-laravel/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /mnt/c/sites/musicvote-laravel/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /mnt/c/sites/mvlaravel/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /mnt/c/sites/mvlaravel/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
