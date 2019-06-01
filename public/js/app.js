@@ -11392,17 +11392,17 @@ function Item(item) {
           if (updated_item) {
             if (updated_item.votecount < item.votecount) {
               // voted up
-              document.getElementById(item.item_id + '_up').children[0].className = 'fas fa-arrow-alt-circle-up fa-2x bounce';
+              document.getElementById(item.item_id + '_up').classList.add('bounce');
               setTimeout(function () {
-                document.getElementById(item.item_id + '_up').children[0].className = 'fas fa-arrow-alt-circle-up fa-2x';
+                document.getElementById(item.item_id + '_up').classList.remove('bounce');
               }, 800);
             }
 
             if (updated_item.votecount > item.votecount) {
               // voted down
-              document.getElementById(item.item_id + '_down').children[0].className = 'fas fa-arrow-alt-circle-down fa-2x bounce';
+              document.getElementById(item.item_id + '_down').classList.add('bounce');
               setTimeout(function () {
-                document.getElementById(item.item_id + '_down').children[0].className = 'fas fa-arrow-alt-circle-down fa-2x';
+                document.getElementById(item.item_id + '_down').classList.remove('bounce');
               }, 800);
             }
 
