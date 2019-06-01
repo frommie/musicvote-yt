@@ -7,7 +7,11 @@ use Illuminate\Http\Request;
 class PlayController extends Controller
 {
   public function play() {
-    return view('play', ['item_id' => $this->first()]);
+    $service = \App\Conf::get('service');
+    if (!$service) {
+      $service = 'youtube';
+    }
+    return view('play', ['service' => $service, 'item_id' => $this->first()]);
   }
 
   public function first() {
