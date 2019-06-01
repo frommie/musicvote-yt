@@ -8,20 +8,20 @@
     <div v-if="parent !== 'search'" class="column is-one-fifth vote-column">
       <a class="level-item" v-on:click="$emit('upvote')">
         <span class="icon is-medium" :id="item_id + '_up'">
-          <i class="fas fa-arrow-alt-circle-up fa-2x" aria-hidden="true"></i>
+          <font-awesome-icon icon="thumbs-up" size="2x" />
         </span>
       </a>
       <span class="is-size-3 vote-number" :id="'votes_' + item_id">{{ votecount }}</span>
       <a class="level-item" v-on:click="$emit('downvote')">
         <span class="icon is-medium " :id="item_id + '_down'">
-          <i class="fas fa-arrow-alt-circle-down fa-2x" aria-hidden="true"></i>
+          <font-awesome-icon icon="thumbs-down" size="2x" />
         </span>
       </a>
     </div>
     <div v-else class="column is-one-fifth add-column">
       <a class="addbutton">
         <span class="icon is-medium">
-          <i class="fas fa-plus-circle fa-2x" aria-hidden="true"></i>
+          <font-awesome-icon icon="plus-circle" size="2x" />
         </span>
       </a>
     </div>
