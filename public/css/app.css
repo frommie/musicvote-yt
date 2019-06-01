@@ -10669,6 +10669,10 @@ body {
   width: 100%;
 }
 
+iframe {
+  height: -webkit-fill-available !important;
+}
+
 .box.columns {
   width: 100%;
   margin: auto;

@@ -6,14 +6,6 @@ use Illuminate\Http\Request;
 
 class PlayController extends Controller
 {
-  public function play() {
-    $service = \App\Conf::get('service');
-    if (!$service) {
-      $service = 'youtube';
-    }
-    return view('play', ['service' => $service, 'item_id' => $this->first()]);
-  }
-
   public function first() {
     // if video playing return playing video
     $item = \App\Playlist::where('playing', '=', true)->first();
