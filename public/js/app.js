@@ -16166,6 +16166,26 @@ exports.push([module.i, "/*! bulma.io v0.7.5 | MIT License | github.com/jgthms/b
 
 /***/ }),
 
+/***/ "./node_modules/css-loader/index.js?!./node_modules/postcss-loader/src/index.js?!./node_modules/typeface-nunito/index.css":
+/*!********************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader??ref--6-1!./node_modules/postcss-loader/src??ref--6-2!./node_modules/typeface-nunito/index.css ***!
+  \********************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var escape = __webpack_require__(/*! ../css-loader/lib/url/escape.js */ "./node_modules/css-loader/lib/url/escape.js");
+exports = module.exports = __webpack_require__(/*! ../css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "/* nunito-200normal - latin */\n@font-face {\n  font-family: 'Nunito';\n  font-style: normal;\n  font-display: swap;\n  font-weight: 200;\n  src:\n    local('Nunito Extra Light '),\n    local('Nunito-Extra Light'),\n    url(" + escape(__webpack_require__(/*! ./files/nunito-latin-200.woff2 */ "./node_modules/typeface-nunito/files/nunito-latin-200.woff2")) + ") format('woff2'), \n    url(" + escape(__webpack_require__(/*! ./files/nunito-latin-200.woff */ "./node_modules/typeface-nunito/files/nunito-latin-200.woff")) + ") format('woff'); /* Modern Browsers */\n}\n\n/* nunito-200italic - latin */\n@font-face {\n  font-family: 'Nunito';\n  font-style: italic;\n  font-display: swap;\n  font-weight: 200;\n  src:\n    local('Nunito Extra Light italic'),\n    local('Nunito-Extra Lightitalic'),\n    url(" + escape(__webpack_require__(/*! ./files/nunito-latin-200italic.woff2 */ "./node_modules/typeface-nunito/files/nunito-latin-200italic.woff2")) + ") format('woff2'), \n    url(" + escape(__webpack_require__(/*! ./files/nunito-latin-200italic.woff */ "./node_modules/typeface-nunito/files/nunito-latin-200italic.woff")) + ") format('woff'); /* Modern Browsers */\n}\n\n/* nunito-300normal - latin */\n@font-face {\n  font-family: 'Nunito';\n  font-style: normal;\n  font-display: swap;\n  font-weight: 300;\n  src:\n    local('Nunito Light '),\n    local('Nunito-Light'),\n    url(" + escape(__webpack_require__(/*! ./files/nunito-latin-300.woff2 */ "./node_modules/typeface-nunito/files/nunito-latin-300.woff2")) + ") format('woff2'), \n    url(" + escape(__webpack_require__(/*! ./files/nunito-latin-300.woff */ "./node_modules/typeface-nunito/files/nunito-latin-300.woff")) + ") format('woff'); /* Modern Browsers */\n}\n\n/* nunito-300italic - latin */\n@font-face {\n  font-family: 'Nunito';\n  font-style: italic;\n  font-display: swap;\n  font-weight: 300;\n  src:\n    local('Nunito Light italic'),\n    local('Nunito-Lightitalic'),\n    url(" + escape(__webpack_require__(/*! ./files/nunito-latin-300italic.woff2 */ "./node_modules/typeface-nunito/files/nunito-latin-300italic.woff2")) + ") format('woff2'), \n    url(" + escape(__webpack_require__(/*! ./files/nunito-latin-300italic.woff */ "./node_modules/typeface-nunito/files/nunito-latin-300italic.woff")) + ") format('woff'); /* Modern Browsers */\n}\n\n/* nunito-400normal - latin */\n@font-face {\n  font-family: 'Nunito';\n  font-style: normal;\n  font-display: swap;\n  font-weight: 400;\n  src:\n    local('Nunito Regular '),\n    local('Nunito-Regular'),\n    url(" + escape(__webpack_require__(/*! ./files/nunito-latin-400.woff2 */ "./node_modules/typeface-nunito/files/nunito-latin-400.woff2")) + ") format('woff2'), \n    url(" + escape(__webpack_require__(/*! ./files/nunito-latin-400.woff */ "./node_modules/typeface-nunito/files/nunito-latin-400.woff")) + ") format('woff'); /* Modern Browsers */\n}\n\n/* nunito-400italic - latin */\n@font-face {\n  font-family: 'Nunito';\n  font-style: italic;\n  font-display: swap;\n  font-weight: 400;\n  src:\n    local('Nunito Regular italic'),\n    local('Nunito-Regularitalic'),\n    url(" + escape(__webpack_require__(/*! ./files/nunito-latin-400italic.woff2 */ "./node_modules/typeface-nunito/files/nunito-latin-400italic.woff2")) + ") format('woff2'), \n    url(" + escape(__webpack_require__(/*! ./files/nunito-latin-400italic.woff */ "./node_modules/typeface-nunito/files/nunito-latin-400italic.woff")) + ") format('woff'); /* Modern Browsers */\n}\n\n/* nunito-600normal - latin */\n@font-face {\n  font-family: 'Nunito';\n  font-style: normal;\n  font-display: swap;\n  font-weight: 600;\n  src:\n    local('Nunito SemiBold '),\n    local('Nunito-SemiBold'),\n    url(" + escape(__webpack_require__(/*! ./files/nunito-latin-600.woff2 */ "./node_modules/typeface-nunito/files/nunito-latin-600.woff2")) + ") format('woff2'), \n    url(" + escape(__webpack_require__(/*! ./files/nunito-latin-600.woff */ "./node_modules/typeface-nunito/files/nunito-latin-600.woff")) + ") format('woff'); /* Modern Browsers */\n}\n\n/* nunito-600italic - latin */\n@font-face {\n  font-family: 'Nunito';\n  font-style: italic;\n  font-display: swap;\n  font-weight: 600;\n  src:\n    local('Nunito SemiBold italic'),\n    local('Nunito-SemiBolditalic'),\n    url(" + escape(__webpack_require__(/*! ./files/nunito-latin-600italic.woff2 */ "./node_modules/typeface-nunito/files/nunito-latin-600italic.woff2")) + ") format('woff2'), \n    url(" + escape(__webpack_require__(/*! ./files/nunito-latin-600italic.woff */ "./node_modules/typeface-nunito/files/nunito-latin-600italic.woff")) + ") format('woff'); /* Modern Browsers */\n}\n\n/* nunito-700normal - latin */\n@font-face {\n  font-family: 'Nunito';\n  font-style: normal;\n  font-display: swap;\n  font-weight: 700;\n  src:\n    local('Nunito Bold '),\n    local('Nunito-Bold'),\n    url(" + escape(__webpack_require__(/*! ./files/nunito-latin-700.woff2 */ "./node_modules/typeface-nunito/files/nunito-latin-700.woff2")) + ") format('woff2'), \n    url(" + escape(__webpack_require__(/*! ./files/nunito-latin-700.woff */ "./node_modules/typeface-nunito/files/nunito-latin-700.woff")) + ") format('woff'); /* Modern Browsers */\n}\n\n/* nunito-700italic - latin */\n@font-face {\n  font-family: 'Nunito';\n  font-style: italic;\n  font-display: swap;\n  font-weight: 700;\n  src:\n    local('Nunito Bold italic'),\n    local('Nunito-Bolditalic'),\n    url(" + escape(__webpack_require__(/*! ./files/nunito-latin-700italic.woff2 */ "./node_modules/typeface-nunito/files/nunito-latin-700italic.woff2")) + ") format('woff2'), \n    url(" + escape(__webpack_require__(/*! ./files/nunito-latin-700italic.woff */ "./node_modules/typeface-nunito/files/nunito-latin-700italic.woff")) + ") format('woff'); /* Modern Browsers */\n}\n\n/* nunito-800normal - latin */\n@font-face {\n  font-family: 'Nunito';\n  font-style: normal;\n  font-display: swap;\n  font-weight: 800;\n  src:\n    local('Nunito ExtraBold '),\n    local('Nunito-ExtraBold'),\n    url(" + escape(__webpack_require__(/*! ./files/nunito-latin-800.woff2 */ "./node_modules/typeface-nunito/files/nunito-latin-800.woff2")) + ") format('woff2'), \n    url(" + escape(__webpack_require__(/*! ./files/nunito-latin-800.woff */ "./node_modules/typeface-nunito/files/nunito-latin-800.woff")) + ") format('woff'); /* Modern Browsers */\n}\n\n/* nunito-800italic - latin */\n@font-face {\n  font-family: 'Nunito';\n  font-style: italic;\n  font-display: swap;\n  font-weight: 800;\n  src:\n    local('Nunito ExtraBold italic'),\n    local('Nunito-ExtraBolditalic'),\n    url(" + escape(__webpack_require__(/*! ./files/nunito-latin-800italic.woff2 */ "./node_modules/typeface-nunito/files/nunito-latin-800italic.woff2")) + ") format('woff2'), \n    url(" + escape(__webpack_require__(/*! ./files/nunito-latin-800italic.woff */ "./node_modules/typeface-nunito/files/nunito-latin-800italic.woff")) + ") format('woff'); /* Modern Browsers */\n}\n\n/* nunito-900normal - latin */\n@font-face {\n  font-family: 'Nunito';\n  font-style: normal;\n  font-display: swap;\n  font-weight: 900;\n  src:\n    local('Nunito Black '),\n    local('Nunito-Black'),\n    url(" + escape(__webpack_require__(/*! ./files/nunito-latin-900.woff2 */ "./node_modules/typeface-nunito/files/nunito-latin-900.woff2")) + ") format('woff2'), \n    url(" + escape(__webpack_require__(/*! ./files/nunito-latin-900.woff */ "./node_modules/typeface-nunito/files/nunito-latin-900.woff")) + ") format('woff'); /* Modern Browsers */\n}\n\n/* nunito-900italic - latin */\n@font-face {\n  font-family: 'Nunito';\n  font-style: italic;\n  font-display: swap;\n  font-weight: 900;\n  src:\n    local('Nunito Black italic'),\n    local('Nunito-Blackitalic'),\n    url(" + escape(__webpack_require__(/*! ./files/nunito-latin-900italic.woff2 */ "./node_modules/typeface-nunito/files/nunito-latin-900italic.woff2")) + ") format('woff2'), \n    url(" + escape(__webpack_require__(/*! ./files/nunito-latin-900italic.woff */ "./node_modules/typeface-nunito/files/nunito-latin-900italic.woff")) + ") format('woff'); /* Modern Browsers */\n}\n\n", ""]);
+
+// exports
+
+
+/***/ }),
+
 /***/ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Playlist.vue?vue&type=style&index=0&id=3cc45e3d&scoped=true&lang=css&":
 /*!**************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Playlist.vue?vue&type=style&index=0&id=3cc45e3d&scoped=true&lang=css& ***!
@@ -16286,6 +16306,33 @@ function toComment(sourceMap) {
 	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
 
 	return '/*# ' + data + ' */';
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/lib/url/escape.js":
+/*!***************************************************!*\
+  !*** ./node_modules/css-loader/lib/url/escape.js ***!
+  \***************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = function escape(url) {
+    if (typeof url !== 'string') {
+        return url
+    }
+    // If url is already wrapped in quotes, remove them
+    if (/^['"].*['"]$/.test(url)) {
+        url = url.slice(1, -1);
+    }
+    // Should url be wrapped?
+    // See https://drafts.csswg.org/css-values-3/#urls
+    if (/["'() \t\n]/.test(url)) {
+        return '"' + url.replace(/"/g, '\\"').replace(/\n/g, '\\n') + '"'
+    }
+
+    return url
 }
 
 
@@ -47838,6 +47885,344 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 
 /***/ }),
 
+/***/ "./node_modules/typeface-nunito/files/nunito-latin-200.woff":
+/*!******************************************************************!*\
+  !*** ./node_modules/typeface-nunito/files/nunito-latin-200.woff ***!
+  \******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/fonts/vendor/typeface-nunito/files/nunito-latin-200.woff?249c20ee4450b15795cdde4cbb5f38d8";
+
+/***/ }),
+
+/***/ "./node_modules/typeface-nunito/files/nunito-latin-200.woff2":
+/*!*******************************************************************!*\
+  !*** ./node_modules/typeface-nunito/files/nunito-latin-200.woff2 ***!
+  \*******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/fonts/vendor/typeface-nunito/files/nunito-latin-200.woff2?2a4f4b0a3646be9d8560178ebc4306e5";
+
+/***/ }),
+
+/***/ "./node_modules/typeface-nunito/files/nunito-latin-200italic.woff":
+/*!************************************************************************!*\
+  !*** ./node_modules/typeface-nunito/files/nunito-latin-200italic.woff ***!
+  \************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/fonts/vendor/typeface-nunito/files/nunito-latin-200italic.woff?67d3d63c0ac28ccbc0c0fcbda8e66e04";
+
+/***/ }),
+
+/***/ "./node_modules/typeface-nunito/files/nunito-latin-200italic.woff2":
+/*!*************************************************************************!*\
+  !*** ./node_modules/typeface-nunito/files/nunito-latin-200italic.woff2 ***!
+  \*************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/fonts/vendor/typeface-nunito/files/nunito-latin-200italic.woff2?89ba5530f3b2c751f2a49e25f31e3f15";
+
+/***/ }),
+
+/***/ "./node_modules/typeface-nunito/files/nunito-latin-300.woff":
+/*!******************************************************************!*\
+  !*** ./node_modules/typeface-nunito/files/nunito-latin-300.woff ***!
+  \******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/fonts/vendor/typeface-nunito/files/nunito-latin-300.woff?cad1324b066f52f764cf080d9244c8b2";
+
+/***/ }),
+
+/***/ "./node_modules/typeface-nunito/files/nunito-latin-300.woff2":
+/*!*******************************************************************!*\
+  !*** ./node_modules/typeface-nunito/files/nunito-latin-300.woff2 ***!
+  \*******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/fonts/vendor/typeface-nunito/files/nunito-latin-300.woff2?895205e22ad7d4d866df7102352077cd";
+
+/***/ }),
+
+/***/ "./node_modules/typeface-nunito/files/nunito-latin-300italic.woff":
+/*!************************************************************************!*\
+  !*** ./node_modules/typeface-nunito/files/nunito-latin-300italic.woff ***!
+  \************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/fonts/vendor/typeface-nunito/files/nunito-latin-300italic.woff?1fde36925a8493f45651815dd89d22a7";
+
+/***/ }),
+
+/***/ "./node_modules/typeface-nunito/files/nunito-latin-300italic.woff2":
+/*!*************************************************************************!*\
+  !*** ./node_modules/typeface-nunito/files/nunito-latin-300italic.woff2 ***!
+  \*************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/fonts/vendor/typeface-nunito/files/nunito-latin-300italic.woff2?f4a613c73f19da60cf08aa42b2a9249b";
+
+/***/ }),
+
+/***/ "./node_modules/typeface-nunito/files/nunito-latin-400.woff":
+/*!******************************************************************!*\
+  !*** ./node_modules/typeface-nunito/files/nunito-latin-400.woff ***!
+  \******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/fonts/vendor/typeface-nunito/files/nunito-latin-400.woff?6386ba6af7b7a5480eb5efda82ff803c";
+
+/***/ }),
+
+/***/ "./node_modules/typeface-nunito/files/nunito-latin-400.woff2":
+/*!*******************************************************************!*\
+  !*** ./node_modules/typeface-nunito/files/nunito-latin-400.woff2 ***!
+  \*******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/fonts/vendor/typeface-nunito/files/nunito-latin-400.woff2?de6068bf97f40206af0b062e262e6213";
+
+/***/ }),
+
+/***/ "./node_modules/typeface-nunito/files/nunito-latin-400italic.woff":
+/*!************************************************************************!*\
+  !*** ./node_modules/typeface-nunito/files/nunito-latin-400italic.woff ***!
+  \************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/fonts/vendor/typeface-nunito/files/nunito-latin-400italic.woff?ef2e2a0d9dd85cf89526d1f27f8fbbef";
+
+/***/ }),
+
+/***/ "./node_modules/typeface-nunito/files/nunito-latin-400italic.woff2":
+/*!*************************************************************************!*\
+  !*** ./node_modules/typeface-nunito/files/nunito-latin-400italic.woff2 ***!
+  \*************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/fonts/vendor/typeface-nunito/files/nunito-latin-400italic.woff2?6ca737afe5cef0c0a9c9bbfec4e398ff";
+
+/***/ }),
+
+/***/ "./node_modules/typeface-nunito/files/nunito-latin-600.woff":
+/*!******************************************************************!*\
+  !*** ./node_modules/typeface-nunito/files/nunito-latin-600.woff ***!
+  \******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/fonts/vendor/typeface-nunito/files/nunito-latin-600.woff?c3de23017bcb95715e6eb11dd6a10fc5";
+
+/***/ }),
+
+/***/ "./node_modules/typeface-nunito/files/nunito-latin-600.woff2":
+/*!*******************************************************************!*\
+  !*** ./node_modules/typeface-nunito/files/nunito-latin-600.woff2 ***!
+  \*******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/fonts/vendor/typeface-nunito/files/nunito-latin-600.woff2?b10ecee279e3a8d11d5ec3193b68d8bf";
+
+/***/ }),
+
+/***/ "./node_modules/typeface-nunito/files/nunito-latin-600italic.woff":
+/*!************************************************************************!*\
+  !*** ./node_modules/typeface-nunito/files/nunito-latin-600italic.woff ***!
+  \************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/fonts/vendor/typeface-nunito/files/nunito-latin-600italic.woff?4f62b81ff327bd0ffadcb7b82e6c13b2";
+
+/***/ }),
+
+/***/ "./node_modules/typeface-nunito/files/nunito-latin-600italic.woff2":
+/*!*************************************************************************!*\
+  !*** ./node_modules/typeface-nunito/files/nunito-latin-600italic.woff2 ***!
+  \*************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/fonts/vendor/typeface-nunito/files/nunito-latin-600italic.woff2?97d4f64b213f3e5163827754c213bb4e";
+
+/***/ }),
+
+/***/ "./node_modules/typeface-nunito/files/nunito-latin-700.woff":
+/*!******************************************************************!*\
+  !*** ./node_modules/typeface-nunito/files/nunito-latin-700.woff ***!
+  \******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/fonts/vendor/typeface-nunito/files/nunito-latin-700.woff?623f5ed42b0b347fb4531ded4e4b57a2";
+
+/***/ }),
+
+/***/ "./node_modules/typeface-nunito/files/nunito-latin-700.woff2":
+/*!*******************************************************************!*\
+  !*** ./node_modules/typeface-nunito/files/nunito-latin-700.woff2 ***!
+  \*******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/fonts/vendor/typeface-nunito/files/nunito-latin-700.woff2?91ae827aa880d02ea567979add1da58c";
+
+/***/ }),
+
+/***/ "./node_modules/typeface-nunito/files/nunito-latin-700italic.woff":
+/*!************************************************************************!*\
+  !*** ./node_modules/typeface-nunito/files/nunito-latin-700italic.woff ***!
+  \************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/fonts/vendor/typeface-nunito/files/nunito-latin-700italic.woff?3aabf345871453097c2d8762411d187e";
+
+/***/ }),
+
+/***/ "./node_modules/typeface-nunito/files/nunito-latin-700italic.woff2":
+/*!*************************************************************************!*\
+  !*** ./node_modules/typeface-nunito/files/nunito-latin-700italic.woff2 ***!
+  \*************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/fonts/vendor/typeface-nunito/files/nunito-latin-700italic.woff2?b94caac4c88b1fe6c4faf6256646f42e";
+
+/***/ }),
+
+/***/ "./node_modules/typeface-nunito/files/nunito-latin-800.woff":
+/*!******************************************************************!*\
+  !*** ./node_modules/typeface-nunito/files/nunito-latin-800.woff ***!
+  \******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/fonts/vendor/typeface-nunito/files/nunito-latin-800.woff?33c733aff58ea08126616f346cbf4f4a";
+
+/***/ }),
+
+/***/ "./node_modules/typeface-nunito/files/nunito-latin-800.woff2":
+/*!*******************************************************************!*\
+  !*** ./node_modules/typeface-nunito/files/nunito-latin-800.woff2 ***!
+  \*******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/fonts/vendor/typeface-nunito/files/nunito-latin-800.woff2?36e4c9b478c2e2adb339a76d819eed7e";
+
+/***/ }),
+
+/***/ "./node_modules/typeface-nunito/files/nunito-latin-800italic.woff":
+/*!************************************************************************!*\
+  !*** ./node_modules/typeface-nunito/files/nunito-latin-800italic.woff ***!
+  \************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/fonts/vendor/typeface-nunito/files/nunito-latin-800italic.woff?672d2afe4f40a766e46ff95379550c4f";
+
+/***/ }),
+
+/***/ "./node_modules/typeface-nunito/files/nunito-latin-800italic.woff2":
+/*!*************************************************************************!*\
+  !*** ./node_modules/typeface-nunito/files/nunito-latin-800italic.woff2 ***!
+  \*************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/fonts/vendor/typeface-nunito/files/nunito-latin-800italic.woff2?0f20328772c0d84250ef397c129607fb";
+
+/***/ }),
+
+/***/ "./node_modules/typeface-nunito/files/nunito-latin-900.woff":
+/*!******************************************************************!*\
+  !*** ./node_modules/typeface-nunito/files/nunito-latin-900.woff ***!
+  \******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/fonts/vendor/typeface-nunito/files/nunito-latin-900.woff?cbf4339e858edf2b14d20140b2887343";
+
+/***/ }),
+
+/***/ "./node_modules/typeface-nunito/files/nunito-latin-900.woff2":
+/*!*******************************************************************!*\
+  !*** ./node_modules/typeface-nunito/files/nunito-latin-900.woff2 ***!
+  \*******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/fonts/vendor/typeface-nunito/files/nunito-latin-900.woff2?b296e05d0932e16d500b753becdb338e";
+
+/***/ }),
+
+/***/ "./node_modules/typeface-nunito/files/nunito-latin-900italic.woff":
+/*!************************************************************************!*\
+  !*** ./node_modules/typeface-nunito/files/nunito-latin-900italic.woff ***!
+  \************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/fonts/vendor/typeface-nunito/files/nunito-latin-900italic.woff?602859bd469800c6205701f5a16b1a1b";
+
+/***/ }),
+
+/***/ "./node_modules/typeface-nunito/files/nunito-latin-900italic.woff2":
+/*!*************************************************************************!*\
+  !*** ./node_modules/typeface-nunito/files/nunito-latin-900italic.woff2 ***!
+  \*************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/fonts/vendor/typeface-nunito/files/nunito-latin-900italic.woff2?ae87e7b4e2d3825919b9bc6c82039b80";
+
+/***/ }),
+
+/***/ "./node_modules/typeface-nunito/index.css":
+/*!************************************************!*\
+  !*** ./node_modules/typeface-nunito/index.css ***!
+  \************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var content = __webpack_require__(/*! !../css-loader??ref--6-1!../postcss-loader/src??ref--6-2!./index.css */ "./node_modules/css-loader/index.js?!./node_modules/postcss-loader/src/index.js?!./node_modules/typeface-nunito/index.css");
+
+if(typeof content === 'string') content = [[module.i, content, '']];
+
+var transform;
+var insertInto;
+
+
+
+var options = {"hmr":true}
+
+options.transform = transform
+options.insertInto = undefined;
+
+var update = __webpack_require__(/*! ../style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
+
+if(content.locals) module.exports = content.locals;
+
+if(false) {}
+
+/***/ }),
+
 /***/ "./node_modules/vue-js-modal/dist/index.js":
 /*!*************************************************!*\
   !*** ./node_modules/vue-js-modal/dist/index.js ***!
@@ -64417,6 +64802,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_Home_vue__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/Home.vue */ "./resources/js/components/Home.vue");
 /* harmony import */ var _components_Player_vue__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/Player.vue */ "./resources/js/components/Player.vue");
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
+
+__webpack_require__(/*! typeface-nunito */ "./node_modules/typeface-nunito/index.css");
 
 
 

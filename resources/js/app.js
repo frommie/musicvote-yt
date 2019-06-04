@@ -1,9 +1,10 @@
-require('./bootstrap');
+require('./bootstrap')
+require('typeface-nunito')
 import Vue from 'vue'
-import 'bulma/css/bulma.css';
+import 'bulma/css/bulma.css'
 
-import VueRouter from 'vue-router';
-import VModal from 'vue-js-modal';
+import VueRouter from 'vue-router'
+import VModal from 'vue-js-modal'
 import VueYoutube from 'vue-youtube'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
@@ -14,10 +15,10 @@ library.add(faThumbsUp, faThumbsDown, faPlusCircle)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
-Vue.config.performance = true;
+Vue.config.performance = true
 
-Vue.use(VueRouter);
-Vue.use(VModal, { dynamic: true, injectModalsContainer: true });
+Vue.use(VueRouter)
+Vue.use(VModal, { dynamic: true, injectModalsContainer: true })
 Vue.use(VueYoutube)
 
 import App from './components/App.vue'
