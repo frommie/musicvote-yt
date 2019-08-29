@@ -23,12 +23,17 @@ Vue.use(VueYoutube)
 
 import App from './components/App.vue'
 import Home from './components/Home.vue'
-import Player from './components/Player.vue'
+import Choose_Player from './components/Choose_Player.vue'
+import YT_Player from './components/YT_Player.vue'
+import SP_Player from './components/SP_Player.vue'
 
 const router = new VueRouter({
   mode: 'history',
   routes: [
-    { path: '/play', component: Player },
+    { path: '/yt', component: YT_Player },
+    { path: '/sp', component: SP_Player },
+    { path: '/play', component: Choose_Player },
+    { path: '/player', component: Choose_Player },
     { path: '/', component: Home }
   ]
 })

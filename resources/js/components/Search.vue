@@ -1,9 +1,13 @@
 <template>
-  <div id="section-search" class="control has-icons-left">
-    <input class="input is-medium" type="text" v-model="query" v-on:keyup.enter="search" placeholder="Search">
-    <span class="icon is-left">
-      <i class="fas fa-search"></i>
-    </span>
+  <div class="field has-addons">
+    <div id="section-search" class="control">
+      <input class="input is-medium" type="text" v-model="query" v-on:keyup.enter="search" placeholder="">
+    </div>
+    <div class="control">
+      <a class="button is-medium" v-on:click="search">
+        Search
+      </a>
+    </div>
   </div>
 </template>
 <script>

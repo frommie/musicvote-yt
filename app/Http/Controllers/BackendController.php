@@ -34,29 +34,30 @@ class BackendController extends Controller
     ]);
     $service = \App\Conf::get('service');
     if ($service == 'spotify') {
-      $result = \App\SpotifyAPI::search($data['query']);
+      $api = new \App\SpotifyAPI();
     } else {
       $api = new \App\YoutubeAPI();
-      $result = $api->search($data['query']);
     }
+    $result = $api->search($data['query']);
 
     return $result;
   }
 
   public function auth() {
-    $spotify_api = new \App\SpotifyAPI();
-    return redirect()->away($spotify_api->auth());
+    $api = new \App\SpotifyAPI();
+    return redirect()->away($api->auth());
   }
 
   public function callback(Request $request) {
-    $spotify_api = new \App\SpotifyAPI();
+    $api = new \App\SpotifyAPI();
     $code = $request->query('code');
-    $spotify_api->callback($code);
+    $api->callback($code);
     return redirect('/');
   }
 
   public function test() {
-    $test = \App\SpotifyAPI::search("keine parolen");
+    $api = new \App\SpotifyAPI();
+    $test = $api->test();
     return response()->json($test);
   }
 }
